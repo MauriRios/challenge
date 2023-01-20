@@ -1,0 +1,83 @@
+[33mcommit 9b6038694367b1a72a703d0a7a0363c469ef8750[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Sun Jan 15 13:51:12 2023 -0300
+
+    fix: corregida entidad balance, error ortografico
+
+[33mcommit 8fae0952f24d75b93a0c625bcf911e39f42cc1c9[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Fri Jan 13 23:49:40 2023 -0300
+
+    add: logica para ventas y gastos, grafico de panel admin
+
+[33mcommit a84f07fc726d02366541747d6e8e99bcb739da14[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Tue Jan 10 21:46:35 2023 -0300
+
+    fix: CORS
+
+[33mcommit 6bb970e98683349288701107c955661d4e3a4b12[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Tue Jan 10 21:12:24 2023 -0300
+
+    fix: url tenia un / de mas
+
+[33mcommit de4733e06fdba9e19dd360310d3d5161f9d64f22[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Tue Jan 10 20:49:38 2023 -0300
+
+    tabla intermedia off
+
+[33mcommit ab1ae7587d33ba7ee41a94f64f23191fa69a68e0[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Tue Jan 10 20:47:05 2023 -0300
+
+    url en cors, tabla intermedia on
+
+[33mcommit 0e07cf89e8ca80eb8a72b449298a597c1a7d1bd5[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Tue Jan 10 20:03:00 2023 -0300
+
+    deploy railway, variables de base de datos
+
+[33mcommit 68f1be13cc340b9e1875dd9a70af1960fed97f49[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Thu Dec 22 16:27:43 2022 -0300
+
+    ultima version con arreglos en relaciones
+
+[33mcommit 6784308e6848d6ebf15345d01ae589f51480c050[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Sun Dec 18 06:18:07 2022 -0300
+
+    Primera version con JWT funcionando
+
+[33mcommit db2ecd7647d641afa65135935ab41554a1903b23[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Sat Dec 17 01:20:48 2022 -0300
+
+    implementacion de JWT
+
+[33mcommit 4262274e4c40e6927a991960d9d952ba55113bd0[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Fri Dec 16 18:43:08 2022 -0300
+
+    add: getbyidproduct para boton de eliminar
+
+[33mcommit 320b22085822ebc1c47b0195b5e6f5ba705eba80[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Mon Dec 5 21:48:48 2022 -0300
+
+    Add: entidades hotconfig y catalogconfig, servicio y controlladores creados
+
+[33mcommit f9911a6dad9835938a45f254de7a9a0448c62e6f[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Sat Dec 3 23:49:14 2022 -0300
+
+    creacion de entidad slider-config, implementacion de manytomany en entidad cart y product a arreglar
+
+[33mcommit dfde371094e8c492dfba7cd3448b55795c8e1fdf[m
+Author: MauriRios <87584747+MauriRios@users.noreply.github.com>
+Date:   Sat Nov 5 12:40:14 2022 -0300
+
+    Primera version backend
