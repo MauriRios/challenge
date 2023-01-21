@@ -1,7 +1,6 @@
 com\demo\challenge\entitys\Sale.class
 com\demo\challenge\repository\IProductRepository.class
 com\demo\challenge\servicesInterfaces\ICustomerService.class
-dto\ProviderDTO.class
 com\demo\challenge\controller\CustomerController.class
 com\demo\challenge\services\ImpCustomerService.class
 com\demo\challenge\controller\SaleController.class

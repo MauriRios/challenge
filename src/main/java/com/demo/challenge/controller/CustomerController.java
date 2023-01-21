@@ -37,7 +37,17 @@ public class CustomerController {
     
     @GetMapping("/traer/{id}")
     public Customer getCustomerById(@PathVariable int id) {
-        return icustomerService.findCustomer(id);
+    Customer customer = icustomerService.findCustomer(id);
+    if(customer.isStatus()){
+        return customer;
+    }else {
+        return null;
+        }
+    }
+    
+    @GetMapping("/activo")
+    public List<Customer> getActiveCustomers() {
+        return icustomerService.getCustomersByStatus(true);
     }
     
     @PostMapping("/crear")
@@ -56,9 +66,25 @@ public class CustomerController {
     public Customer editCustomer (@PathVariable("id") int id,
                                         @RequestBody Customer customer)
     {
-    customer.setId(id);  
-    icustomerService.saveCustomer(customer);
+    Customer customerDB = icustomerService.findCustomer(id);
+    if(customerDB.isStatus()){
+        customer.setId(id);  
+        icustomerService.updateCustomer(customer);
+        return customer;
+    }else{
+        return null;
+        }   
+    }
     
-    return customer;
+    @PutMapping("/activo/{id}")
+    public String activateCustomer(@PathVariable int id) {
+        icustomerService.activateCustomer(id);
+        return "El cliente ha sido activado exitosamente";
+    }
+    
+    @PutMapping("/desactivo/{id}")
+    public String deactivateCustomer(@PathVariable int id) {
+        icustomerService.deactivateCustomer(id);
+        return "El cliente ha sido desactivado exitosamente";
     }
 }

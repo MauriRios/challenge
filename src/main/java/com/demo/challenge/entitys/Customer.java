@@ -45,7 +45,9 @@ public class Customer {
     private int phone;
     
     @NotNull
-    private String Address;
+    private String address;
+    
+    private boolean status;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval= true)
     private List<Sale> sales = new ArrayList<>();
