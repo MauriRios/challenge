@@ -5,10 +5,11 @@
 package com.demo.challenge.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,21 +37,18 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private Date date;
+    private LocalDate date;
     
     private int quantity;
     
-    @Column(name = "totalPrice")
     private double total;
 
- 
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "sale_product",
         joinColumns = @JoinColumn(name = "sale_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
     
     @JsonIgnore
     @ManyToOne
@@ -60,14 +58,19 @@ public class Sale {
     public Sale() {
     }
 
-    public Sale(int id, Date date, int quantity, double total, List<Product> products, Customer customer) {
+    public Sale(int id, LocalDate date, int quantity, double total, List<Product> products, Customer customer) {
         this.id = id;
         this.date = date;
         this.quantity = quantity;
         this.total = total;
-        this.products = products;
+        this.products = new ArrayList<>();
         this.customer = customer;
     }
+
+    //probando
+   // public void addProduct(Product product, int quantity) {
+   //       products.add(product);
+    //  }
 
     
 }

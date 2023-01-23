@@ -15,14 +15,14 @@ import java.util.List;
 
 public interface IProviderService {
     
-    public List<Provider> getProviders();
     
-    //public void saveProvider(Provider provider, int providerId); 
-
-    public void saveProvider(Provider provider);
-
-    public void deleteProvider(int id);
-    
-    public Provider findProvider(int id);
+    List<Provider> getProviders();
+    List<Provider> getProvidersByStatus(boolean status);
+    Provider findProvider(int id);
+    void deleteProvider(int id);
+    void updateProvider(Provider provider);
+    void createProvider(Provider provider);
+    void activateProvider(int id);
+    void deactivateProvider(int id);
     
 }

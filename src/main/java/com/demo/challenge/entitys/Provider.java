@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 /**
@@ -31,38 +32,48 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(length = 45, nullable = false, unique = true)
-    private String name;
+    @NotNull
+    @Column(length = 45, nullable = false)
+    private String providerName;
     
+    @NotNull
     @Column(length = 11, nullable = false, unique = true)
     private int cuit;
     
+    @NotNull
     @Column(length = 11, nullable = false, unique = true)
     private int phone;
     
-    @Column(length = 11, nullable = false, unique = true)
+    @NotNull
+    @Column(length = 11, nullable = false)
     private String address;
+    
+    @NotNull
+    private boolean status;
     
     @ManyToMany
     @JoinTable(name = "provider_product",
         joinColumns = @JoinColumn(name = "provider_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    private List<Product> prodList;
 
     public Provider() {
     }
 
-    public Provider(int id, String name, int cuit, int phone, String address, List<Product> products) {
+    public Provider(int id, String providerName, int cuit, int phone, String address, boolean status, List<Product> prodList) {
         this.id = id;
-        this.name = name;
+        this.providerName = providerName;
         this.cuit = cuit;
         this.phone = phone;
         this.address = address;
-        this.products = products;
+        this.status = status;
+        this.prodList = prodList;
     }
+
+   
     
     public void addProduct(Product product) {
-        this.products.add(product);
+        this.prodList.add(product);
         product.addProvider(this);
     }
     

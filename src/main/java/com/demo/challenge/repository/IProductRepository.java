@@ -4,8 +4,12 @@
  */
 package com.demo.challenge.repository;
 
+import com.demo.challenge.dto.ProductDTO;
 import com.demo.challenge.entitys.Product;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,4 +20,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
     
+    @Query(value = "SELECT products.name, products.stock, providers.providerName, providers.phone FROM products JOIN provider_product ON provider_product.product_id = products.id JOIN providers ON providers.id = provider_product.provider_id WHERE products.stock <= :stock GROUP BY products.id", nativeQuery = true)
+    List<ProductDTO> findLowStockProducts(@Param("stock") int stock);
+    
+   
 }

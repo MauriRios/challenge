@@ -32,6 +32,9 @@ public class ImpCustomerService implements ICustomerService {
     
     @Override
     public List<Customer> getCustomersByStatus(boolean status) {
+        //traigo "todos" por id creo una lista nueva y desestructuro "todos" 
+        //con el ciclo for itero cada uno, con el if comparo el status si es true
+        //lo guardo en la lista nueva y la retorno 
         List<Customer> allCustomers = icustomerRepository.findAll();
         List<Customer> filteredCustomers = new ArrayList<>();
         for (Customer customer: allCustomers) {
@@ -44,6 +47,7 @@ public class ImpCustomerService implements ICustomerService {
     
     @Override
     public void activateCustomer(int id) {
+        //busco por id y seteo el status en true
         Customer customer = icustomerRepository.findById(id).get();
         customer.setStatus(true);
         icustomerRepository.save(customer);
@@ -51,16 +55,12 @@ public class ImpCustomerService implements ICustomerService {
 
     @Override
     public void deactivateCustomer(int id) {
+        //busco por id y seteo el status en false
         Customer customer = icustomerRepository.findById(id).get();
         customer.setStatus(false);
         icustomerRepository.save(customer);
     }
 
-    @Override
-    public void saveCustomer(Customer customer) {
-        icustomerRepository.save(customer);
-        
-    }
 
     @Override
     public void deleteCustomer(int id) {
@@ -77,6 +77,7 @@ public class ImpCustomerService implements ICustomerService {
     
     @Override
     public void updateCustomer(Customer customer) {
+        customer.setStatus(true);
         icustomerRepository.save(customer);
     }
     

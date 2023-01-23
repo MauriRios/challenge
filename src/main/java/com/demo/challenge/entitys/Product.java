@@ -9,6 +9,7 @@ package com.demo.challenge.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,37 +35,47 @@ public class Product {
     private int id;
     
     @NotNull
+    @Column(length = 45, nullable = false)
     private String name;
     
     @NotNull
+    @Column(length = 30, nullable = false)
     private String description;
     
     @NotNull
+    @Column(nullable = false)
     private int price;
     
     @NotNull
+    @Column(nullable = false)
     private int stock;
+    
+    @NotNull
+    @Column(nullable = false)
+    private boolean status;
+    
+    @Column(nullable = true)
+    private int quantity;
+    
    
     @JsonIgnore
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "prodList")
     private List<Provider> providerList = new ArrayList<>();
     
-    @JsonIgnore
-    @ManyToMany(mappedBy = "products")
-    private List<Sale> sales;
 
     public Product() {
     }
 
-    public Product(int id, String name, String description, int price, int stock, List<Provider> providerList, List<Sale> sales) {
+    public Product(int id, String name, String description, int price, int stock, boolean status, int quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
-        this.providerList = providerList;
-        this.sales = sales;
-    }   
+        this.status = status;
+        this.quantity = quantity;
+    }
+  
     
     public void addProvider(Provider provider) {
         this.providerList.add(provider);

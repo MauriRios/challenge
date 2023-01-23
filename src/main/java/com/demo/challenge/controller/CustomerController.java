@@ -7,7 +7,9 @@ package com.demo.challenge.controller;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author mauri
  */
+
 @RestController
 @RequestMapping  ("cliente")
 @CrossOrigin(origins = "*")
@@ -38,28 +41,39 @@ public class CustomerController {
     @GetMapping("/traer/{id}")
     public Customer getCustomerById(@PathVariable int id) {
     Customer customer = icustomerService.findCustomer(id);
+    //busco por id, verifico el status y filtro si son true
     if(customer.isStatus()){
         return customer;
     }else {
-        return null;
+            return null;
         }
     }
     
     @GetMapping("/activo")
     public List<Customer> getActiveCustomers() {
-        return icustomerService.getCustomersByStatus(true);
+        //trae solo los status true filtro en servImpl
+            return icustomerService.getCustomersByStatus(true);
     }
     
     @PostMapping("/crear")
-    public void createCustomer(@RequestBody Customer customer) {
-        icustomerService.saveCustomer(customer);
-        
+    public String createCustomer(@RequestBody Customer customer) {
+        try {
+            icustomerService.updateCustomer(customer);  
+                return "Se creo el cliente correctamente"; 
+        }catch (ConstraintViolationException e) {
+                return "Faltan datos del cliente, por favor llena todos los campos";
+        }
+                  
     }
 
     @DeleteMapping("/borrar/{id}")
-    public void deleteCustomer(@PathVariable int id) {
-        icustomerService.deleteCustomer(id);
-        
+    public String deleteCustomer(@PathVariable int id) {
+        try {
+                icustomerService.deleteCustomer(id);
+                    return "Cliente borrado con exito";      
+        } catch (EmptyResultDataAccessException ne) {        
+                    return "No se encontró el cliente con id "+id;
+        }   
     }
 
     @PutMapping("/editar/{id}")
@@ -70,9 +84,9 @@ public class CustomerController {
     if(customerDB.isStatus()){
         customer.setId(id);  
         icustomerService.updateCustomer(customer);
-        return customer;
+            return customer;
     }else{
-        return null;
+            return null;
         }   
     }
     

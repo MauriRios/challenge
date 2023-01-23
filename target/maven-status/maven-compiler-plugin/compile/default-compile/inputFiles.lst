@@ -1,5 +1,6 @@
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\services\ImpCustomerService.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\services\ImpSaleService.java
+C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\dto\ProductDTO.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\repository\ICustomerRepository.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\servicesInterfaces\ICustomerService.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\controller\CustomerController.java
@@ -9,6 +10,7 @@ C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\controller\Pro
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\entitys\Customer.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\entitys\Provider.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\services\ImpProviderService.java
+C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\dto\SaleRequestDTO.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\servicesInterfaces\IProductService.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\entitys\Sale.java
 C:\Users\mauri\Desktop\challenge\src\main\java\com\demo\challenge\services\ImpProductService.java

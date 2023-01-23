@@ -4,12 +4,16 @@
  */
 package com.demo.challenge.controller;
 
-import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Sale;
-import com.demo.challenge.servicesInterfaces.ICustomerService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -45,15 +50,19 @@ public class SaleController {
     }
     
     @PostMapping("/crear/{customerId}")
-    public void createSale(@PathVariable int customerId, @RequestBody Sale sale) {
+    public String createSale(@PathVariable int customerId, @RequestBody Sale sale) {
     isaleService.saveSale(sale, customerId);
-        
+        return "Venta realizada con éxito";
     }
 
     @DeleteMapping("/borrar/{id}")
-    public void deleteSale(@PathVariable int id) {
+    public String deleteSale(@PathVariable int id) {
+        try {
         isaleService.deleteSale(id);
-        
+                return "Proveedor borrado con éxito ";
+        } catch(EmptyResultDataAccessException ne) {           
+            return "No se encontró el proveedor con id "+id;
+        }
     }
 
     @PutMapping("/editar/{id}")
@@ -66,5 +75,13 @@ public class SaleController {
     return sale;
     }  
     
+    //querys
+        @GetMapping("/date")
+        public ResponseEntity<List<Sale>> findByDate(@RequestParam("date")
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            
+            List<Sale> sales = isaleService.findByDate(date);
+            return new ResponseEntity<>(sales, HttpStatus.OK);
+        }
     
 }

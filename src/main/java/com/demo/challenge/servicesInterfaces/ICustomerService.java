@@ -17,19 +17,9 @@ public interface ICustomerService {
     List<Customer> getCustomers();
     List<Customer> getCustomersByStatus(boolean status);
     Customer findCustomer(int id);
-    void saveCustomer(Customer customer);
     void deleteCustomer(int id);
     void updateCustomer(Customer customer);
     void activateCustomer(int id);
     void deactivateCustomer(int id);
-    
-    
-   // public List<Customer> getCustomers();
-
-   // public void saveCustomer(Customer customer);
-
-    //public void deleteCustomer(int id);
-    
-    //public Customer findCustomer(int id);
     
 }

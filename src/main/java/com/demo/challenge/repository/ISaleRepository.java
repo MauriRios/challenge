@@ -5,8 +5,12 @@
 package com.demo.challenge.repository;
 
 import com.demo.challenge.entitys.Sale;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,4 +21,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ISaleRepository extends JpaRepository<Sale, Integer> {
 
+    @Query("SELECT s FROM Sale s WHERE s.date = :date")
+    List<Sale> findByDate(@Param("date") LocalDate date);
 }

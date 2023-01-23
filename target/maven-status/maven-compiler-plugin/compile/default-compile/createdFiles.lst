@@ -5,7 +5,9 @@ com\demo\challenge\controller\CustomerController.class
 com\demo\challenge\services\ImpCustomerService.class
 com\demo\challenge\controller\SaleController.class
 com\demo\challenge\controller\ProductController.class
+com\demo\challenge\dto\SaleRequestDTO.class
 com\demo\challenge\entitys\Provider.class
+com\demo\challenge\dto\ProductDTO.class
 com\demo\challenge\services\ImpProductService.class
 com\demo\challenge\services\ImpSaleService.class
 com\demo\challenge\servicesInterfaces\IProviderService.class

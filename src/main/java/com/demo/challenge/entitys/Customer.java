@@ -33,23 +33,30 @@ public class Customer {
     private int id;
     
     @NotNull
+    @Column(length = 20, nullable = false)
     private String name;
     
     @NotNull
+    @Column(length = 20, nullable = false)
     private String lastName;
     
     @NotNull
+    @Column(length = 11, nullable = false, unique = true)
     private int dni;
     
     @NotNull
+    @Column(length = 11, nullable = false, unique = true)
     private int phone;
     
     @NotNull
+    @Column(length = 30, nullable = false)
     private String address;
     
+    @NotNull
+    @Column(nullable = false)
     private boolean status;
     
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval= true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Sale> sales = new ArrayList<>();
 
     public Customer() {
