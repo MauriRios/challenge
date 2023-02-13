@@ -6,6 +6,8 @@ package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.entitys.Provider;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public interface IProviderService {
     Provider findProvider(int id);
     void deleteProvider(int id);
     void updateProvider(Provider provider);
-    void createProvider(Provider provider);
+    ResponseEntity<String> createProvider(Provider provider);
     void activateProvider(int id);
     void deactivateProvider(int id);
     

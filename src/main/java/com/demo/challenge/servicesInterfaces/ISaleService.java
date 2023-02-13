@@ -20,11 +20,10 @@ public interface ISaleService {
 
     public List<Sale> getSales();
 
-    public void saveSale(Sale sale, int customerId);
+    public void saveSale(Sale sale, int customerId, Integer providerId);
     
     //void saveSale(Sale sale, List<Product> products, int customerId) throws IllegalArgumentException;
-    
-    public void updateSale(Sale sale);    
+
 
     public void deleteSale(int id);    
 
@@ -32,5 +31,6 @@ public interface ISaleService {
     
     //querys
      List<Sale> findByDate(LocalDate date);
-    
+     List<Sale> findByProviderId(int providerId);
+
 }

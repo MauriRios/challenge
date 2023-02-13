@@ -6,10 +6,12 @@ package com.demo.challenge.services;
 
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Product;
+import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.repository.ISaleRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
+import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,6 +38,9 @@ public class ImpSaleService implements ISaleService {
             @Autowired
             private IProductRepository iproductRepository;
 
+            @Autowired
+            private IProviderService iproviderService;
+
             @Override
             public List<Sale> getSales() {
                 List<Sale> sale = isaleRepository.findAll();
@@ -43,41 +48,37 @@ public class ImpSaleService implements ISaleService {
             }
 
              @Override
-             public void saveSale(Sale sale, int customerId) {
-                 //Creo nuevo array para llenarlo en el bucle
+             public void saveSale(Sale sale, int customerId, Integer providerId) {
+                //Creo nuevo array para llenarlo en el bucle
                 List<Product> productList = new ArrayList<>();
                 //creo variable total para llenarla en el bucle
                 double total = 0.0;
                 //formateo la date para luego setear el tiempo al ejecutar la venta
-                    LocalDate today = LocalDate.now();    
+                LocalDate today = LocalDate.now();
                     
                     //desestructuro el array de objetos que llega de ventas y lo itero
                     //para luego restar el stock, sumar el valor total y setear la date y mandarlo a la bd
                  for(var unit: sale.getProducts()){
-                     
                      var producto = iproductRepository.findById( unit.getId()).get();
-                    var quantity = producto.getStock() - unit.getQuantity();
+                     var quantity = producto.getStock() - unit.getQuantity();
                     
                     //cuenta da mas de lo debido, arreglar
                     total += unit.getQuantity() * unit.getPrice();
                     producto.setStock(quantity);
                     productList.add(producto);
-                 }
-                 //seteo valores
-                 sale.setDate(today);
-                 sale.setProducts(productList);
-                 sale.setTotal(total);
-                 //mando a la db
-                    Customer customer = icustomerService.findCustomer(customerId);
-                    sale.setCustomer(customer);
-                        isaleRepository.save(sale);
+                       }
+                     //seteo valores
+                         sale.setDate(today);
+                         sale.setProducts(productList);
+                         sale.setTotal(total);
+                     //mando a la db
+                        Customer customer = icustomerService.findCustomer(customerId);
+                        sale.setCustomer(customer);
+                        Provider provider = iproviderService.findProvider(providerId);
+                        sale.setProvider(provider);
+                            isaleRepository.save(sale);
 
              }
-
-            @Override
-            public void updateSale(Sale sale) {
-                isaleRepository.save(sale);    
-            }
 
             @Override
             public void deleteSale(int id) {
@@ -94,11 +95,14 @@ public class ImpSaleService implements ISaleService {
 
                 //querys 
 
-               @Override
+
                 public List<Sale> findByDate(LocalDate date) {
-                    return isaleRepository.findByDate(date);
+                return isaleRepository.findByDate(date);
                 }
-                
+
+                public List<Sale> findByProviderId(int providerId) {
+                    return isaleRepository.findByProviderId(providerId);
+                }
 
     
 }

@@ -4,11 +4,15 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
+import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,6 +41,9 @@ public class SaleController {
     
     @Autowired 
     ISaleService isaleService;
+
+    @Autowired
+    IProviderService iproviderService;
     
     
     @GetMapping("/traer")
@@ -49,10 +56,18 @@ public class SaleController {
         return isaleService.findSale(id);
     }
     
-    @PostMapping("/crear/{customerId}")
-    public String createSale(@PathVariable int customerId, @RequestBody Sale sale) {
-    isaleService.saveSale(sale, customerId);
-        return "Venta realizada con éxito";
+    @PostMapping("/crear")
+    public String createSale(@RequestParam Integer customerId, @RequestParam Integer providerId, @RequestBody Sale sale) throws Exception {
+        try {
+            if (providerId == null || customerId == null)
+                throw new Exception("Proveedor no encontrado");
+            else {
+                isaleService.saveSale(sale, customerId, providerId);
+                return "Venta realizada con éxito";
+            }
+        } catch (NoSuchElementException ex){
+            throw new Exception ("ERROR PROVEEDOR O CLIENTE NULL");
+        }
     }
 
     @DeleteMapping("/borrar/{id}")
@@ -64,24 +79,34 @@ public class SaleController {
             return "No se encontró el proveedor con id "+id;
         }
     }
-
-    @PutMapping("/editar/{id}")
-    public Sale editSale (@PathVariable("id") int id,
-                                        @RequestBody Sale sale)
-    {
-    sale.setId(id);  
-    isaleService.updateSale(sale);
     
-    return sale;
-    }  
-    
-    //querys
+         //querys
         @GetMapping("/date")
         public ResponseEntity<List<Sale>> findByDate(@RequestParam("date")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-            
-            List<Sale> sales = isaleService.findByDate(date);
+                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            try {
+                if (date == null) {
+                    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                }else {
+                    List<Sale> sales = isaleService.findByDate(date);
+                    return new ResponseEntity<>(sales, HttpStatus.OK);
+                }
+
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @GetMapping("/provider/{providerId}")
+        public ResponseEntity<List<Sale>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
+            Provider provider = iproviderService.findProvider(providerId);
+            if (provider == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<Sale> sales = isaleService.findByProviderId(providerId);
             return new ResponseEntity<>(sales, HttpStatus.OK);
         }
+
+
     
 }

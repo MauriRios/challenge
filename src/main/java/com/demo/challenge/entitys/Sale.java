@@ -9,16 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 
@@ -36,11 +29,14 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
+    @NotNull
+    @Column(nullable = false)
     private LocalDate date;
-    
+    @NotNull
+    @Column(nullable = false)
     private int quantity;
-    
+    @NotNull
+    @Column(nullable = false)
     private double total;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -54,6 +50,10 @@ public class Sale {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
    
     public Sale() {
     }

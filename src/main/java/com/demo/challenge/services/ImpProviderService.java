@@ -11,6 +11,9 @@ import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -62,7 +65,7 @@ public class ImpProviderService implements IProviderService {
         }
         
             @Override
-            public void createProvider(Provider provider) {
+            public ResponseEntity<String> createProvider(Provider provider) {
             try {
                 if(provider.getProviderName() == null ||
                    provider.getCuit() == 0 ||
@@ -73,11 +76,11 @@ public class ImpProviderService implements IProviderService {
                 }
                 provider.setStatus(true);
                 iproviderRepository.save(provider);
-                 System.out.println("Proveedor agregado con éxito");
-            } catch (NullPointerException ne) {
-                System.out.println("No se encontró el proveedor con id ");
+                return ResponseEntity.ok().body("Proveedor agregado con éxito");
+            } catch (DataIntegrityViolationException ex) {
+                return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
             }
-        }
+            }
 
         @Override
         public void updateProvider(Provider provider) {
