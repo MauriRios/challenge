@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -46,7 +47,7 @@ public class Sale {
         inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products = new ArrayList<>();
     
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -67,10 +68,7 @@ public class Sale {
         this.customer = customer;
     }
 
-    //probando
-   // public void addProduct(Product product, int quantity) {
-   //       products.add(product);
-    //  }
+
 
     
 }

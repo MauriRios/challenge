@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -57,18 +58,12 @@ public class SaleController {
     }
     
     @PostMapping("/crear")
-    public String createSale(@RequestParam Integer customerId, @RequestParam Integer providerId, @RequestBody Sale sale) throws Exception {
-        try {
-            if (providerId == null || customerId == null)
-                throw new Exception("Proveedor no encontrado");
-            else {
-                isaleService.saveSale(sale, customerId, providerId);
-                return "Venta realizada con éxito";
-            }
-        } catch (NoSuchElementException ex){
-            throw new Exception ("ERROR PROVEEDOR O CLIENTE NULL");
-        }
+    public void createSale(@RequestParam Integer customerId, @RequestParam Integer providerId, @RequestBody Sale sale) {
+        isaleService.saveSale(sale, customerId, providerId);
+
     }
+
+
 
     @DeleteMapping("/borrar/{id}")
     public String deleteSale(@PathVariable int id) {
@@ -98,12 +93,8 @@ public class SaleController {
         }
 
         @GetMapping("/provider/{providerId}")
-        public ResponseEntity<List<Sale>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
-            Provider provider = iproviderService.findProvider(providerId);
-            if (provider == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            List<Sale> sales = isaleService.findByProviderId(providerId);
+        public ResponseEntity<List<SaleDTO>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
+            List<SaleDTO> sales = isaleService.findByProviderId(providerId);
             return new ResponseEntity<>(sales, HttpStatus.OK);
         }
 

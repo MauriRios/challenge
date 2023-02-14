@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.services;
 
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.entitys.Provider;
@@ -13,10 +14,9 @@ import com.demo.challenge.repository.ISaleRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,34 +49,28 @@ public class ImpSaleService implements ISaleService {
 
              @Override
              public void saveSale(Sale sale, int customerId, Integer providerId) {
-                //Creo nuevo array para llenarlo en el bucle
-                List<Product> productList = new ArrayList<>();
-                //creo variable total para llenarla en el bucle
-                double total = 0.0;
-                //formateo la date para luego setear el tiempo al ejecutar la venta
                 LocalDate today = LocalDate.now();
-                    
-                    //desestructuro el array de objetos que llega de ventas y lo itero
-                    //para luego restar el stock, sumar el valor total y setear la date y mandarlo a la bd
-                 for(var unit: sale.getProducts()){
-                     var producto = iproductRepository.findById( unit.getId()).get();
-                     var quantity = producto.getStock() - unit.getQuantity();
-                    
-                    //cuenta da mas de lo debido, arreglar
-                    total += unit.getQuantity() * unit.getPrice();
-                    producto.setStock(quantity);
-                    productList.add(producto);
-                       }
-                     //seteo valores
-                         sale.setDate(today);
-                         sale.setProducts(productList);
-                         sale.setTotal(total);
-                     //mando a la db
-                        Customer customer = icustomerService.findCustomer(customerId);
-                        sale.setCustomer(customer);
-                        Provider provider = iproviderService.findProvider(providerId);
-                        sale.setProvider(provider);
-                            isaleRepository.save(sale);
+                List<Product> productList = new ArrayList<>();
+                double total = 0.0;
+
+
+                    for (var unit : sale.getProducts()) {
+                        var product = iproductRepository.findById(unit.getId()).get();
+                        var quantity = product.getStock() - unit.getQuantity();
+                        total += unit.getQuantity() * unit.getPrice();
+                        product.setStock(quantity);
+                        productList.add(product);
+                    }
+
+                    sale.setDate(today);
+                    sale.setProducts(productList);
+                    sale.setTotal(total);
+
+                    Customer customer = icustomerService.findCustomer(customerId);
+                    sale.setCustomer(customer);
+                    Provider provider = iproviderService.findProvider(providerId);
+                    sale.setProvider(provider);
+                    isaleRepository.save(sale);
 
              }
 
@@ -100,7 +94,7 @@ public class ImpSaleService implements ISaleService {
                 return isaleRepository.findByDate(date);
                 }
 
-                public List<Sale> findByProviderId(int providerId) {
+                public List<SaleDTO> findByProviderId(int providerId) {
                     return isaleRepository.findByProviderId(providerId);
                 }
 

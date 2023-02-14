@@ -4,10 +4,9 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.entitys.Product;
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Sale;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +30,6 @@ public interface ISaleService {
     
     //querys
      List<Sale> findByDate(LocalDate date);
-     List<Sale> findByProviderId(int providerId);
+     List<SaleDTO> findByProviderId(int providerId);
 
 }
