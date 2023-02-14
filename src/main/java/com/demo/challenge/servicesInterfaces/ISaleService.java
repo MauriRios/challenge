@@ -30,6 +30,6 @@ public interface ISaleService {
     
     //querys
      List<Sale> findByDate(LocalDate date);
-     List<SaleDTO> findByProviderId(int providerId);
+    // List<SaleDTO> findByProviderId(int providerId);
 
 }

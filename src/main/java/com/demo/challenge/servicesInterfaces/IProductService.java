@@ -5,6 +5,7 @@
 package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.entitys.Product;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public interface IProductService {
     
-   List<Product> getProducts();
+   ProductListDTO getProducts();
     List<Product> getProductsByStatus(boolean status);
     Product findProduct(int id);
     void deleteProduct(int id);

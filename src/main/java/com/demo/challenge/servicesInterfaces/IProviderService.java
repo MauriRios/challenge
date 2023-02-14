@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.entitys.Provider;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,7 @@ public interface IProviderService {
     ResponseEntity<String> createProvider(Provider provider);
     void activateProvider(int id);
     void deactivateProvider(int id);
+
+    List<SaleDTO> findSaleByProvider(int providerId);
     
 }

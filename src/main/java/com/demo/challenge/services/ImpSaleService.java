@@ -68,8 +68,8 @@ public class ImpSaleService implements ISaleService {
 
                     Customer customer = icustomerService.findCustomer(customerId);
                     sale.setCustomer(customer);
-                    Provider provider = iproviderService.findProvider(providerId);
-                    sale.setProvider(provider);
+                   // Provider provider = iproviderService.findProvider(providerId);
+                   // sale.setProvider(provider);
                     isaleRepository.save(sale);
 
              }
@@ -94,9 +94,9 @@ public class ImpSaleService implements ISaleService {
                 return isaleRepository.findByDate(date);
                 }
 
-                public List<SaleDTO> findByProviderId(int providerId) {
-                    return isaleRepository.findByProviderId(providerId);
-                }
+//                public List<SaleDTO> findByProviderId(int providerId) {
+//                    return isaleRepository.findByProviderId(providerId);
+//                }
 
     
 }

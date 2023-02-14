@@ -92,11 +92,11 @@ public class SaleController {
             }
         }
 
-        @GetMapping("/provider/{providerId}")
-        public ResponseEntity<List<SaleDTO>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
-            List<SaleDTO> sales = isaleService.findByProviderId(providerId);
-            return new ResponseEntity<>(sales, HttpStatus.OK);
-        }
+//        @GetMapping("/provider/{providerId}")
+//        public ResponseEntity<List<SaleDTO>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
+//            List<SaleDTO> sales = isaleService.findByProviderId(providerId);
+//            return new ResponseEntity<>(sales, HttpStatus.OK);
+//        }
 
 
     

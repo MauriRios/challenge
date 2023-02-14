@@ -5,6 +5,7 @@
 package com.demo.challenge.controller;
 
 import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
@@ -44,7 +45,7 @@ public class ProductController {
     IProductRepository iproductRepository;
     
     @GetMapping("/traer")
-    public List<Product> getProducts() {
+    public ProductListDTO getProducts() {
         return iproductService.getProducts();
     }
     

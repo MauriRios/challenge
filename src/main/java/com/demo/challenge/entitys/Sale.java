@@ -12,7 +12,6 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -45,9 +44,9 @@ public class Sale {
         name = "sale_product",
         joinColumns = @JoinColumn(name = "sale_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products = new ArrayList<>();
+    private List<Product> products;
     
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

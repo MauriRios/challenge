@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
@@ -97,4 +98,12 @@ public class ProviderController {
         iproviderService.deactivateProvider(id);
         return "El proveedor ha sido desactivado exitosamente";
     }
+
+    @GetMapping("/ventas/{providerId}")
+    public List<SaleDTO> sales(@PathVariable int providerId) {
+
+     return iproviderService.findSaleByProvider(providerId);
+
+    }
+
 }

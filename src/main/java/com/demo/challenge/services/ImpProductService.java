@@ -5,6 +5,7 @@
 package com.demo.challenge.services;
 
 import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.repository.IProductRepository;
@@ -12,6 +13,8 @@ import com.demo.challenge.servicesInterfaces.IProductService;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +31,14 @@ public class ImpProductService implements IProductService {
 
         @Autowired private IProviderService iproviderService;
 
+        ModelMapper mapper = new ModelMapper();
+
         @Override
-        public List<Product> getProducts() {
+        public ProductListDTO getProducts() {
             List<Product> products = iproductRepository.findAll();
-            return products;
+            ProductListDTO productsListDTO = mapper.map(products, ProductListDTO.class);
+
+            return productsListDTO;
         }
 
         @Override

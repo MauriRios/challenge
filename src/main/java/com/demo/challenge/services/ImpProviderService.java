@@ -5,6 +5,7 @@
 package com.demo.challenge.services;
 
 
+import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.repository.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -100,7 +101,9 @@ public class ImpProviderService implements IProviderService {
             return provider;
 
            }
-        
-        
+           @Override
+           public List<SaleDTO> findSaleByProvider(int providerId){
+            return iproviderRepository.findByProviderId(providerId);
+           }
 
         }
