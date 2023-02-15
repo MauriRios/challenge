@@ -5,7 +5,7 @@
 package com.demo.challenge.services;
 
 
-import com.demo.challenge.dto.SaleDTO;
+import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.repository.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -102,7 +101,7 @@ public class ImpProviderService implements IProviderService {
 
            }
            @Override
-           public List<SaleDTO> findSaleByProvider(int providerId){
+           public List<SaleRequestDTO> findSaleByProvider(int providerId){
             return iproviderRepository.findByProviderId(providerId);
            }
 

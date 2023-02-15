@@ -4,7 +4,7 @@
  */
 package com.demo.challenge.controller;
 
-import com.demo.challenge.dto.SaleDTO;
+import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
@@ -100,7 +100,7 @@ public class ProviderController {
     }
 
     @GetMapping("/ventas/{providerId}")
-    public List<SaleDTO> sales(@PathVariable int providerId) {
+    public List<SaleRequestDTO> sales(@PathVariable int providerId) {
 
      return iproviderService.findSaleByProvider(providerId);
 

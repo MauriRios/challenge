@@ -8,14 +8,10 @@ package com.demo.challenge.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import java.util.Set;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.*;
 
@@ -58,11 +54,13 @@ public class Product {
     
     @Column(nullable = true)
     private int quantity;
-    
-   
-    @JsonIgnore
-    @ManyToMany(mappedBy = "prodList")
-    private List<Provider> providerList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idProv")
+    private Provider provider;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Sale> sales;
 
 
 }

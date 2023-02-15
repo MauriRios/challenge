@@ -22,6 +22,8 @@ import lombok.*;
 
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table (name = "sales")
 public class Sale {
@@ -39,34 +41,20 @@ public class Sale {
     @Column(nullable = false)
     private double total;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "sale_product",
         joinColumns = @JoinColumn(name = "sale_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
-    
-    @JsonIgnore
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "provider_id")
-    private Provider provider;
-   
-    public Sale() {
-    }
-
-    public Sale(int id, LocalDate date, int quantity, double total, List<Product> products, Customer customer) {
-        this.id = id;
-        this.date = date;
-        this.quantity = quantity;
-        this.total = total;
-        this.products = new ArrayList<>();
-        this.customer = customer;
-    }
-
+    private Provider provider_id;
 
 
     

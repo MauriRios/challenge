@@ -4,16 +4,8 @@
  */
 package com.demo.challenge.entitys;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.*;
 
@@ -30,7 +22,7 @@ public class Customer {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     @NotNull
     @Column(length = 20, nullable = false)
@@ -42,11 +34,11 @@ public class Customer {
     
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
-    private int dni;
+    private Integer dni;
     
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
-    private int phone;
+    private Integer phone;
     
     @NotNull
     @Column(length = 30, nullable = false)
@@ -54,22 +46,10 @@ public class Customer {
     
     @NotNull
     @Column(nullable = false)
-    private boolean status;
+    private Boolean status;
     
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Sale> sales = new ArrayList<>();
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Sale> purchases;
 
-    public Customer() {
-    }
 
-    public Customer(int id) {
-        this.id = id;
-    }
-
-    
-
-    
-    
-   
-    
 }

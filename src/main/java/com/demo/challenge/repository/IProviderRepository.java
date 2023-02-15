@@ -4,14 +4,13 @@
  */
 package com.demo.challenge.repository;
 
-import com.demo.challenge.dto.SaleDTO;
+import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.lang.annotation.Native;
 import java.util.List;
 
 /**
@@ -23,6 +22,6 @@ import java.util.List;
 public interface IProviderRepository extends JpaRepository<Provider, Integer> {
 
     @Query("select new com.demo.challenge.dto.SaleDTO(s.id, s.date, s.quantity, s.total) from Sale s where s.provider.id = :providerId")
-    List<SaleDTO> findByProviderId(@Param("providerId") int providerId);
+    List<SaleRequestDTO> findByProviderId(@Param("providerId") int providerId);
 
 }

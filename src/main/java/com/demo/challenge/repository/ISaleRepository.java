@@ -4,10 +4,8 @@
  */
 package com.demo.challenge.repository;
 
-import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Sale;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

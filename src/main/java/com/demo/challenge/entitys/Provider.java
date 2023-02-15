@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -24,7 +26,7 @@ public class Provider {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     @NotNull
     @Column(length = 45, nullable = false)
@@ -34,11 +36,11 @@ public class Provider {
     private String providerLastName;
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
-    private int cuit;
+    private Integer cuit;
     
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
-    private int phone;
+    private Integer phone;
     
     @NotNull
     @Column(length = 11, nullable = false)
@@ -47,21 +49,13 @@ public class Provider {
     @NotNull
     private Boolean status;
     
-    @ManyToMany
-    @JoinTable(name = "provider_product",
-        joinColumns = @JoinColumn(name = "provider_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Product> prodList;
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider_id",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Sale> saleList;
 
-//    public void addProduct(Product product) {
-//        this.prodList.add(product);
-//        product.addProvider(this);
-//    }
-    
-    
     
     
 }

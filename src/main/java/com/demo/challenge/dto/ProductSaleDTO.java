@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.demo.challenge.dto;
 
 import lombok.AllArgsConstructor;
@@ -10,23 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-
-/**
- *
- * @author mauri
- */
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductSaleDTO {
 
     private Integer id;
     private String providerName;
     private String description;
     private Double price;
-    private Integer stock;
-    
-    
+    private Integer quantity;
+
 }

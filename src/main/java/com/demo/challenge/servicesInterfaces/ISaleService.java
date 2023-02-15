@@ -4,7 +4,6 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Sale;
 import java.time.LocalDate;
 import java.util.List;

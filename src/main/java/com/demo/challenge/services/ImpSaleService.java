@@ -4,10 +4,8 @@
  */
 package com.demo.challenge.services;
 
-import com.demo.challenge.dto.SaleDTO;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.repository.ISaleRepository;
