@@ -68,7 +68,10 @@ public class ImpSaleService implements ISaleService {
 
                     Customer customer = icustomerService.findCustomer(customerId);
                     sale.setCustomer(customer);
-                   // Provider provider = iproviderService.findProvider(providerId);
+
+                    // al relacionar el id del provider con la venta, me tira stackoverflow en las
+                    // consultas get de cliente, sale, provider
+                    //Provider provider = iproviderService.findProvider(providerId);
                    // sale.setProvider(provider);
                     isaleRepository.save(sale);
 
@@ -89,14 +92,10 @@ public class ImpSaleService implements ISaleService {
 
                 //querys 
 
-
                 public List<Sale> findByDate(LocalDate date) {
                 return isaleRepository.findByDate(date);
                 }
 
-//                public List<SaleDTO> findByProviderId(int providerId) {
-//                    return isaleRepository.findByProviderId(providerId);
-//                }
 
     
 }

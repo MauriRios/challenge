@@ -17,6 +17,8 @@ import lombok.*;
 
 @Getter @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "providers")
 public class Provider {
     
@@ -52,25 +54,10 @@ public class Provider {
     @OneToMany(mappedBy = "provider")
     private List<Sale> saleList;
 
-    public Provider() {
-    }
-
-    public Provider(int id, String providerName, int cuit, int phone, String address, boolean status, List<Product> prodList) {
-        this.id = id;
-        this.providerName = providerName;
-        this.cuit = cuit;
-        this.phone = phone;
-        this.address = address;
-        this.status = status;
-        this.prodList = prodList;
-    }
-
-   
-    
-    public void addProduct(Product product) {
-        this.prodList.add(product);
-        product.addProvider(this);
-    }
+//    public void addProduct(Product product) {
+//        this.prodList.add(product);
+//        product.addProvider(this);
+//    }
     
     
     

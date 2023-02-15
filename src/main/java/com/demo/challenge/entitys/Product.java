@@ -27,6 +27,8 @@ import lombok.*;
 
 @Getter @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name= "products")
 public class Product {
     
@@ -60,26 +62,7 @@ public class Product {
    
     @JsonIgnore
     @ManyToMany(mappedBy = "prodList")
-    private List<Provider> providerList = new ArrayList<>();
-    
+    private List<Provider> providerList;
 
-    public Product() {
-    }
-
-    public Product(int id, String name, String description, int price, int stock, boolean status, int quantity) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-        this.status = status;
-        this.quantity = quantity;
-    }
-  
-    
-    public void addProvider(Provider provider) {
-        this.providerList.add(provider);
-    }
-    
 
 }

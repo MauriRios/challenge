@@ -8,6 +8,8 @@ import com.demo.challenge.dto.ProductDTO;
 import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.entitys.Provider;
+import com.demo.challenge.exceptions.BusinessException;
+import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,15 +40,11 @@ public class ImpProductService implements IProductService {
         public ProductListDTO getProducts() {
             List<Product> products = iproductRepository.findAll();
             ProductListDTO productsListDTO = mapper.map(products, ProductListDTO.class);
-
             return productsListDTO;
         }
 
         @Override
         public List<Product> getProductsByStatus(boolean status) {
-        //traigo "todos" por id creo una lista nueva y desestructuro "todos" 
-        //con el ciclo for itero cada uno, con el if comparo el status si es true
-        //lo guardo en la lista nueva y la retorno 
         List<Product> allProducts = iproductRepository.findAll();
         List<Product> filteredProducts = new ArrayList<>();
         for (Product product: allProducts) {
@@ -58,7 +57,6 @@ public class ImpProductService implements IProductService {
 
         @Override
         public void activateProduct(int id) {
-            //busco por id y seteo el status en true
             Product product = iproductRepository.findById(id).get();
             product.setStatus(true);
             iproductRepository.save(product);
@@ -66,7 +64,6 @@ public class ImpProductService implements IProductService {
 
         @Override
         public void deactivateProduct(int id) {
-            //busco por id y seteo el status en false
             Product product = iproductRepository.findById(id).get();
             product.setStatus(false);
             iproductRepository.save(product);
@@ -79,24 +76,28 @@ public class ImpProductService implements IProductService {
                         product.getName() == null ||
                         product.getDescription() == null ||
                         product.getPrice() <= 0 ||
-                        product.getStock() < 0 ){
-                    throw new IllegalArgumentException("Validacion de producto falló, todos los campos son mandatorios");
+                        product.getStock() <= 0 ){
+                    throw new RequestException("P-400","Validacion de producto falló, todos los campos son mandatorios");
                 }
                 Provider provider = iproviderService.findProvider(providerId);
                 
                 product.setStatus(true);
-                provider.addProduct(product);
+                provider.getProdList().add(product);
                 iproductRepository.save(product);
-                 System.out.println("Producto agregado al proovedor " + providerId);
-            } catch (NullPointerException ne) {
-                System.out.println("No se encontró el proveedor con id " + providerId);
+                 System.out.println("Producto agregado al proveedor " + providerId);
+            } catch (BusinessException ex) {
+                throw new BusinessException(ex.getCode(), ex.getStatus(),ex.getMessage());
             }
         }
 
         @Override
         public Product findProduct(int id) {
            Product product = iproductRepository.findById(id).orElse(null);
-           return product;
+            if(product.isStatus() == true){
+                return product;
+            }else {
+                return null;
+            }
          }
 
         @Override

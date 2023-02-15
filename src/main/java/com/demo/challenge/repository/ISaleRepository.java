@@ -25,9 +25,4 @@ public interface ISaleRepository extends JpaRepository<Sale, Integer> {
     @Query("SELECT s FROM Sale s WHERE s.date = :date")
     List<Sale> findByDate(@Param("date") LocalDate date);
 
-  //  @Query("SELECT sale FROM Sale sale WHERE sale.provider.id = :providerId")
-   // List<Sale> findByProviderId(@Param("providerId") int providerId);
-
-   // @Query("SELECT new com.demo.challenge.dto.SaleDTO(s.id, s.date, s.quantity, s.total) FROM Sale s WHERE s.provider.id = :providerId")
-  //  List<SaleDTO> findByProviderId(@Param("providerId") int providerId);
 }

@@ -37,12 +37,7 @@ public class ProductController {
     
     @Autowired 
     IProductService iproductService;
-    
-    @Autowired
-    IProviderService iproviderService;
-    
-    @Autowired 
-    IProductRepository iproductRepository;
+
     
     @GetMapping("/traer")
     public ProductListDTO getProducts() {
@@ -51,13 +46,7 @@ public class ProductController {
     
      @GetMapping("/traer/{id}")
     public Product getProductById(@PathVariable int id) {
-    Product product = iproductService.findProduct(id);
-    //busco por id, verifico el status y filtro si son true
-    if(product.isStatus()){
-        return product;
-    }else {
-        return null;
-        }
+    return iproductService.findProduct(id);
     }
     
     @GetMapping("/activo")
@@ -78,7 +67,7 @@ public class ProductController {
         try {
         iproductService.deleteProduct(id);      
             return "Producto borrado con exito";      
-        } catch(EmptyResultDataAccessException ne) {        
+        } catch(EmptyResultDataAccessException ne) {
             return "No se encontró el producto con id "+id;
         }    
     }
