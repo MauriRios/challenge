@@ -29,7 +29,9 @@ public class Provider {
     @NotNull
     @Column(length = 45, nullable = false)
     private String providerName;
-    
+    @NotNull
+    @Column(length = 25, nullable = false)
+    private String providerLastName;
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
     private int cuit;
@@ -43,7 +45,7 @@ public class Provider {
     private String address;
     
     @NotNull
-    private boolean status;
+    private Boolean status;
     
     @ManyToMany
     @JoinTable(name = "provider_product",
