@@ -43,7 +43,7 @@ public class ProviderController {
     public Provider getProviderById(@PathVariable int id) {
     Provider provider = iproviderService.findProvider(id);
     //busco por id, verifico el status y filtro si son true
-    if(provider.isStatus()){
+    if(provider.getStatus() == true){
         return provider;
     }else {
         return null;
@@ -78,7 +78,7 @@ public class ProviderController {
                                         @RequestBody Provider provider)
     {
     Provider providerDB = iproviderService.findProvider(id);
-    if(providerDB.isStatus()){
+    if(providerDB.getStatus() == true){
         provider.setId(id);  
         iproviderService.updateProvider(provider);
         return provider;

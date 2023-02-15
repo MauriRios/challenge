@@ -36,12 +36,24 @@ public class ImpProductService implements IProductService {
 
         ModelMapper mapper = new ModelMapper();
 
-        @Override
-        public ProductListDTO getProducts() {
-            List<Product> products = iproductRepository.findAll();
-            ProductListDTO productsListDTO = mapper.map(products, ProductListDTO.class);
-            return productsListDTO;
+//        @Override
+//        public ProductListDTO getProducts() {
+//            List<Product> products = iproductRepository.findAll();
+//            ProductListDTO productsListDTO = mapper.map(products, ProductListDTO.class);
+//            return productsListDTO;
+//        }
+
+    @Override
+    public List<ProductListDTO> getProducts() {
+        var products = iproductRepository.findAll();
+        List<ProductListDTO> productListDTO =  new ArrayList<>();
+        for (var unit : products) {
+            var prod = mapper.map(unit, ProductListDTO.class);
+            //  prod.setProviderId(unit.getProvider().getId());
+            productListDTO.add(prod);
         }
+        return productListDTO;
+    }
 
         @Override
         public List<Product> getProductsByStatus(boolean status) {

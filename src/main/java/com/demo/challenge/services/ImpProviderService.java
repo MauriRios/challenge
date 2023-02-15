@@ -42,7 +42,7 @@ public class ImpProviderService implements IProviderService {
         List<Provider> allProviders = iproviderRepository.findAll();
         List<Provider> filteredProviders = new ArrayList<>();
         for (Provider provider: allProviders) {
-            if (provider.isStatus() == status) {
+            if (provider.getStatus() == true) {
                 filteredProviders.add(provider);
             }
         }

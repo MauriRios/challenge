@@ -40,7 +40,7 @@ public class ProductController {
 
     
     @GetMapping("/traer")
-    public ProductListDTO getProducts() {
+    public List<ProductListDTO> getProducts() {
         return iproductService.getProducts();
     }
     
