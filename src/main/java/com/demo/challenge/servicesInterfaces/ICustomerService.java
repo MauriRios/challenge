@@ -16,7 +16,7 @@ import java.util.List;
 public interface ICustomerService {
     
     List<CustomerDTO> getCustomers();
-    List<Customer> getCustomersByStatus(boolean status);
+    List<CustomerDTO> getCustomersByStatus(boolean status);
     Customer findCustomer(int id);
     void deleteCustomer(int id);
     void updateCustomer(Customer customer);

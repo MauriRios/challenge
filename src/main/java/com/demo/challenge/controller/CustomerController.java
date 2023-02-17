@@ -45,7 +45,7 @@ public class CustomerController {
     }
     
     @GetMapping("/activos")
-    public List<Customer> getActiveCustomers() {
+    public List<CustomerDTO> getActiveCustomers() {
             return icustomerService.getCustomersByStatus(true);
     }
     

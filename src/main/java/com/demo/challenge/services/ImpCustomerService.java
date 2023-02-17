@@ -48,15 +48,17 @@ public class ImpCustomerService implements ICustomerService {
     }
     
     @Override
-    public List<Customer> getCustomersByStatus(boolean status) {
-        List<Customer> allCustomers = icustomerRepository.findAll();
-        List<Customer> filteredCustomers = new ArrayList<>();
-        for (Customer customer: allCustomers) {
+    public List<CustomerDTO> getCustomersByStatus(boolean status) {
+        var allCustomers = icustomerRepository.findAll();
+        List<CustomerDTO> customerDTO = new ArrayList<>();
+        for (var customer : allCustomers) {
             if (customer.getStatus() == true) {
-                filteredCustomers.add(customer);
+                var filteredCustomer = mapper.map(customer, CustomerDTO.class);
+
+                customerDTO.add(filteredCustomer);
             }
         }
-        return filteredCustomers;
+        return customerDTO;
     }
 
     @Override
