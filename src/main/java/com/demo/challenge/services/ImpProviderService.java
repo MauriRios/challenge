@@ -44,27 +44,28 @@ public class ImpProviderService implements IProviderService {
         var providers = iproviderRepository.findAll();
         var products = iproductRepository.findAll();
         List<ProviderDTO> providerDTO =  new ArrayList<>();
-        List<ProductDTO> productDTO =  new ArrayList<>();
 
         for (var unit : providers) {
             var prov = mapper.map(unit, ProviderDTO.class);
-            for(var unit2 : products){
-                if(unit2.getProvider().getId().equals(unit.getId()));{
+            List<ProductDTO> productDTO =  new ArrayList<>();
+
+            for (var unit2 : products) {
+                if (unit2.getProvider().getId() == unit.getId()) {
                     var providerIdProduct = mapper.map(unit2, ProductDTO.class);
                     providerIdProduct.setProvideId(unit.getId());
                     productDTO.add(providerIdProduct);
-
                 }
-
             }
 
             prov.setProductList(productDTO);
             providerDTO.add(prov);
         }
+
         return providerDTO;
     }
-    
-        @Override
+
+
+    @Override
         public List<Provider> getProvidersByStatus(boolean status) {
         List<Provider> allProviders = iproviderRepository.findAll();
         List<Provider> filteredProviders = new ArrayList<>();
