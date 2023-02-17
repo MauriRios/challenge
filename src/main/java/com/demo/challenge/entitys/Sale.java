@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.entitys;
 
+import com.demo.challenge.dto.ProductSaleDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;

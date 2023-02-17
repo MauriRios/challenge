@@ -5,7 +5,6 @@
 package com.demo.challenge.controller;
 
 import com.demo.challenge.dto.SaleDTO;
-import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
@@ -13,12 +12,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,8 +52,8 @@ public class SaleController {
     }
     
     @PostMapping("/crear")
-    public void createSale(@RequestBody SaleRequestDTO saleRequestDTO) {
-        isaleService.createSale(saleRequestDTO);
+    public void createSale(@RequestBody SaleDTO saleDTO) {
+        isaleService.createSale(saleDTO);
 
     }
     

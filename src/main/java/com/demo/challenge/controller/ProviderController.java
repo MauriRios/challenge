@@ -5,12 +5,10 @@
 package com.demo.challenge.controller;
 
 import com.demo.challenge.dto.ProviderDTO;
-import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

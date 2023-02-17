@@ -4,9 +4,7 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.dto.ProductSaleDTO;
 import com.demo.challenge.dto.SaleDTO;
-import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Sale;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +19,7 @@ public interface ISaleService {
 
     public List<SaleDTO> getSales();
 
-    public String createSale(SaleRequestDTO saleRequestDTO);
+    public String createSale(SaleDTO saleDTO);
 
     public Sale findSale(int id);
     

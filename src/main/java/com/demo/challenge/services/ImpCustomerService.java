@@ -37,9 +37,11 @@ public class ImpCustomerService implements ICustomerService {
         var customer = icustomerRepository.findAll();
         List<CustomerDTO> customerDTO = new ArrayList<>();
             for (var unit : customer) {
-                var custo = mapper.map(unit, CustomerDTO.class);
-                customerDTO.add(custo);
+                var custom = mapper.map(unit, CustomerDTO.class);
+
+                customerDTO.add(custom);
             }
+
 
 
         return customerDTO;

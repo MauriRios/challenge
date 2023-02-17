@@ -5,7 +5,6 @@
 package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.dto.ProviderDTO;
-import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import org.springframework.http.ResponseEntity;
 
