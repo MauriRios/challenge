@@ -5,6 +5,7 @@
 package com.demo.challenge.services;
 
 import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repository.IProductRepository;
@@ -51,16 +52,21 @@ public class ImpProductService implements IProductService {
         }
 
         @Override
-        public List<Product> getProductsByStatus(boolean status) {
-        List<Product> allProducts = iproductRepository.findAll();
-        List<Product> filteredProducts = new ArrayList<>();
-        for (Product product: allProducts) {
-            if (product.isStatus() == status) {
-                filteredProducts.add(product);
+        public List<ProductDTO> getProductsByStatus(Boolean status) {
+            var allProducts = iproductRepository.findAll();
+            List<ProductDTO> productDTO = new ArrayList<>();
+            for (var product : allProducts) {
+                if (product.getStatus() == true) {
+                    var filteredProducts = mapper.map(product, ProductDTO.class);
+
+                    filteredProducts.setProviderName(product.getProvider().getProviderName());
+                    filteredProducts.setProvideId(product.getProvider().getId());
+                    productDTO.add(filteredProducts);
+                }
             }
+            return productDTO;
         }
-        return filteredProducts;
-        }
+
         @Transactional
         @Override
         public String activateProduct(int id) {

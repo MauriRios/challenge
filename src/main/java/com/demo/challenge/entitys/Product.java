@@ -31,7 +31,7 @@ public class Product {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     @NotNull
     @Column(length = 45, nullable = false)
@@ -43,18 +43,18 @@ public class Product {
     
     @NotNull
     @Column(nullable = false)
-    private int price;
+    private Integer price;
     
     @NotNull
     @Column(nullable = false)
-    private int stock;
+    private Integer stock;
     
     @NotNull
     @Column(nullable = false)
-    private boolean status = true;
+    private Boolean status = true;
     
     @Column(nullable = true)
-    private int quantity;
+    private Integer quantity;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

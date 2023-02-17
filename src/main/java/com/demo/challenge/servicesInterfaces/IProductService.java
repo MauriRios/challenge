@@ -18,7 +18,7 @@ import java.util.List;
 public interface IProductService {
 
     List<ProductDTO> getProducts();
-    List<Product> getProductsByStatus(boolean status);
+    List<ProductDTO> getProductsByStatus(Boolean status);
     Product findProduct(int id);
     String deleteProduct(int id);
     String updateProduct(Product product);

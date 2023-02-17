@@ -30,6 +30,6 @@ public class ProductDTO {
     private Integer quantity;
     private BigDecimal price;
     private Integer stock;
-
+    private Boolean status;
 
 }

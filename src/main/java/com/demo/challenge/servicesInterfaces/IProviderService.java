@@ -19,7 +19,7 @@ public interface IProviderService {
     
     
     List<ProviderDTO> getProviders();
-    List<Provider> getProvidersByStatus(boolean status);
+    List<ProviderDTO> getProvidersByStatus(boolean status);
     Provider findProvider(int id);
     void deleteProvider(int id);
     void updateProvider(Provider provider);

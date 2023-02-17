@@ -5,6 +5,7 @@
 package com.demo.challenge.services;
 
 
+import com.demo.challenge.dto.CustomerDTO;
 import com.demo.challenge.dto.ProductDTO;
 import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.entitys.Provider;
@@ -56,7 +57,6 @@ public class ImpProviderService implements IProviderService {
                     productDTO.add(providerIdProduct);
                 }
             }
-
             prov.setProductList(productDTO);
             providerDTO.add(prov);
         }
@@ -66,16 +66,29 @@ public class ImpProviderService implements IProviderService {
 
 
     @Override
-        public List<Provider> getProvidersByStatus(boolean status) {
-        List<Provider> allProviders = iproviderRepository.findAll();
-        List<Provider> filteredProviders = new ArrayList<>();
-        for (Provider provider: allProviders) {
+    public List<ProviderDTO> getProvidersByStatus(boolean status) {
+        var allProviders = iproviderRepository.findAll();
+        var products = iproductRepository.findAll();
+        List<ProviderDTO> providerDTO = new ArrayList<>();
+        for (var provider : allProviders) {
             if (provider.getStatus() == true) {
-                filteredProviders.add(provider);
+                var filteredProviders = mapper.map(provider, ProviderDTO.class);
+                List<ProductDTO> productDTO =  new ArrayList<>();
+
+                for (var unit2 : products) {
+                    if (unit2.getProvider().getId() == filteredProviders.getId()) {
+                        var providerIdProduct = mapper.map(unit2, ProductDTO.class);
+                        providerIdProduct.setProvideId(filteredProviders.getId());
+                        productDTO.add(providerIdProduct);
+                    }
+                }
+                filteredProviders.setProductList(productDTO);
+                providerDTO.add(filteredProviders);
             }
         }
-        return filteredProviders;
-        }
+        return providerDTO;
+    }
+    
         @Transactional
         @Override
         public void activateProvider(int id) {

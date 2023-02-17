@@ -41,9 +41,6 @@ public class ImpCustomerService implements ICustomerService {
 
                 customerDTO.add(custom);
             }
-
-
-
         return customerDTO;
     }
     

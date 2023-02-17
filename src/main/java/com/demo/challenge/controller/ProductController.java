@@ -49,8 +49,8 @@ public class ProductController {
         return iproductService.findProduct(id);
     }
     
-    @GetMapping("/activo")
-    public List<Product> getActiveProducts() {
+    @GetMapping("/activos")
+    public List<ProductDTO> getActiveProducts() {
         return iproductService.getProductsByStatus(true);
     }
 

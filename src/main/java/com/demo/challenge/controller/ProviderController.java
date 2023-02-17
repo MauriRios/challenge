@@ -43,8 +43,8 @@ public class ProviderController {
     return iproviderService.findProvider(id);
     }
     
-    @GetMapping("/activo")
-    public List<Provider> getActiveProviders() {
+    @GetMapping("/activos")
+    public List<ProviderDTO> getActiveProviders() {
         return iproviderService.getProvidersByStatus(true);
     }
     
