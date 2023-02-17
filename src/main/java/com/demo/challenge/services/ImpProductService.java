@@ -5,10 +5,7 @@
 package com.demo.challenge.services;
 
 import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
-import com.demo.challenge.exceptions.BusinessException;
 import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
@@ -17,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  *
@@ -30,30 +28,27 @@ import org.springframework.stereotype.Service;
 public class ImpProductService implements IProductService {
     
     
-        @Autowired private IProductRepository iproductRepository;
+    private final IProductRepository iproductRepository;
 
-        @Autowired private IProviderService iproviderService;
+    public ImpProductService(IProductRepository iproductRepository) {
+        this.iproductRepository = iproductRepository;
 
-        ModelMapper mapper = new ModelMapper();
-
-//        @Override
-//        public ProductListDTO getProducts() {
-//            List<Product> products = iproductRepository.findAll();
-//            ProductListDTO productsListDTO = mapper.map(products, ProductListDTO.class);
-//            return productsListDTO;
-//        }
-
-    @Override
-    public List<ProductListDTO> getProducts() {
-        var products = iproductRepository.findAll();
-        List<ProductListDTO> productListDTO =  new ArrayList<>();
-        for (var unit : products) {
-            var prod = mapper.map(unit, ProductListDTO.class);
-            //  prod.setProviderId(unit.getProvider().getId());
-            productListDTO.add(prod);
-        }
-        return productListDTO;
     }
+
+    ModelMapper mapper = new ModelMapper();
+
+        @Override
+        public List<ProductDTO> getProducts() {
+            var products = iproductRepository.findAll();
+            List<ProductDTO> productDTO =  new ArrayList<>();
+            for (var unit : products) {
+                var prod = mapper.map(unit, ProductDTO.class);
+                prod.setProviderName(unit.getProvider().getProviderName());
+                prod.setProvideId(unit.getProvider().getId());
+                productDTO.add(prod);
+            }
+            return productDTO;
+        }
 
         @Override
         public List<Product> getProductsByStatus(boolean status) {
@@ -66,24 +61,26 @@ public class ImpProductService implements IProductService {
         }
         return filteredProducts;
         }
-
+        @Transactional
         @Override
-        public void activateProduct(int id) {
+        public String activateProduct(int id) {
             Product product = iproductRepository.findById(id).get();
             product.setStatus(true);
             iproductRepository.save(product);
+            return "El producto ha sido activado exitosamente";
         }
-
+        @Transactional
         @Override
-        public void deactivateProduct(int id) {
+        public String deactivateProduct(int id) {
             Product product = iproductRepository.findById(id).get();
             product.setStatus(false);
             iproductRepository.save(product);
+            return "El producto ha sido desactivado exitosamente";
         }
-        
-            @Override
-            public void saveProduct(Product product, int providerId) {
-            try {
+        @Transactional
+        @Override
+        public String saveProduct(Product product) {
+
                 if(     product.getName() == null ||
                         product.getName() == null ||
                         product.getDescription() == null ||
@@ -91,47 +88,42 @@ public class ImpProductService implements IProductService {
                         product.getStock() <= 0 ){
                     throw new RequestException("P-400","Validacion de producto falló, todos los campos son mandatorios");
                 }
-                Provider provider = iproviderService.findProvider(providerId);
-                
-                product.setStatus(true);
-                provider.getProdList().add(product);
                 iproductRepository.save(product);
-                 System.out.println("Producto agregado al proveedor " + providerId);
-            } catch (BusinessException ex) {
-                throw new BusinessException(ex.getCode(), ex.getStatus(),ex.getMessage());
+                return "Producto agregado con exíto";
             }
-        }
+
 
         @Override
         public Product findProduct(int id) {
-           Product product = iproductRepository.findById(id).orElse(null);
-            if(product.isStatus() == true){
-                return product;
-            }else {
-                return null;
-            }
+        try {
+            Product product = iproductRepository.findById(id).get();
+            return product;
+        }
+           catch (EmptyResultDataAccessException ne) {
+               return null;
+           }
          }
-
+        @Transactional
         @Override
-        public void updateProduct(Product product) {
+        public String updateProduct(Product product) {
             iproductRepository.save(product);
+            return "Producto editado exítosamente";
         }
 
+        @Transactional
         @Override
-        public void deleteProduct(int id) {
-            iproductRepository.deleteById(id);
+        public String deleteProduct(int id) {
+            try {
+                iproductRepository.deleteById(id);
+                return "Producto borrado con exito";
+            } catch(EmptyResultDataAccessException ne) {
+                return "No se encontró el producto con id " + id;
+            }
 
         }
         
         //query
-        
-        
-        @Override
-        public List<ProductDTO> findLowStockProducts(int stock) {
-            return (List<ProductDTO>) iproductRepository.findLowStockProducts(stock).stream()
-                .map(obj -> new ProductDTO(
-                        obj.getName(), obj.getStock(), obj.getProviderName(), obj.getProviderPhone()));
-        }
+
 
 
     }

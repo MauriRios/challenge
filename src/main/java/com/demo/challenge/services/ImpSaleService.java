@@ -4,20 +4,28 @@
  */
 package com.demo.challenge.services;
 
+import com.demo.challenge.dto.*;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Product;
+import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
+import com.demo.challenge.repository.ICustomerRepository;
 import com.demo.challenge.repository.IProductRepository;
+import com.demo.challenge.repository.IProviderRepository;
 import com.demo.challenge.repository.ISaleRepository;
-import com.demo.challenge.servicesInterfaces.ICustomerService;
-import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Set;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
  *
@@ -27,72 +35,87 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImpSaleService implements ISaleService {
     
-            @Autowired
-            private ISaleRepository isaleRepository;
 
-            @Autowired
-            private ICustomerService icustomerService;
+    private final ISaleRepository isaleRepository;
+    private final IProviderRepository iproviderRepository;
+    private final ICustomerRepository icustomerRepository;
+    private final IProductRepository iproductRepository;
 
-            @Autowired
-            private IProductRepository iproductRepository;
+    public ImpSaleService(ISaleRepository isaleRepository, IProviderRepository iproviderRepository, ICustomerRepository icustomerRepository, IProductRepository iproductRepository) {
+        this.isaleRepository = isaleRepository;
+        this.iproviderRepository = iproviderRepository;
+        this.icustomerRepository = icustomerRepository;
+        this.iproductRepository = iproductRepository;
+    }
 
-            @Autowired
-            private IProviderService iproviderService;
+    ModelMapper mapper = new ModelMapper();
 
-            @Override
-            public List<Sale> getSales() {
-                List<Sale> sale = isaleRepository.findAll();
-                return sale;
-            }
+    @Override
+     public List<SaleDTO> getSales() {
+         var sales = isaleRepository.findAll();
+         List<SaleDTO> saleDTO = new ArrayList<>();
 
-             @Override
-             public void saveSale(Sale sale, int customerId, Integer providerId) {
-                LocalDate today = LocalDate.now();
-                List<Product> productList = new ArrayList<>();
-                double total = 0.0;
+         for (var unit : sales){
+              var purchases = mapper.map(unit, SaleDTO.class);
+             purchases.setCustomerId(unit.getCustomer().getId());
+             purchases.setProviderId(unit.getProvider_id().getId());
+             saleDTO.add(purchases);
+         }
 
+                return saleDTO;
+     }
+     @Transactional
+     @Override
+     public String createSale(SaleRequestDTO saleRequestDTO) {
+        var customer = icustomerRepository.findById(saleRequestDTO.getCustomerId());
+        var provider = iproviderRepository.findById(saleRequestDTO.getProviderId());
+        LocalDate today = LocalDate.now();
+        Set<ProductSaleDTO> products = new HashSet<>();
 
-                    for (var unit : sale.getProducts()) {
-                        var product = iproductRepository.findById(unit.getId()).get();
-                        var quantity = product.getStock() - unit.getQuantity();
-                        total += unit.getQuantity() * unit.getPrice();
-                        product.setStock(quantity);
-                        productList.add(product);
-                    }
+        int totalQuantity = 0;
+        BigDecimal totalPrice = new BigDecimal("0.0");
 
-                    sale.setDate(today);
-                    sale.setProducts(productList);
-                    sale.setTotal(total);
+        for (var unit : saleRequestDTO.getProducts()) {
+             var product = iproductRepository.findById(unit.getId()).get();
 
-                    Customer customer = icustomerService.findCustomer(customerId);
-                    sale.setCustomer(customer);
+             if (product.getStock() >= unit.getQuantity()) {
+                 var result = product.getStock() - unit.getQuantity();
 
-                    // al relacionar el id del provider con la venta, me tira stackoverflow en las
-                    // consultas get de cliente, sale, provider
-                    //Provider provider = iproviderService.findProvider(providerId);
-                   // sale.setProvider(provider);
-                    isaleRepository.save(sale);
-
+                 product.setStock(result);
+                 totalQuantity += unit.getQuantity();
+                 totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
+                 products.add(mapper.map(unit, ProductSaleDTO.class));
              }
+             else {
+                 return "la cagaste capo, no tengo tanto stock, vuelva prontos";
+             }
+                iproductRepository.save(product);
+        }
 
-            @Override
-            public void deleteSale(int id) {
-                isaleRepository.deleteById(id);
+         saleRequestDTO.setDate(today);
+         var sale = mapper.map(saleRequestDTO, Sale.class);
+//         sale.setCustomer(customer);
+//         sale.setProvider_id(provider);
+//         sale.setProducts(products);
+         sale.setTotal(totalPrice);
+         isaleRepository.save(sale);
+         return "Venta realizada con Exíto";
+
+    }
+
+
+        @Override
+        public Sale findSale(int id) {
+             Sale sale = isaleRepository.findById(id).orElse(null);
+             return sale;
 
             }
 
-            @Override
-            public Sale findSale(int id) {
-               Sale sale = isaleRepository.findById(id).orElse(null);
-                return sale;
+        //querys
 
-               }
-
-                //querys 
-
-                public List<Sale> findByDate(LocalDate date) {
+        public List<Sale> findByDate(LocalDate date) {
                 return isaleRepository.findByDate(date);
-                }
+            }
 
 
     

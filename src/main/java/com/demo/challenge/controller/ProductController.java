@@ -40,71 +40,57 @@ public class ProductController {
 
     
     @GetMapping("/traer")
-    public List<ProductListDTO> getProducts() {
+    public List<ProductDTO> getProducts() {
         return iproductService.getProducts();
     }
     
-     @GetMapping("/traer/{id}")
+    @GetMapping("/traer/{id}")
     public Product getProductById(@PathVariable int id) {
-    return iproductService.findProduct(id);
+        return iproductService.findProduct(id);
     }
     
     @GetMapping("/activo")
     public List<Product> getActiveProducts() {
-        //trae solo los status true, filtro en servImpl
         return iproductService.getProductsByStatus(true);
     }
-    
 
-    @PostMapping("/crear/{providerId}")
-    public void createProduct(@PathVariable int providerId,@RequestBody Product product) {
-        iproductService.saveProduct(product, providerId);
+    @PostMapping("/crear")
+    public void createProduct(@RequestBody Product product) {
+        iproductService.saveProduct(product);
     }
-    
 
     @DeleteMapping("/borrar/{id}")
     public String deleteProduct(@PathVariable int id) {
-        try {
-        iproductService.deleteProduct(id);      
-            return "Producto borrado con exito";      
-        } catch(EmptyResultDataAccessException ne) {
-            return "No se encontró el producto con id "+id;
-        }    
+
+       return iproductService.deleteProduct(id);
+
     }
 
     @PutMapping("/editar/{id}")
     public Product editProduct(@PathVariable("id") int id,
-                                        @RequestBody Product product)
-    {
-    Product productDB = iproductService.findProduct(id);
-    if(productDB.isStatus()){
-        product.setId(id);  
+                               @RequestBody Product product) {
+        product.setId(id);
         iproductService.updateProduct(product);
         return product;
-    }else{
-        return null;
-        }   
     }
     
        @PutMapping("/activo/{id}")
-        public String activateProduct(@PathVariable int id) {
+        public void activateProduct(@PathVariable int id) {
         iproductService.activateProduct(id);
-            return "El producto ha sido activado exitosamente";
     }
     
     @PutMapping("/desactivo/{id}")
-        public String deactivateProduct(@PathVariable int id) {
+        public void deactivateProduct(@PathVariable int id) {
         iproductService.deactivateProduct(id);
-            return "El producto ha sido desactivado exitosamente";
     }
         
         //query
         
-        @GetMapping("/low-stock")
-        public List<ProductDTO> getLowStockProducts(@RequestParam("stock") int stock) {
-              return iproductService.findLowStockProducts(stock);
-
-                   
-    }
+//        @GetMapping("/low-stock")
+//        public List<ProductProviderDTO> getLowStockProducts(@RequestParam("stock") int stock) {
+//              return iproductService.findLowStockProducts(stock);
+//
+//
+//    }
         
 }

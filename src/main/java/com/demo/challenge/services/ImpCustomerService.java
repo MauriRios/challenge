@@ -5,13 +5,17 @@
 package com.demo.challenge.services;
 
 
+import com.demo.challenge.dto.CustomerDTO;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.repository.ICustomerRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 
 /**
@@ -22,63 +26,67 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImpCustomerService implements ICustomerService {
     
-    @Autowired ICustomerRepository icustomerRepository;
-    
+    private final ICustomerRepository icustomerRepository;
+    public ImpCustomerService(ICustomerRepository icustomerRepository) {
+        this.icustomerRepository = icustomerRepository;
+    }
+    ModelMapper mapper = new ModelMapper();
+
     @Override
-    public List<Customer> getCustomers() {
-        List<Customer> customer = icustomerRepository.findAll();
-        return customer;
+    public List<CustomerDTO> getCustomers() {
+        var customer = icustomerRepository.findAll();
+        List<CustomerDTO> customerDTO = new ArrayList<>();
+            for (var unit : customer) {
+                var custo = mapper.map(unit, CustomerDTO.class);
+                customerDTO.add(custo);
+            }
+
+
+        return customerDTO;
     }
     
     @Override
     public List<Customer> getCustomersByStatus(boolean status) {
-        //traigo "todos" por id creo una lista nueva y desestructuro "todos" 
-        //con el ciclo for itero cada uno, con el if comparo el status si es true
-        //lo guardo en la lista nueva y la retorno 
         List<Customer> allCustomers = icustomerRepository.findAll();
         List<Customer> filteredCustomers = new ArrayList<>();
         for (Customer customer: allCustomers) {
-            if (customer.isStatus() == status) {
+            if (customer.getStatus() == true) {
                 filteredCustomers.add(customer);
             }
         }
         return filteredCustomers;
     }
-    
-    @Override
-    public void activateCustomer(int id) {
-        //busco por id y seteo el status en true
-        Customer customer = icustomerRepository.findById(id).get();
-        customer.setStatus(true);
-        icustomerRepository.save(customer);
-    }
-
-    @Override
-    public void deactivateCustomer(int id) {
-        //busco por id y seteo el status en false
-        Customer customer = icustomerRepository.findById(id).get();
-        customer.setStatus(false);
-        icustomerRepository.save(customer);
-    }
-
-
-    @Override
-    public void deleteCustomer(int id) {
-        icustomerRepository.deleteById(id);
-        
-    }
 
     @Override
     public Customer findCustomer(int id) {
-       Customer customer = icustomerRepository.findById(id).orElse(null);
+        Customer customer = icustomerRepository.findById(id).orElse(null);
         return customer;
 
-       }
-    
+    }
+    @Transactional
     @Override
     public void updateCustomer(Customer customer) {
         customer.setStatus(true);
         icustomerRepository.save(customer);
+    }
+    @Transactional
+    @Override
+    public void activateCustomer(int id) {
+        Customer customer = icustomerRepository.findById(id).get();
+        customer.setStatus(true);
+        icustomerRepository.save(customer);
+    }
+    @Transactional
+    @Override
+    public void deactivateCustomer(int id) {
+        Customer customer = icustomerRepository.findById(id).get();
+        customer.setStatus(false);
+        icustomerRepository.save(customer);
+    }
+    @Transactional
+    @Override
+    public void deleteCustomer(int id) {
+        icustomerRepository.deleteById(id);
     }
     
     }

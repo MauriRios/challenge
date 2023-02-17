@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class SaleRequestDTO {
 
-    private int id;
+    private Integer id;
     private LocalDate date;
-    private double total;
-    private Long providerId;
-    private Long customerId;
-    private Set<ProductSaleDTO> productos =  new HashSet<>();
+    private Integer providerId;
+    private Integer customerId;
+    private BigDecimal totalPrice;
+    private Integer quantity;
+    private Set<ProductSaleDTO> products =  new HashSet<>();
 
 }

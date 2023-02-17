@@ -18,10 +18,10 @@ import java.util.List;
 public class SaleDTO {
 
     private Integer id;
-    private LocalDate date;
     private Integer providerId;
     private Integer customerId;
+    private LocalDate date;
     private Integer quantity;
     private Double totalPrice;
-    private List<ProductSaleDTO> products =  new ArrayList<>();
+    private List<ProductSaleDTO> purchases =  new ArrayList<>();
 }

@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -35,24 +36,17 @@ public class ProviderController {
     
     
     @GetMapping("/traer")
-    public List<Provider> getProviders() {
+    public List<ProviderDTO> getProviders() {
         return iproviderService.getProviders();
     }
     
     @GetMapping("/traer/{id}")
     public Provider getProviderById(@PathVariable int id) {
-    Provider provider = iproviderService.findProvider(id);
-    //busco por id, verifico el status y filtro si son true
-    if(provider.getStatus() == true){
-        return provider;
-    }else {
-        return null;
-        }
+    return iproviderService.findProvider(id);
     }
     
     @GetMapping("/activo")
     public List<Provider> getActiveProviders() {
-        //trae solo los status true filtro en servImpl
         return iproviderService.getProvidersByStatus(true);
     }
     
@@ -62,48 +56,38 @@ public class ProviderController {
     }
 
     @DeleteMapping("/borrar/{id}")
-    public String deleteProvider(@PathVariable int id) {
-        try {
+    public void deleteProvider(@PathVariable int id) {
              iproviderService.deleteProvider(id);
-        return "Proveedor borrado con éxito";
-        } catch(EmptyResultDataAccessException ne) {           
-            return "No se encontró el proveedor con id "+id;
-        }   
-    }
-       
-    
+        }
+//        catch(EmptyResultDataAccessException ne) {
+//            return "No se encontró el proveedor con id "+id;
+//        }
     
     @PutMapping("/editar/{id}")
     public Provider editProvider (@PathVariable("id") int id,
-                                        @RequestBody Provider provider)
-    {
-    Provider providerDB = iproviderService.findProvider(id);
-    if(providerDB.getStatus() == true){
+                                  @RequestBody Provider provider){
         provider.setId(id);  
         iproviderService.updateProvider(provider);
         return provider;
-    }else{
-        throw new IllegalArgumentException("Validacion de producto falló, todos los campos son mandatorios");
-        }   
     }
+
     
     @PutMapping("/activo/{id}")
-    public String activateProvider(@PathVariable int id) {
+    public void activateProvider(@PathVariable int id) {
         iproviderService.activateProvider(id);
-        return "El proveedor ha sido activado exitosamente";
+
     }
     
     @PutMapping("/desactivo/{id}")
-    public String deactivateProvider(@PathVariable int id) {
+    public void deactivateProvider(@PathVariable int id) {
         iproviderService.deactivateProvider(id);
-        return "El proveedor ha sido desactivado exitosamente";
     }
 
-    @GetMapping("/ventas/{providerId}")
-    public List<SaleRequestDTO> sales(@PathVariable int providerId) {
-
-     return iproviderService.findSaleByProvider(providerId);
-
-    }
+//    @GetMapping("/ventas/{providerId}")
+//    public List<SaleRequestDTO> sales(@PathVariable int providerId) {
+//
+//     return iproviderService.findSaleByProvider(providerId);
+//
+//    }
 
 }

@@ -4,6 +4,9 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
+import com.demo.challenge.dto.ProductSaleDTO;
+import com.demo.challenge.dto.SaleDTO;
+import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Sale;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,14 +19,9 @@ import java.util.List;
 
 public interface ISaleService {
 
-    public List<Sale> getSales();
+    public List<SaleDTO> getSales();
 
-    public void saveSale(Sale sale, int customerId, Integer providerId);
-    
-    //void saveSale(Sale sale, List<Product> products, int customerId) throws IllegalArgumentException;
-
-
-    public void deleteSale(int id);    
+    public String createSale(SaleRequestDTO saleRequestDTO);
 
     public Sale findSale(int id);
     

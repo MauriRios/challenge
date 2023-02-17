@@ -23,10 +23,12 @@ import java.math.BigDecimal;
 public class ProductDTO {
 
     private Integer id;
+    private Integer provideId;
     private String providerName;
+    private String name;
     private String description;
     private Double price;
     private Integer stock;
-    
-    
+
+
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface IProviderRepository extends JpaRepository<Provider, Integer> {
 
-    @Query("select new com.demo.challenge.dto.SaleDTO(s.id, s.date, s.quantity, s.total) from Sale s where s.provider.id = :providerId")
-    List<SaleRequestDTO> findByProviderId(@Param("providerId") int providerId);
+//    @Query("select new com.demo.challenge.dto.SaleRequestDTO(s.id, s.date, s.quantity, s.total) from Sale s where s.provider.id = :providerId")
+//    List<SaleRequestDTO> findByProviderId(@Param("providerId") int providerId);
 
 }

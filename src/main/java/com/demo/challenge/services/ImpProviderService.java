@@ -5,16 +5,21 @@
 package com.demo.challenge.services;
 
 
-import com.demo.challenge.dto.SaleRequestDTO;
+import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.entitys.Provider;
+import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.repository.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 
 /**
@@ -25,19 +30,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImpProviderService implements IProviderService {
     
-        @Autowired IProviderRepository iproviderRepository;
+    private final IProviderRepository iproviderRepository;
 
-        @Override
-        public List<Provider> getProviders() {
-            List<Provider> providers = iproviderRepository.findAll();
-            return providers;
+    private final IProductRepository iproductRepository;
+    public ImpProviderService(IProviderRepository iproviderRepository, IProductRepository iproductRepository) {
+        this.iproviderRepository = iproviderRepository;
+        this.iproductRepository = iproductRepository;
+    }
+    ModelMapper mapper = new ModelMapper();
+
+    @Override
+    public List<ProviderDTO> getProviders() {
+        var providers = iproviderRepository.findAll();
+        var products = iproductRepository.findAll();
+        List<ProviderDTO> providerDTO =  new ArrayList<>();
+        List<ProductDTO> productDTO =  new ArrayList<>();
+
+        for (var unit : providers) {
+            var prov = mapper.map(unit, ProviderDTO.class);
+            for(var unit2 : products){
+                if(unit2.getProvider().getId().equals(unit.getId()));{
+                    var providerIdProduct = mapper.map(unit2, ProductDTO.class);
+                    providerIdProduct.setProvideId(unit.getId());
+                    productDTO.add(providerIdProduct);
+
+                }
+
+            }
+
+            prov.setProductList(productDTO);
+            providerDTO.add(prov);
         }
+        return providerDTO;
+    }
     
         @Override
         public List<Provider> getProvidersByStatus(boolean status) {
-        //traigo "todos" por id creo una lista nueva y desestructuro "todos" 
-        //con el ciclo for itero cada uno, con el if comparo el status si es true
-        //lo guardo en la lista nueva y la retorno 
         List<Provider> allProviders = iproviderRepository.findAll();
         List<Provider> filteredProviders = new ArrayList<>();
         for (Provider provider: allProviders) {
@@ -47,25 +75,23 @@ public class ImpProviderService implements IProviderService {
         }
         return filteredProviders;
         }
-
+        @Transactional
         @Override
         public void activateProvider(int id) {
-            //busco por id y seteo el status en true
             Provider provider = iproviderRepository.findById(id).get();
             provider.setStatus(true);
             iproviderRepository.save(provider);
         }
-
+        @Transactional
         @Override
         public void deactivateProvider(int id) {
-            //busco por id y seteo el status en false
             Provider provider = iproviderRepository.findById(id).get();
             provider.setStatus(false);
             iproviderRepository.save(provider);
         }
-        
-            @Override
-            public ResponseEntity<String> createProvider(Provider provider) {
+        @Transactional
+        @Override
+        public ResponseEntity<String> createProvider(Provider provider) {
             try {
                 if(provider.getProviderName() == null ||
                    provider.getCuit() == 0 ||
@@ -80,14 +106,14 @@ public class ImpProviderService implements IProviderService {
             } catch (DataIntegrityViolationException ex) {
                 return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
             }
-            }
-
+        }
+        @Transactional
         @Override
         public void updateProvider(Provider provider) {
             iproviderRepository.save(provider);
 
         }
-
+        @Transactional
         @Override
         public void deleteProvider(int id) {
             iproviderRepository.deleteById(id);
@@ -100,9 +126,9 @@ public class ImpProviderService implements IProviderService {
             return provider;
 
            }
-           @Override
-           public List<SaleRequestDTO> findSaleByProvider(int providerId){
-            return iproviderRepository.findByProviderId(providerId);
-           }
+//           @Override
+//           public List<SaleRequestDTO> findSaleByProvider(int providerId){
+//            return iproviderRepository.findByProviderId(providerId);
+//           }
 
         }

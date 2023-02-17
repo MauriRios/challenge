@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
+import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.dto.SaleRequestDTO;
 import com.demo.challenge.entitys.Provider;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.List;
 public interface IProviderService {
     
     
-    List<Provider> getProviders();
+    List<ProviderDTO> getProviders();
     List<Provider> getProvidersByStatus(boolean status);
     Provider findProvider(int id);
     void deleteProvider(int id);
@@ -27,6 +28,6 @@ public interface IProviderService {
     void activateProvider(int id);
     void deactivateProvider(int id);
 
-    List<SaleRequestDTO> findSaleByProvider(int providerId);
+//    List<SaleProviderDTO> findSaleByProvider(int providerId);
     
 }

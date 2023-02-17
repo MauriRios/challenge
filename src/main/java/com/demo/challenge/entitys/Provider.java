@@ -4,9 +4,12 @@
  */
 package com.demo.challenge.entitys;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -48,10 +51,11 @@ public class Provider {
     
     @NotNull
     private Boolean status;
-    
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Product> prodList;
+    private List<Product> prodList  = new ArrayList<>();
 
     @OneToMany(mappedBy = "provider_id",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Sale> saleList;

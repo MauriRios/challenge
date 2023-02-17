@@ -6,6 +6,7 @@ package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.dto.ProductDTO;
 import com.demo.challenge.dto.ProductListDTO;
+import com.demo.challenge.dto.ProductProviderDTO;
 import com.demo.challenge.entitys.Product;
 import java.util.List;
 
@@ -16,18 +17,18 @@ import java.util.List;
 
 public interface IProductService {
 
-    List<ProductListDTO> getProducts();
+    List<ProductDTO> getProducts();
     List<Product> getProductsByStatus(boolean status);
     Product findProduct(int id);
-    void deleteProduct(int id);
-    void updateProduct(Product product);
-    public void saveProduct(Product product, int providerId); 
-    void activateProduct(int id);
-    void deactivateProduct(int id);
+    String deleteProduct(int id);
+    String updateProduct(Product product);
+    String saveProduct(Product product);
+    String activateProduct(int id);
+    String deactivateProduct(int id);
    
     // querys
     
-    List<ProductDTO> findLowStockProducts(int stock);
+    //List<ProductProviderDTO> findLowStockProducts(int stock);
     
   
 }

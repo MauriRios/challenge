@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
+import com.demo.challenge.dto.CustomerDTO;
 import com.demo.challenge.entitys.Customer;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public interface ICustomerService {
     
-    List<Customer> getCustomers();
+    List<CustomerDTO> getCustomers();
     List<Customer> getCustomersByStatus(boolean status);
     Customer findCustomer(int id);
     void deleteCustomer(int id);

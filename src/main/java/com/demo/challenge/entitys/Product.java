@@ -6,6 +6,7 @@ package com.demo.challenge.entitys;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,13 +51,15 @@ public class Product {
     
     @NotNull
     @Column(nullable = false)
-    private boolean status;
+    private boolean status = true;
     
     @Column(nullable = true)
     private int quantity;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idProv")
+    @JoinColumn(name = "provider_id", referencedColumnName = "id"
+            , foreignKey = @ForeignKey(name = "fk_Product_Provider"))
     private Provider provider;
 
     @ManyToMany(mappedBy = "products")

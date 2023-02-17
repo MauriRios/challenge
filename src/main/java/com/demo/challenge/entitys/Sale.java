@@ -5,6 +5,8 @@
 package com.demo.challenge.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class Sale {
     private int quantity;
     @NotNull
     @Column(nullable = false)
-    private double total;
+    private BigDecimal total;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

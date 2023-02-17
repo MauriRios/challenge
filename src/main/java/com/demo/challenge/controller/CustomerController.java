@@ -4,6 +4,7 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.dto.CustomerDTO;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import java.util.List;
@@ -34,71 +35,51 @@ public class CustomerController {
     ICustomerService icustomerService;
     
     @GetMapping("/traer")
-    public List<Customer> getCustomers() {
+    public List<CustomerDTO> getCustomers() {
         return icustomerService.getCustomers();
     }
     
     @GetMapping("/traer/{id}")
     public Customer getCustomerById(@PathVariable int id) {
-    Customer customer = icustomerService.findCustomer(id);
-    //busco por id, verifico el status y filtro si son true
-    if(customer.isStatus()){
-        return customer;
-    }else {
-            return null;
-        }
+        return icustomerService.findCustomer(id);
     }
     
-    @GetMapping("/activo")
+    @GetMapping("/activos")
     public List<Customer> getActiveCustomers() {
-        //trae solo los status true filtro en servImpl
             return icustomerService.getCustomersByStatus(true);
     }
     
     @PostMapping("/crear")
-    public String createCustomer(@RequestBody Customer customer) {
-        try {
+    public void createCustomer(@RequestBody Customer customer) {
             icustomerService.updateCustomer(customer);  
-                return "Se creo el cliente correctamente"; 
-        }catch (ConstraintViolationException e) {
-                return "Faltan datos del cliente, por favor llena todos los campos";
+
         }
-                  
-    }
 
     @DeleteMapping("/borrar/{id}")
-    public String deleteCustomer(@PathVariable int id) {
-        try {
+    public void deleteCustomer(@PathVariable int id) {
                 icustomerService.deleteCustomer(id);
-                    return "Cliente borrado con exito";      
-        } catch (EmptyResultDataAccessException ne) {        
-                    return "No se encontró el cliente con id "+id;
-        }   
+
+//        catch (EmptyResultDataAccessException ne) {
+//                    return "No se encontró el cliente con id " + id;
+//        }
     }
 
     @PutMapping("/editar/{id}")
     public Customer editCustomer (@PathVariable("id") int id,
-                                        @RequestBody Customer customer)
-    {
-    Customer customerDB = icustomerService.findCustomer(id);
-    if(customerDB.isStatus()){
-        customer.setId(id);  
+                                        @RequestBody Customer customer){
+        customer.setId(id);
         icustomerService.updateCustomer(customer);
-            return customer;
-    }else{
-            return null;
-        }   
+        return customer;
     }
+
     
     @PutMapping("/activo/{id}")
-    public String activateCustomer(@PathVariable int id) {
+    public void activateCustomer(@PathVariable int id) {
         icustomerService.activateCustomer(id);
-        return "El cliente ha sido activado exitosamente";
     }
     
     @PutMapping("/desactivo/{id}")
-    public String deactivateCustomer(@PathVariable int id) {
+    public void deactivateCustomer(@PathVariable int id) {
         icustomerService.deactivateCustomer(id);
-        return "El cliente ha sido desactivado exitosamente";
     }
 }
