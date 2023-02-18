@@ -4,9 +4,12 @@
  */
 package com.demo.challenge.services;
 
+import com.demo.challenge.dto.LowProductProviderDTO;
 import com.demo.challenge.dto.ProductDTO;
+import com.demo.challenge.dto.ProductProviderDTO;
 import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.entitys.Product;
+import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
@@ -129,7 +132,18 @@ public class ImpProductService implements IProductService {
         }
         
         //query
+        @Override
+        public List<LowProductProviderDTO> findProductsByLowStock(Integer stock){
+            var products = iproductRepository.findProductsByLowStock(stock);
+            List<LowProductProviderDTO> productDTO = new ArrayList<>();
+            for (var unit : products) {
+                var product = mapper.map(unit, LowProductProviderDTO.class);
 
+                product.setProvider(mapper.map(unit.getProvider(), ProductProviderDTO.ProviderInfoDTO.class));
+                productDTO.add(product);
+            }
+            return productDTO;
 
+        }
 
     }

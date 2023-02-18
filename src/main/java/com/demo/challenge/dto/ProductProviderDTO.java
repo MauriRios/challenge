@@ -1,9 +1,6 @@
 package com.demo.challenge.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -18,6 +15,19 @@ public class ProductProviderDTO {
     private String providerName;
     private String description;
     private BigDecimal price;
-    private int stock;
+    private Integer stock;
     private Boolean status;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ProviderInfoDTO{
+        private Long id;
+        private String providerName;
+        private String providerLastName;
+        private String phone;
+        private String address;
+        private int cuit;
+        private Boolean status;
+    }
 }

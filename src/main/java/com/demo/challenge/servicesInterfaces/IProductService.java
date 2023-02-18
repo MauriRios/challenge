@@ -4,8 +4,8 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
+import com.demo.challenge.dto.LowProductProviderDTO;
 import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductListDTO;
 import com.demo.challenge.dto.ProductProviderDTO;
 import com.demo.challenge.entitys.Product;
 import java.util.List;
@@ -27,8 +27,8 @@ public interface IProductService {
     String deactivateProduct(int id);
    
     // querys
-    
-    //List<ProductProviderDTO> findLowStockProducts(int stock);
+
+    List<LowProductProviderDTO> findProductsByLowStock(Integer id);
     
   
 }

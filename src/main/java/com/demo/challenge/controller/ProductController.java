@@ -4,26 +4,14 @@
  */
 package com.demo.challenge.controller;
 
+import com.demo.challenge.dto.LowProductProviderDTO;
 import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductListDTO;
+import com.demo.challenge.dto.ProductProviderDTO;
 import com.demo.challenge.entitys.Product;
-import com.demo.challenge.repository.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
-import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -61,9 +49,7 @@ public class ProductController {
 
     @DeleteMapping("/borrar/{id}")
     public String deleteProduct(@PathVariable int id) {
-
        return iproductService.deleteProduct(id);
-
     }
 
     @PutMapping("/editar/{id}")
@@ -86,11 +72,11 @@ public class ProductController {
         
         //query
         
-//        @GetMapping("/low-stock")
-//        public List<ProductProviderDTO> getLowStockProducts(@RequestParam("stock") int stock) {
-//              return iproductService.findLowStockProducts(stock);
-//
-//
-//    }
+        @GetMapping("/lowStock")
+        public List<LowProductProviderDTO> getLowStockProducts(@RequestParam("stock") Integer id) {
+              return iproductService.findProductsByLowStock(id);
+
+
+    }
         
 }

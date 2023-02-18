@@ -21,8 +21,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
 
-//  @Query(value = "SELECT products PRODUCTS where stock <= ?1")
-//  List<ProductProviderDTO> findLowStockProducts(Integer stock);
-
-
+    @Query(value = "SELECT * FROM PRODUCTS where stock <= :stock", nativeQuery = true )
+    List<Product> findProductsByLowStock(@Param("stock") Integer stock);
 }
