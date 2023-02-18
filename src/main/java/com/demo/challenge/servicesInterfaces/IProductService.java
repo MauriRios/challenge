@@ -19,7 +19,7 @@ public interface IProductService {
 
     List<ProductDTO> getProducts();
     List<ProductDTO> getProductsByStatus(Boolean status);
-    Product findProduct(int id);
+    ProductDTO findProductById(int id);
     String deleteProduct(int id);
     String updateProduct(Product product);
     String saveProduct(Product product);

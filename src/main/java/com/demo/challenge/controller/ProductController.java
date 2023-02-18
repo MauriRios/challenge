@@ -45,8 +45,8 @@ public class ProductController {
     }
     
     @GetMapping("/traer/{id}")
-    public Product getProductById(@PathVariable int id) {
-        return iproductService.findProduct(id);
+    public ProductDTO getProductById(@PathVariable int id) {
+        return iproductService.findProductById(id);
     }
     
     @GetMapping("/activos")

@@ -13,6 +13,7 @@ import com.demo.challenge.servicesInterfaces.IProductService;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -100,14 +101,13 @@ public class ImpProductService implements IProductService {
 
 
         @Override
-        public Product findProduct(int id) {
-        try {
-            Product product = iproductRepository.findById(id).get();
-            return product;
-        }
-           catch (EmptyResultDataAccessException ne) {
-               return null;
-           }
+        public ProductDTO findProductById(int id) {
+            Optional<Product> product = iproductRepository.findById(id);
+            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+
+            productDTO.setProvideId(product.get().getProvider().getId());
+
+            return productDTO;
          }
         @Transactional
         @Override
