@@ -9,9 +9,10 @@ import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +35,22 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class SaleController {
     
-    @Autowired 
-    ISaleService isaleService;
 
-    @Autowired
-    IProviderService iproviderService;
-    
-    
+    private final ISaleService isaleService;
+
+    public SaleController(ISaleService isaleService, IProviderService iproviderService) {
+        this.isaleService = isaleService;
+    }
+    ModelMapper mapper = new ModelMapper();
+
     @GetMapping("/traer")
     public List<SaleDTO> getSales() {
         return isaleService.getSales();
     }
     
     @GetMapping("/traer/{id}")
-    public Sale getSaleById(@PathVariable int id) {
-        return isaleService.findSale(id);
+    public SaleDTO getSaleById(@PathVariable int id) {
+        return isaleService.findSaleById(id);
     }
     
     @PostMapping("/crear")
@@ -57,28 +59,21 @@ public class SaleController {
 
     }
     
-         //querys
-    @GetMapping("/date")
-    public ResponseEntity<List<Sale>> findByDate(@RequestParam("date")
-                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-       try {
-           if (date == null) {
-                    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-           } else {
-                    List<Sale> sales = isaleService.findByDate(date);
-                    return new ResponseEntity<>(sales, HttpStatus.OK);
-                }
+    //querys
 
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    @GetMapping("/date")
+    public List<SaleDTO> findSaleByDate(@RequestParam("date")
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        return isaleService.findSaleByDate(date);
+
         }
 
-//        @GetMapping("/provider/{providerId}")
-//        public ResponseEntity<List<SaleDTO>> getSalesByProviderId(@PathVariable("providerId") int providerId) {
-//            List<SaleDTO> sales = isaleService.findByProviderId(providerId);
-//            return new ResponseEntity<>(sales, HttpStatus.OK);
-//        }
+        @GetMapping("/proveedor")
+        public List<SaleDTO> getSalesByProviderId(@RequestParam("providerId") Integer providerId) {
+            return isaleService.getSalesByProviderId(providerId);
+        }
+
 
 
     

@@ -17,10 +17,7 @@ import com.demo.challenge.servicesInterfaces.ISaleService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -91,7 +88,7 @@ public class ImpSaleService implements ISaleService {
 
              }
              else {
-                 return "la cagaste capo, no tengo tanto stock, vuelva prontos";
+                 return "Producto sin Stock, vuelva mas tarde";
              }
                 iproductRepository.save(product);
         }
@@ -106,22 +103,36 @@ public class ImpSaleService implements ISaleService {
          sale.setQuantity(totalQuantity);
          isaleRepository.save(sale);
          return "Venta realizada con Exíto";
-
     }
 
+    @Override
+    public SaleDTO findSaleById(int id) {
+        Optional<Sale> sale = isaleRepository.findById(id);
+        SaleDTO saleDTO = (mapper.map(sale, SaleDTO.class));
+        return saleDTO;
+    }
 
-        @Override
-        public Sale findSale(int id) {
-             Sale sale = isaleRepository.findById(id).orElse(null);
-             return sale;
+    //querys
 
-            }
+    @Override
+    public List<SaleDTO> findSaleByDate(LocalDate date) {
+        List<Sale> sales = isaleRepository.findSaleByDate(date);
+        List<SaleDTO> saleDTO =  new ArrayList<>();
+        for(var unit: sales) {
+            saleDTO.add(mapper.map(unit, SaleDTO.class));
+        }
+        return saleDTO;
+    }
 
-        //querys
-
-        public List<Sale> findByDate(LocalDate date) {
-                return isaleRepository.findByDate(date);
-            }
+    @Override
+    public List<SaleDTO> getSalesByProviderId(Integer providerId) {
+        List<Sale> sales = isaleRepository.getSalesByProviderId(providerId);
+        List<SaleDTO> saleDTO =  new ArrayList<>();
+        for(var unit: sales) {
+            saleDTO.add(mapper.map(unit, SaleDTO.class));
+        }
+        return saleDTO;
+    }
 
 
     

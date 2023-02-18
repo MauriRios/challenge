@@ -27,6 +27,5 @@ public interface IProviderService {
     void activateProvider(int id);
     void deactivateProvider(int id);
 
-//    List<SaleProviderDTO> findSaleByProvider(int providerId);
     
 }

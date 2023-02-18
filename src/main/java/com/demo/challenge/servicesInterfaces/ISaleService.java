@@ -21,10 +21,10 @@ public interface ISaleService {
 
     public String createSale(SaleDTO saleDTO);
 
-    public Sale findSale(int id);
+    public SaleDTO findSaleById(int id);
     
     //querys
-     List<Sale> findByDate(LocalDate date);
-
+     List<SaleDTO> findSaleByDate(LocalDate date);
+     List<SaleDTO> getSalesByProviderId(Integer providerId);
 
 }
