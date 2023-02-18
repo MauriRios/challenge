@@ -8,7 +8,7 @@ import com.demo.challenge.dto.ProviderDTO;
 import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class ProviderController {
     
-    @Autowired 
-    IProviderService iproviderService;
-    
-    
+
+    private final IProviderService iproviderService;
+
+    public ProviderController(IProviderService iproviderService) {
+        this.iproviderService = iproviderService;
+    }
+
+
     @GetMapping("/traer")
     public List<ProviderDTO> getProviders() {
         return iproviderService.getProviders();

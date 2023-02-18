@@ -89,5 +89,9 @@ public class ImpCustomerService implements ICustomerService {
     public void deleteCustomer(int id) {
         icustomerRepository.deleteById(id);
     }
+
+    //        catch (EmptyResultDataAccessException ne) {
+    //                    return "No se encontró el cliente con id " + id;
+    //        }
     
     }

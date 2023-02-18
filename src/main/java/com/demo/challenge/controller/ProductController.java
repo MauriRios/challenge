@@ -6,11 +6,10 @@ package com.demo.challenge.controller;
 
 import com.demo.challenge.dto.LowProductProviderDTO;
 import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductProviderDTO;
 import com.demo.challenge.entitys.Product;
 import com.demo.challenge.servicesInterfaces.IProductService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,10 +22,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class ProductController {
     
-    @Autowired 
-    IProductService iproductService;
 
-    
+    private final IProductService iproductService;
+
+    public ProductController(IProductService iproductService) {
+        this.iproductService = iproductService;
+    }
+
+
     @GetMapping("/traer")
     public List<ProductDTO> getProducts() {
         return iproductService.getProducts();

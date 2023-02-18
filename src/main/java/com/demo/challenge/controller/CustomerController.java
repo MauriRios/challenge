@@ -8,9 +8,7 @@ import com.demo.challenge.dto.CustomerDTO;
 import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import java.util.List;
-import javax.validation.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class CustomerController {
     
-    @Autowired 
-    ICustomerService icustomerService;
-    
+    private final ICustomerService icustomerService;
+
+    public CustomerController(ICustomerService icustomerService) {
+        this.icustomerService = icustomerService;
+    }
+
     @GetMapping("/traer")
     public List<CustomerDTO> getCustomers() {
         return icustomerService.getCustomers();
@@ -51,17 +52,12 @@ public class CustomerController {
     
     @PostMapping("/crear")
     public void createCustomer(@RequestBody Customer customer) {
-            icustomerService.updateCustomer(customer);  
-
+            icustomerService.updateCustomer(customer);
         }
 
     @DeleteMapping("/borrar/{id}")
     public void deleteCustomer(@PathVariable int id) {
                 icustomerService.deleteCustomer(id);
-
-//        catch (EmptyResultDataAccessException ne) {
-//                    return "No se encontró el cliente con id " + id;
-//        }
     }
 
     @PutMapping("/editar/{id}")
@@ -72,7 +68,6 @@ public class CustomerController {
         return customer;
     }
 
-    
     @PutMapping("/activo/{id}")
     public void activateCustomer(@PathVariable int id) {
         icustomerService.activateCustomer(id);

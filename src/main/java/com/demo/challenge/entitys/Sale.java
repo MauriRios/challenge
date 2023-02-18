@@ -4,13 +4,8 @@
  */
 package com.demo.challenge.entitys;
 
-import com.demo.challenge.dto.ProductSaleDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,7 +37,7 @@ public class Sale {
     private int quantity;
     @NotNull
     @Column(nullable = false)
-    private BigDecimal total;
+    private BigDecimal totalPrice;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

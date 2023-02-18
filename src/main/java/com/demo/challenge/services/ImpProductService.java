@@ -128,7 +128,6 @@ public class ImpProductService implements IProductService {
             } catch(EmptyResultDataAccessException ne) {
                 return "No se encontró el producto con id " + id;
             }
-
         }
         
         //query

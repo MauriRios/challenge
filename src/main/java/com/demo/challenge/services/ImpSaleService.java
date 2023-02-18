@@ -5,9 +5,7 @@
 package com.demo.challenge.services;
 
 import com.demo.challenge.dto.*;
-import com.demo.challenge.entitys.Customer;
 import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
 import com.demo.challenge.entitys.Sale;
 import com.demo.challenge.repository.ICustomerRepository;
 import com.demo.challenge.repository.IProductRepository;
@@ -56,7 +54,7 @@ public class ImpSaleService implements ISaleService {
               var purchases = mapper.map(unit, SaleDTO.class);
              purchases.setCustomerId(unit.getCustomer().getId());
              purchases.setProviderId(unit.getProvider_id().getId());
-             purchases.setTotalPrice(unit.getTotal());
+             purchases.setTotalPrice(unit.getTotalPrice());
              saleDTO.add(purchases);
          }
 
@@ -99,7 +97,7 @@ public class ImpSaleService implements ISaleService {
          sale.setCustomer(customer);
          sale.setProvider_id(provider);
          sale.setProducts(products);
-         sale.setTotal(totalPrice);
+         sale.setTotalPrice(totalPrice);
          sale.setQuantity(totalQuantity);
          isaleRepository.save(sale);
          return "Venta realizada con Exíto";

@@ -64,17 +64,12 @@ public class SaleController {
     @GetMapping("/date")
     public List<SaleDTO> findSaleByDate(@RequestParam("date")
                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-
         return isaleService.findSaleByDate(date);
-
         }
 
         @GetMapping("/proveedor")
         public List<SaleDTO> getSalesByProviderId(@RequestParam("providerId") Integer providerId) {
             return isaleService.getSalesByProviderId(providerId);
         }
-
-
-
     
 }
