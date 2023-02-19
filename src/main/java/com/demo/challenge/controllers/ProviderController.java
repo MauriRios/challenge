@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.demo.challenge.controller;
+package com.demo.challenge.controllers;
 
-import com.demo.challenge.dto.ProviderDTO;
-import com.demo.challenge.entitys.Provider;
+import com.demo.challenge.dtos.ProviderDTO;
+import com.demo.challenge.entities.Provider;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.List;
 

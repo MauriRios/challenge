@@ -4,13 +4,13 @@
  */
 package com.demo.challenge.services;
 
-import com.demo.challenge.dto.*;
-import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Sale;
-import com.demo.challenge.repository.ICustomerRepository;
-import com.demo.challenge.repository.IProductRepository;
-import com.demo.challenge.repository.IProviderRepository;
-import com.demo.challenge.repository.ISaleRepository;
+import com.demo.challenge.dtos.*;
+import com.demo.challenge.entities.Product;
+import com.demo.challenge.entities.Sale;
+import com.demo.challenge.repositories.ICustomerRepository;
+import com.demo.challenge.repositories.IProductRepository;
+import com.demo.challenge.repositories.IProviderRepository;
+import com.demo.challenge.repositories.ISaleRepository;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 
 import java.math.BigDecimal;

@@ -4,8 +4,8 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.dto.CustomerDTO;
-import com.demo.challenge.entitys.Customer;
+import com.demo.challenge.dtos.CustomerDTO;
+import com.demo.challenge.entities.Customer;
 import java.util.List;
 
 /**

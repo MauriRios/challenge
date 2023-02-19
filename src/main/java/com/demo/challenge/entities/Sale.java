@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.demo.challenge.entitys;
+package com.demo.challenge.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

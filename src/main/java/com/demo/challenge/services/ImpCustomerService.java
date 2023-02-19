@@ -5,9 +5,9 @@
 package com.demo.challenge.services;
 
 
-import com.demo.challenge.dto.CustomerDTO;
-import com.demo.challenge.entitys.Customer;
-import com.demo.challenge.repository.ICustomerRepository;
+import com.demo.challenge.dtos.CustomerDTO;
+import com.demo.challenge.entities.Customer;
+import com.demo.challenge.repositories.ICustomerRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 import java.util.ArrayList;
 import java.util.List;

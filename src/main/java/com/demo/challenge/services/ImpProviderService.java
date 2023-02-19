@@ -5,12 +5,11 @@
 package com.demo.challenge.services;
 
 
-import com.demo.challenge.dto.CustomerDTO;
-import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProviderDTO;
-import com.demo.challenge.entitys.Provider;
-import com.demo.challenge.repository.IProductRepository;
-import com.demo.challenge.repository.IProviderRepository;
+import com.demo.challenge.dtos.ProductDTO;
+import com.demo.challenge.dtos.ProviderDTO;
+import com.demo.challenge.entities.Provider;
+import com.demo.challenge.repositories.IProductRepository;
+import com.demo.challenge.repositories.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import java.util.ArrayList;
 import java.util.List;

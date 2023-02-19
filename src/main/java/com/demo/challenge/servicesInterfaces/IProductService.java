@@ -4,10 +4,9 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.dto.LowProductProviderDTO;
-import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductProviderDTO;
-import com.demo.challenge.entitys.Product;
+import com.demo.challenge.dtos.LowProductProviderDTO;
+import com.demo.challenge.dtos.ProductDTO;
+import com.demo.challenge.entities.Product;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
-package com.demo.challenge.controller;
+package com.demo.challenge.controllers;
 
-import com.demo.challenge.dto.ExternalProductsDTO;
+import com.demo.challenge.dtos.ExternalProductsDTO;
 import com.demo.challenge.services.ExternalProductService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

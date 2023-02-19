@@ -1,4 +1,4 @@
-package com.demo.challenge.dto;
+package com.demo.challenge.dtos;
 
 import lombok.Builder;
 import lombok.Data;

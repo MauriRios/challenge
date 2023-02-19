@@ -4,16 +4,14 @@
  */
 package com.demo.challenge.services;
 
-import com.demo.challenge.dto.LowProductProviderDTO;
-import com.demo.challenge.dto.ProductDTO;
-import com.demo.challenge.dto.ProductProviderDTO;
-import com.demo.challenge.dto.ProviderDTO;
-import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
+import com.demo.challenge.dtos.LowProductProviderDTO;
+import com.demo.challenge.dtos.ProductDTO;
+import com.demo.challenge.dtos.ProductProviderDTO;
+import com.demo.challenge.entities.Product;
 import com.demo.challenge.exceptions.RequestException;
-import com.demo.challenge.repository.IProductRepository;
+import com.demo.challenge.repositories.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
-import com.demo.challenge.servicesInterfaces.IProviderService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
-package com.demo.challenge.controller;
+package com.demo.challenge.controllers;
 
 
-import com.demo.challenge.dto.ErrorDTO;
+import com.demo.challenge.dtos.ErrorDTO;
 import com.demo.challenge.exceptions.BusinessException;
 import com.demo.challenge.exceptions.RequestException;
 import org.springframework.http.HttpStatus;

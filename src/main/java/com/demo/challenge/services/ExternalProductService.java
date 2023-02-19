@@ -1,6 +1,6 @@
 package com.demo.challenge.services;
 
-import com.demo.challenge.dto.ExternalProductsDTO;
+import com.demo.challenge.dtos.ExternalProductsDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

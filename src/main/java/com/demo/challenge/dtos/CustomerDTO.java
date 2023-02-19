@@ -1,6 +1,5 @@
-package com.demo.challenge.dto;
+package com.demo.challenge.dtos;
 
-import com.demo.challenge.entitys.Sale;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
