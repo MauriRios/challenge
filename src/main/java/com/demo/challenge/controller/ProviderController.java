@@ -85,11 +85,5 @@ public class ProviderController {
         iproviderService.deactivateProvider(id);
     }
 
-//    @GetMapping("/ventas/{providerId}")
-//    public List<SaleRequestDTO> sales(@PathVariable int providerId) {
-//
-//     return iproviderService.findSaleByProvider(providerId);
-//
-//    }
 
 }
