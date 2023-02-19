@@ -71,22 +71,7 @@ public class ImpProductService implements IProductService {
             return productDTO;
         }
 
-        @Transactional
-        @Override
-        public String activateProduct(int id) {
-            Product product = iproductRepository.findById(id).get();
-            product.setStatus(true);
-            iproductRepository.save(product);
-            return "El producto ha sido activado exitosamente";
-        }
-        @Transactional
-        @Override
-        public String deactivateProduct(int id) {
-            Product product = iproductRepository.findById(id).get();
-            product.setStatus(false);
-            iproductRepository.save(product);
-            return "El producto ha sido desactivado exitosamente";
-        }
+
         @Transactional
         @Override
         public String saveProduct(Product product) {
@@ -117,6 +102,23 @@ public class ImpProductService implements IProductService {
         public String updateProduct(Product product) {
             iproductRepository.save(product);
             return "Producto editado exítosamente";
+        }
+
+        @Transactional
+        @Override
+        public String activateProduct(int id) {
+            Product product = iproductRepository.findById(id).get();
+            product.setStatus(true);
+            iproductRepository.save(product);
+            return "El producto ha sido activado exitosamente";
+        }
+        @Transactional
+        @Override
+        public String deactivateProduct(int id) {
+            Product product = iproductRepository.findById(id).get();
+            product.setStatus(false);
+            iproductRepository.save(product);
+            return "El producto ha sido desactivado exitosamente";
         }
 
         @Transactional
