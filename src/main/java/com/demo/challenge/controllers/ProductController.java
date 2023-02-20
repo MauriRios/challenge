@@ -23,63 +23,62 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     
 
-    private final IProductService iproductService;
+        private final IProductService iproductService;
 
-    public ProductController(IProductService iproductService) {
-        this.iproductService = iproductService;
-    }
+        public ProductController(IProductService iproductService) {
+            this.iproductService = iproductService;
+        }
 
 
-    @GetMapping("/traer")
-    public List<ProductDTO> getProducts() {
-        return iproductService.getProducts();
-    }
-    
-    @GetMapping("/traer/{id}")
-    public ProductDTO getProductById(@PathVariable int id) {
-        return iproductService.findProductById(id);
-    }
-    
-    @GetMapping("/activos")
-    public List<ProductDTO> getActiveProducts() {
-        return iproductService.getProductsByStatus(true);
-    }
+        @GetMapping("/traer")
+        public List<ProductDTO> getProducts() {
+            return iproductService.getProducts();
+        }
 
-    @PostMapping("/crear")
-    public void createProduct(@RequestBody Product product) {
-        iproductService.saveProduct(product);
-    }
+        @GetMapping("/traer/{id}")
+        public ProductDTO getProductById(@PathVariable int id) {
+            return iproductService.findProductById(id);
+        }
 
-    @DeleteMapping("/borrar/{id}")
-    public String deleteProduct(@PathVariable int id) {
-       return iproductService.deleteProduct(id);
-    }
+        @GetMapping("/activos")
+        public List<ProductDTO> getActiveProducts() {
+            return iproductService.getProductsByStatus(true);
+        }
 
-    @PutMapping("/editar/{id}")
-    public Product editProduct(@PathVariable("id") int id,
-                               @RequestBody Product product) {
-        product.setId(id);
-        iproductService.updateProduct(product);
-        return product;
-    }
-    
+        @PostMapping("/crear")
+        public String createProduct(@RequestBody Product product) {
+            return iproductService.saveProduct(product);
+        }
+
+
+        @PutMapping("/editar/{id}")
+        public Product editProduct(@PathVariable("id") int id,
+                                   @RequestBody Product product) {
+            product.setId(id);
+            iproductService.updateProduct(product);
+            return product;
+        }
+
        @PutMapping("/activo/{id}")
-        public void activateProduct(@PathVariable int id) {
-        iproductService.activateProduct(id);
-    }
-    
-    @PutMapping("/desactivo/{id}")
-        public void deactivateProduct(@PathVariable int id) {
-        iproductService.deactivateProduct(id);
-    }
-        
-        //query
-        
-        @GetMapping("/lowStock")
-        public List<LowProductProviderDTO> getLowStockProducts(@RequestParam("stock") Integer id) {
-              return iproductService.findProductsByLowStock(id);
+            public void activateProduct(@PathVariable int id) {
+            iproductService.activateProduct(id);
+        }
 
+       @PutMapping("/desactivo/{id}")
+            public void deactivateProduct(@PathVariable int id) {
+            iproductService.deactivateProduct(id);
+        }
 
-    }
+       @DeleteMapping("/borrar/{id}")
+       public String deleteProduct(@PathVariable int id) {
+            return iproductService.deleteProduct(id);
+        }
+
+       //query
+
+       @GetMapping("/lowStock")
+       public List<LowProductProviderDTO> getLowStockProducts(@RequestParam("stock") Integer id) {
+            return iproductService.findProductsByLowStock(id);
+        }
         
 }

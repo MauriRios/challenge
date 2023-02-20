@@ -26,8 +26,5 @@ public interface ISaleRepository extends JpaRepository<Sale, Integer> {
     @Query(value = "select s from Sale s where s.id = :providerId")
     List<Sale> getSalesByProviderId(@Param("providerId") Integer id);
 
-//    @Query(value = "select s from Sale s where s.fecha >= :desde AND v.fecha <= :hasta", nativeQuery = true)
-//    List<Sale> findByFecha(LocalDateTime desde, LocalDateTime hasta);
-
 
 }

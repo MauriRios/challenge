@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping  ("proveedor")
 @CrossOrigin(origins = "*")
 public class ProviderController {
-    
 
     private final IProviderService iproviderService;
 
@@ -44,26 +43,18 @@ public class ProviderController {
     
     @GetMapping("/traer/{id}")
     public Provider getProviderById(@PathVariable int id) {
-    return iproviderService.findProvider(id);
+        return iproviderService.findProvider(id);
     }
     
     @GetMapping("/activos")
     public List<ProviderDTO> getActiveProviders() {
         return iproviderService.getProvidersByStatus(true);
     }
-    
+
     @PostMapping("/crear")
     public void createProvider(@RequestBody Provider provider) {
         iproviderService.createProvider(provider);
     }
-
-    @DeleteMapping("/borrar/{id}")
-    public void deleteProvider(@PathVariable int id) {
-             iproviderService.deleteProvider(id);
-        }
-//        catch(EmptyResultDataAccessException ne) {
-//            return "No se encontró el proveedor con id "+id;
-//        }
     
     @PutMapping("/editar/{id}")
     public Provider editProvider (@PathVariable("id") int id,
@@ -74,15 +65,19 @@ public class ProviderController {
     }
 
     
-    @PutMapping("/activo/{id}")
+    @PutMapping("/activar/{id}")
     public void activateProvider(@PathVariable int id) {
         iproviderService.activateProvider(id);
-
     }
     
-    @PutMapping("/desactivo/{id}")
+    @PutMapping("/desactivar/{id}")
     public void deactivateProvider(@PathVariable int id) {
         iproviderService.deactivateProvider(id);
+    }
+
+    @DeleteMapping("/borrar/{id}")
+    public void deleteProvider(@PathVariable int id) {
+        iproviderService.deleteProvider(id);
     }
 
 

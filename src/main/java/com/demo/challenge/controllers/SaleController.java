@@ -50,8 +50,8 @@ public class SaleController {
     }
     
     @PostMapping("/crear")
-    public void createSale(@RequestBody SaleDTO saleDTO) {
-        isaleService.createSale(saleDTO);
+    public String createSale(@RequestBody SaleDTO saleDTO) {
+        return isaleService.createSale(saleDTO);
 
     }
     
@@ -61,11 +61,11 @@ public class SaleController {
     public List<SaleDTO> findSaleByDate(@RequestParam("date")
                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return isaleService.findSaleByDate(date);
-        }
+    }
 
-        @GetMapping("/proveedor")
-        public List<SaleDTO> getSalesByProviderId(@RequestParam("providerId") Integer providerId) {
+    @GetMapping("/proveedor")
+    public List<SaleDTO> getSalesByProviderId(@RequestParam("providerId") Integer providerId) {
             return isaleService.getSalesByProviderId(providerId);
-        }
+    }
     
 }

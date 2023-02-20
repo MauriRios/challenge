@@ -87,26 +87,19 @@ public class ImpProviderService implements IProviderService {
         }
         return providerDTO;
     }
-    
-        @Transactional
-        @Override
-        public void activateProvider(int id) {
-            Provider provider = iproviderRepository.findById(id).get();
-            provider.setStatus(true);
-            iproviderRepository.save(provider);
-        }
-        @Transactional
-        @Override
-        public void deactivateProvider(int id) {
-            Provider provider = iproviderRepository.findById(id).get();
-            provider.setStatus(false);
-            iproviderRepository.save(provider);
-        }
-        @Transactional
-        @Override
-        public ResponseEntity<String> createProvider(Provider provider) {
-            try {
-                if(provider.getProviderName() == null ||
+
+    @Override
+    public Provider findProvider(int id) {
+        Provider provider = iproviderRepository.findById(id).orElse(null);
+        return provider;
+
+    }
+
+    @Transactional
+    @Override
+    public ResponseEntity<String> createProvider(Provider provider) {
+        try {
+            if(provider.getProviderName() == null ||
                    provider.getCuit() == 0 ||
                    provider.getAddress() == null ||
                    provider.getPhone() == 0)
@@ -118,30 +111,37 @@ public class ImpProviderService implements IProviderService {
                 return ResponseEntity.ok().body("Proveedor agregado con éxito");
             } catch (DataIntegrityViolationException ex) {
                 return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
-            }
         }
-        @Transactional
-        @Override
-        public void updateProvider(Provider provider) {
+    }
+
+    @Transactional
+    @Override
+    public void updateProvider(Provider provider) {
             iproviderRepository.save(provider);
+    }
 
-        }
-        @Transactional
-        @Override
-        public void deleteProvider(int id) {
+    @Transactional
+    @Override
+    public void activateProvider(int id) {
+        Provider provider = iproviderRepository.findById(id).get();
+        provider.setStatus(true);
+        iproviderRepository.save(provider);
+    }
+    @Transactional
+    @Override
+    public void deactivateProvider(int id) {
+        Provider provider = iproviderRepository.findById(id).get();
+        provider.setStatus(false);
+        iproviderRepository.save(provider);
+    }
+
+    @Transactional
+    @Override
+    public void deleteProvider(int id) {
             iproviderRepository.deleteById(id);
+    }
 
-        }
 
-        @Override
-        public Provider findProvider(int id) {
-           Provider provider = iproviderRepository.findById(id).orElse(null);
-            return provider;
 
-           }
-//           @Override
-//           public List<SaleRequestDTO> findSaleByProvider(int providerId){
-//            return iproviderRepository.findByProviderId(providerId);
-//           }
 
         }

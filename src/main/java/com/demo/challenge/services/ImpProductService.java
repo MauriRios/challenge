@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -74,16 +75,22 @@ public class ImpProductService implements IProductService {
         @Override
         public String saveProduct(Product product) {
 
-                if(     product.getName() == null ||
+            try {
+                if (product.getName() == null ||
                         product.getName() == null ||
                         product.getDescription() == null ||
                         product.getPrice() <= 0 ||
-                        product.getStock() <= 0 ){
-                    throw new RequestException("P-400","Validacion de producto falló, todos los campos son mandatorios");
+                        product.getStock() <= 0) {
+                    throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
                 }
+
                 iproductRepository.save(product);
                 return "Producto agregado con exíto";
+
+            } catch (DataIntegrityViolationException ex){
+                throw new RequestException("P-401", "ID del proveedor faltante o incorrecto");
             }
+        }
 
 
         @Override

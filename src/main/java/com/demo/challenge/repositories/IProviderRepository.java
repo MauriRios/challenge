@@ -16,7 +16,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProviderRepository extends JpaRepository<Provider, Integer> {
 
-//    @Query("select new com.demo.challenge.dto.SaleRequestDTO(s.id, s.date, s.quantity, s.total) from Sale s where s.provider.id = :providerId")
-//    List<SaleRequestDTO> findByProviderId(@Param("providerId") int providerId);
-
 }

@@ -114,13 +114,19 @@ public class ImpSaleService implements ISaleService {
 
     @Override
     public List<SaleDTO> findSaleByDate(LocalDate date) {
+
         List<Sale> sales = isaleRepository.findSaleByDate(date);
-        List<SaleDTO> saleDTO =  new ArrayList<>();
-        for(var unit: sales) {
+        List<SaleDTO> saleDTO = new ArrayList<>();
+        for (var unit : sales) {
             saleDTO.add(mapper.map(unit, SaleDTO.class));
         }
-        return saleDTO;
+        if (saleDTO.size() > 0) {
+            return saleDTO;
+        } else {
+            return null;
+        }
     }
+
 
     @Override
     public List<SaleDTO> getSalesByProviderId(Integer providerId) {
