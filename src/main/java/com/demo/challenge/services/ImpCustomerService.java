@@ -9,6 +9,7 @@ import com.demo.challenge.dtos.CustomerDTO;
 import com.demo.challenge.entities.Customer;
 import com.demo.challenge.repositories.ICustomerRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,31 +20,32 @@ import javax.transaction.Transactional;
 
 
 /**
- *
  * @author mauri
  */
 
 @Service
 public class ImpCustomerService implements ICustomerService {
-    
+
     private final ICustomerRepository icustomerRepository;
+
     public ImpCustomerService(ICustomerRepository icustomerRepository) {
         this.icustomerRepository = icustomerRepository;
     }
+
     ModelMapper mapper = new ModelMapper();
 
     @Override
     public List<CustomerDTO> getCustomers() {
         var customer = icustomerRepository.findAll();
         List<CustomerDTO> customerDTO = new ArrayList<>();
-            for (var unit : customer) {
-                var custom = mapper.map(unit, CustomerDTO.class);
+        for (var unit : customer) {
+            var custom = mapper.map(unit, CustomerDTO.class);
 
-                customerDTO.add(custom);
-            }
+            customerDTO.add(custom);
+        }
         return customerDTO;
     }
-    
+
     @Override
     public List<CustomerDTO> getCustomersByStatus(boolean status) {
         var allCustomers = icustomerRepository.findAll();
@@ -64,12 +66,14 @@ public class ImpCustomerService implements ICustomerService {
         return customer;
 
     }
+
     @Transactional
     @Override
     public void updateCustomer(Customer customer) {
         customer.setStatus(true);
         icustomerRepository.save(customer);
     }
+
     @Transactional
     @Override
     public void activateCustomer(int id) {
@@ -77,6 +81,7 @@ public class ImpCustomerService implements ICustomerService {
         customer.setStatus(true);
         icustomerRepository.save(customer);
     }
+
     @Transactional
     @Override
     public void deactivateCustomer(int id) {
@@ -84,11 +89,12 @@ public class ImpCustomerService implements ICustomerService {
         customer.setStatus(false);
         icustomerRepository.save(customer);
     }
+
     @Transactional
     @Override
     public void deleteCustomer(int id) {
         icustomerRepository.deleteById(id);
     }
 
-    
-    }
+
+}

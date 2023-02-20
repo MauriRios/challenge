@@ -15,22 +15,22 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 /**
- *
  * @author mauri
  */
 
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "providers")
 public class Provider {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @NotNull
     @Column(length = 45, nullable = false)
     private String providerName;
@@ -40,26 +40,25 @@ public class Provider {
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
     private Integer cuit;
-    
+
     @NotNull
     @Column(length = 11, nullable = false, unique = true)
     private Integer phone;
-    
+
     @NotNull
     @Column(length = 11, nullable = false)
     private String address;
-    
+
     @NotNull
     private Boolean status;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Product> prodList  = new ArrayList<>();
+    private List<Product> prodList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "provider_id",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "provider_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Sale> saleList;
 
-    
-    
+
 }

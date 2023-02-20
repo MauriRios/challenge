@@ -24,14 +24,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 /**
- *
  * @author mauri
  */
 
 @Service
 public class ImpProductService implements IProductService {
-    
-    
+
+
     private final IProductRepository iproductRepository;
 
     public ImpProductService(IProductRepository iproductRepository) {
@@ -41,115 +40,117 @@ public class ImpProductService implements IProductService {
 
     ModelMapper mapper = new ModelMapper();
 
-        @Override
-        public List<ProductDTO> getProducts() {
-            var products = iproductRepository.findAll();
-            List<ProductDTO> productDTO =  new ArrayList<>();
-            for (var unit : products) {
-                var prod = mapper.map(unit, ProductDTO.class);
-                prod.setProviderName(unit.getProvider().getProviderName());
-                prod.setProvideId(unit.getProvider().getId());
-                productDTO.add(prod);
-            }
-            return productDTO;
+    @Override
+    public List<ProductDTO> getProducts() {
+        var products = iproductRepository.findAll();
+        List<ProductDTO> productDTO = new ArrayList<>();
+        for (var unit : products) {
+            var prod = mapper.map(unit, ProductDTO.class);
+            prod.setProviderName(unit.getProvider().getProviderName());
+            prod.setProvideId(unit.getProvider().getId());
+            productDTO.add(prod);
         }
+        return productDTO;
+    }
 
-        @Override
-        public List<ProductDTO> getProductsByStatus(Boolean status) {
-            var allProducts = iproductRepository.findAll();
-            List<ProductDTO> productDTO = new ArrayList<>();
-            for (var product : allProducts) {
-                if (product.getStatus() == true) {
-                    var filteredProducts = mapper.map(product, ProductDTO.class);
+    @Override
+    public List<ProductDTO> getProductsByStatus(Boolean status) {
+        var allProducts = iproductRepository.findAll();
+        List<ProductDTO> productDTO = new ArrayList<>();
+        for (var product : allProducts) {
+            if (product.getStatus() == true) {
+                var filteredProducts = mapper.map(product, ProductDTO.class);
 
-                    filteredProducts.setProviderName(product.getProvider().getProviderName());
-                    filteredProducts.setProvideId(product.getProvider().getId());
-                    productDTO.add(filteredProducts);
-                }
-            }
-            return productDTO;
-        }
-
-
-        @Transactional
-        @Override
-        public String saveProduct(Product product) {
-
-            try {
-                if (product.getName() == null ||
-                        product.getName() == null ||
-                        product.getDescription() == null ||
-                        product.getPrice() <= 0 ||
-                        product.getStock() <= 0) {
-                    throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
-                }
-
-                iproductRepository.save(product);
-                return "Producto agregado con exíto";
-
-            } catch (DataIntegrityViolationException ex){
-                throw new RequestException("P-401", "ID del proveedor faltante o incorrecto");
+                filteredProducts.setProviderName(product.getProvider().getProviderName());
+                filteredProducts.setProvideId(product.getProvider().getId());
+                productDTO.add(filteredProducts);
             }
         }
+        return productDTO;
+    }
 
 
-        @Override
-        public ProductDTO findProductById(int id) {
-            Optional<Product> product = iproductRepository.findById(id);
-            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+    @Transactional
+    @Override
+    public String saveProduct(Product product) {
 
-            productDTO.setProvideId(product.get().getProvider().getId());
+        try {
+            if (product.getName() == null ||
+                    product.getName() == null ||
+                    product.getDescription() == null ||
+                    product.getPrice() <= 0 ||
+                    product.getStock() <= 0) {
+                throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
+            }
 
-            return productDTO;
-         }
-        @Transactional
-        @Override
-        public String updateProduct(Product product) {
             iproductRepository.save(product);
-            return "Producto editado exítosamente";
-        }
+            return "Producto agregado con exíto";
 
-        @Transactional
-        @Override
-        public String activateProduct(int id) {
-            Product product = iproductRepository.findById(id).get();
-            product.setStatus(true);
-            iproductRepository.save(product);
-            return "El producto ha sido activado exitosamente";
+        } catch (DataIntegrityViolationException ex) {
+            throw new RequestException("P-401", "ID del proveedor faltante o incorrecto");
         }
-        @Transactional
-        @Override
-        public String deactivateProduct(int id) {
-            Product product = iproductRepository.findById(id).get();
-            product.setStatus(false);
-            iproductRepository.save(product);
-            return "El producto ha sido desactivado exitosamente";
-        }
+    }
 
-        @Transactional
-        @Override
-        public String deleteProduct(int id) {
-            try {
-                iproductRepository.deleteById(id);
-                return "Producto borrado con exito";
-            } catch(EmptyResultDataAccessException ne) {
-                return "No se encontró el producto con id " + id;
-            }
-        }
-        
-        //query
-        @Override
-        public List<LowProductProviderDTO> findProductsByLowStock(Integer stock){
-            var products = iproductRepository.findProductsByLowStock(stock);
-            List<LowProductProviderDTO> productDTO = new ArrayList<>();
-            for (var unit : products) {
-                var product = mapper.map(unit, LowProductProviderDTO.class);
 
-                product.setProvider(mapper.map(unit.getProvider(), ProductProviderDTO.ProviderInfoDTO.class));
-                productDTO.add(product);
-            }
-            return productDTO;
+    @Override
+    public ProductDTO findProductById(int id) {
+        Optional<Product> product = iproductRepository.findById(id);
+        ProductDTO productDTO = mapper.map(product, ProductDTO.class);
 
+        productDTO.setProvideId(product.get().getProvider().getId());
+
+        return productDTO;
+    }
+
+    @Transactional
+    @Override
+    public String updateProduct(Product product) {
+        iproductRepository.save(product);
+        return "Producto editado exítosamente";
+    }
+
+    @Transactional
+    @Override
+    public String activateProduct(int id) {
+        Product product = iproductRepository.findById(id).get();
+        product.setStatus(true);
+        iproductRepository.save(product);
+        return "El producto ha sido activado exitosamente";
+    }
+
+    @Transactional
+    @Override
+    public String deactivateProduct(int id) {
+        Product product = iproductRepository.findById(id).get();
+        product.setStatus(false);
+        iproductRepository.save(product);
+        return "El producto ha sido desactivado exitosamente";
+    }
+
+    @Transactional
+    @Override
+    public String deleteProduct(int id) {
+        try {
+            iproductRepository.deleteById(id);
+            return "Producto borrado con exito";
+        } catch (EmptyResultDataAccessException ne) {
+            return "No se encontró el producto con id " + id;
         }
+    }
+
+    //query
+    @Override
+    public List<LowProductProviderDTO> findProductsByLowStock(Integer stock) {
+        var products = iproductRepository.findProductsByLowStock(stock);
+        List<LowProductProviderDTO> productDTO = new ArrayList<>();
+        for (var unit : products) {
+            var product = mapper.map(unit, LowProductProviderDTO.class);
+
+            product.setProvider(mapper.map(unit.getProvider(), ProductProviderDTO.ProviderInfoDTO.class));
+            productDTO.add(product);
+        }
+        return productDTO;
 
     }
+
+}

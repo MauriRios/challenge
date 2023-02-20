@@ -12,5 +12,5 @@ public class ExternalProductsDTO {
     private String name;
     private String sku;
     private String stock;
-    private  String imgUr;
+    private String imgUr;
 }

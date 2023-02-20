@@ -21,7 +21,7 @@ public class ProductProviderDTO {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ProviderInfoDTO{
+    public static class ProviderInfoDTO {
         private Long id;
         private String providerName;
         private String providerLastName;

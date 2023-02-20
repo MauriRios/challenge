@@ -11,6 +11,7 @@ import com.demo.challenge.entities.Provider;
 import com.demo.challenge.repositories.IProductRepository;
 import com.demo.challenge.repositories.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,31 +24,32 @@ import javax.transaction.Transactional;
 
 
 /**
- *
  * @author mauri
  */
 
 @Service
 public class ImpProviderService implements IProviderService {
-    
+
     private final IProviderRepository iproviderRepository;
 
     private final IProductRepository iproductRepository;
+
     public ImpProviderService(IProviderRepository iproviderRepository, IProductRepository iproductRepository) {
         this.iproviderRepository = iproviderRepository;
         this.iproductRepository = iproductRepository;
     }
+
     ModelMapper mapper = new ModelMapper();
 
     @Override
     public List<ProviderDTO> getProviders() {
         var providers = iproviderRepository.findAll();
         var products = iproductRepository.findAll();
-        List<ProviderDTO> providerDTO =  new ArrayList<>();
+        List<ProviderDTO> providerDTO = new ArrayList<>();
 
         for (var unit : providers) {
             var prov = mapper.map(unit, ProviderDTO.class);
-            List<ProductDTO> productDTO =  new ArrayList<>();
+            List<ProductDTO> productDTO = new ArrayList<>();
 
             for (var unit2 : products) {
                 if (unit2.getProvider().getId() == unit.getId()) {
@@ -72,7 +74,7 @@ public class ImpProviderService implements IProviderService {
         for (var provider : allProviders) {
             if (provider.getStatus() == true) {
                 var filteredProviders = mapper.map(provider, ProviderDTO.class);
-                List<ProductDTO> productDTO =  new ArrayList<>();
+                List<ProductDTO> productDTO = new ArrayList<>();
 
                 for (var unit2 : products) {
                     if (unit2.getProvider().getId() == filteredProviders.getId()) {
@@ -99,25 +101,24 @@ public class ImpProviderService implements IProviderService {
     @Override
     public ResponseEntity<String> createProvider(Provider provider) {
         try {
-            if(provider.getProviderName() == null ||
-                   provider.getCuit() == 0 ||
-                   provider.getAddress() == null ||
-                   provider.getPhone() == 0)
-                {
-                    throw new IllegalArgumentException("Validacion de proovedor falló, todos los campos son mandatorios");
-                }
-                provider.setStatus(true);
-                iproviderRepository.save(provider);
-                return ResponseEntity.ok().body("Proveedor agregado con éxito");
-            } catch (DataIntegrityViolationException ex) {
-                return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
+            if (provider.getProviderName() == null ||
+                    provider.getCuit() == 0 ||
+                    provider.getAddress() == null ||
+                    provider.getPhone() == 0) {
+                throw new IllegalArgumentException("Validacion de proovedor falló, todos los campos son mandatorios");
+            }
+            provider.setStatus(true);
+            iproviderRepository.save(provider);
+            return ResponseEntity.ok().body("Proveedor agregado con éxito");
+        } catch (DataIntegrityViolationException ex) {
+            return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
         }
     }
 
     @Transactional
     @Override
     public void updateProvider(Provider provider) {
-            iproviderRepository.save(provider);
+        iproviderRepository.save(provider);
     }
 
     @Transactional
@@ -127,6 +128,7 @@ public class ImpProviderService implements IProviderService {
         provider.setStatus(true);
         iproviderRepository.save(provider);
     }
+
     @Transactional
     @Override
     public void deactivateProvider(int id) {
@@ -138,10 +140,8 @@ public class ImpProviderService implements IProviderService {
     @Transactional
     @Override
     public void deleteProvider(int id) {
-            iproviderRepository.deleteById(id);
+        iproviderRepository.deleteById(id);
     }
 
 
-
-
-        }
+}

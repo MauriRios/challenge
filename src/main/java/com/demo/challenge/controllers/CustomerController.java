@@ -7,6 +7,7 @@ package com.demo.challenge.controllers;
 import com.demo.challenge.dtos.CustomerDTO;
 import com.demo.challenge.entities.Customer;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,15 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author mauri
  */
 
 @RestController
-@RequestMapping  ("cliente")
+@RequestMapping("cliente")
 @CrossOrigin(origins = "*")
 public class CustomerController {
-    
+
     private final ICustomerService icustomerService;
 
     public CustomerController(ICustomerService icustomerService) {
@@ -39,30 +39,30 @@ public class CustomerController {
     public List<CustomerDTO> getCustomers() {
         return icustomerService.getCustomers();
     }
-    
+
     @GetMapping("/traer/{id}")
     public Customer getCustomerById(@PathVariable int id) {
         return icustomerService.findCustomer(id);
     }
-    
+
     @GetMapping("/activos")
     public List<CustomerDTO> getActiveCustomers() {
-            return icustomerService.getCustomersByStatus(true);
+        return icustomerService.getCustomersByStatus(true);
     }
-    
+
     @PostMapping("/crear")
     public void createCustomer(@RequestBody Customer customer) {
-            icustomerService.updateCustomer(customer);
-        }
+        icustomerService.updateCustomer(customer);
+    }
 
     @DeleteMapping("/borrar/{id}")
     public void deleteCustomer(@PathVariable int id) {
-                icustomerService.deleteCustomer(id);
+        icustomerService.deleteCustomer(id);
     }
 
     @PutMapping("/editar/{id}")
-    public Customer editCustomer (@PathVariable("id") int id,
-                                        @RequestBody Customer customer){
+    public Customer editCustomer(@PathVariable("id") int id,
+                                 @RequestBody Customer customer) {
         customer.setId(id);
         icustomerService.updateCustomer(customer);
         return customer;
@@ -72,7 +72,7 @@ public class CustomerController {
     public void activateCustomer(@PathVariable int id) {
         icustomerService.activateCustomer(id);
     }
-    
+
     @PutMapping("/desactivo/{id}")
     public void deactivateCustomer(@PathVariable int id) {
         icustomerService.deactivateCustomer(id);

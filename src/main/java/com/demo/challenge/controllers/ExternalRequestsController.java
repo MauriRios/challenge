@@ -21,8 +21,8 @@ public class ExternalRequestsController {
     }
 
     @GetMapping("/products")
-    public List<ExternalProductsDTO> getExternalProducts(){
-    return externalProductService.getExternalProductsList();
+    public List<ExternalProductsDTO> getExternalProducts() {
+        return externalProductService.getExternalProductsList();
     }
 
 }

@@ -5,51 +5,51 @@
 package com.demo.challenge.entities;
 
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 /**
- *
  * @author mauri
  */
 
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name= "products")
+@Table(name = "products")
 public class Product {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @NotNull
     @Column(length = 45, nullable = false)
     private String name;
-    
+
     @NotNull
     @Column(length = 30, nullable = false)
     private String description;
-    
+
     @NotNull
     @Column(nullable = false)
     private Integer price;
-    
+
     @NotNull
     @Column(nullable = false)
     private Integer stock;
-    
+
     @NotNull
     @Column(nullable = false)
     private Boolean status = true;
-    
+
     @Column(nullable = true)
     private Integer quantity;
 

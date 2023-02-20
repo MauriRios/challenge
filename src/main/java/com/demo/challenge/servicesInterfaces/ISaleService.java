@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- *
  * @author mauri
  */
 
@@ -22,9 +21,10 @@ public interface ISaleService {
     public String createSale(SaleDTO saleDTO);
 
     public SaleDTO findSaleById(int id);
-    
+
     //querys
-     List<SaleDTO> findSaleByDate(LocalDate date);
-     List<SaleDTO> getSalesByProviderId(Integer providerId);
+    List<SaleDTO> findSaleByDate(LocalDate date);
+
+    List<SaleDTO> getSalesByProviderId(Integer providerId);
 
 }

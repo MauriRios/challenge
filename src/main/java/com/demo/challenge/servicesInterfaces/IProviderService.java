@@ -11,21 +11,27 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- *
  * @author mauri
  */
 
 public interface IProviderService {
-    
-    
+
+
     List<ProviderDTO> getProviders();
+
     List<ProviderDTO> getProvidersByStatus(boolean status);
+
     Provider findProvider(int id);
+
     void deleteProvider(int id);
+
     void updateProvider(Provider provider);
+
     ResponseEntity<String> createProvider(Provider provider);
+
     void activateProvider(int id);
+
     void deactivateProvider(int id);
 
-    
+
 }

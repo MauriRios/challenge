@@ -14,7 +14,7 @@ public class ExternalProductService {
         RestTemplate restTemplate = new RestTemplate();
         List<LinkedHashMap> result = restTemplate.getForObject(uri, ArrayList.class);
         List<ExternalProductsDTO> products = new ArrayList<>();
-        for (int i = 0;i<result.size();i++){
+        for (int i = 0; i < result.size(); i++) {
 
             var externalProductsList = new ExternalProductsDTO();
 

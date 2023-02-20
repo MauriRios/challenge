@@ -14,18 +14,18 @@ import lombok.*;
 
 
 /**
- *
  * @author mauri
  */
 
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table (name = "sales")
+@Table(name = "sales")
 public class Sale {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -41,9 +41,9 @@ public class Sale {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "sale_product",
-        joinColumns = @JoinColumn(name = "sale_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
+            name = "sale_product",
+            joinColumns = @JoinColumn(name = "sale_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -55,5 +55,4 @@ public class Sale {
     private Provider provider_id;
 
 
-    
 }
