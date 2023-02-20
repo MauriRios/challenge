@@ -7,13 +7,18 @@ package com.demo.challenge.services;
 
 import com.demo.challenge.dtos.CustomerDTO;
 import com.demo.challenge.entities.Customer;
+import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repositories.ICustomerRepository;
 import com.demo.challenge.servicesInterfaces.ICustomerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -69,31 +74,68 @@ public class ImpCustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public void updateCustomer(Customer customer) {
+    public ResponseEntity<String> createCustomer(Customer customer) {
+        try {
+            if (    customer.getName() == null ||
+                    customer.getLastName() == null ||
+                    customer.getAddress() == null ||
+                    customer.getPhone() == 0 ||
+                    customer.getPhone() == 0
+                    ) {
+                throw new RequestException("P-700","Validacion de Cliente falló, todos los campos son mandatorios");
+            }
+            customer.setStatus(true);
+            icustomerRepository.save(customer);
+            return ResponseEntity.ok().body("Cliente agregado con éxito");
+
+        } catch (DataIntegrityViolationException ex) {
+            throw new RequestException("P-702","El DNI/Telefono ingresado ya existe");
+        }
+    }
+
+    @Transactional
+    @Override
+    public String updateCustomer(Customer customer) {
         customer.setStatus(true);
         icustomerRepository.save(customer);
+
+        return "Cliente Esad con exíto";
     }
 
     @Transactional
     @Override
-    public void activateCustomer(int id) {
+    public String activateCustomer(int id) {
         Customer customer = icustomerRepository.findById(id).get();
         customer.setStatus(true);
-        icustomerRepository.save(customer);
+      icustomerRepository.save(customer);
+
+      return "Cliente Activado";
     }
 
     @Transactional
     @Override
-    public void deactivateCustomer(int id) {
-        Customer customer = icustomerRepository.findById(id).get();
-        customer.setStatus(false);
+    public String deactivateCustomer(int id) {
+        try {
+            Customer customer = icustomerRepository.findById(id).get();
+
+            customer.setStatus(false);
         icustomerRepository.save(customer);
+        return "Cliente desactivado";
+    } catch (NoSuchElementException e) {
+        throw new RequestException("P-405","Id del cliente no encontrado");
+        }
     }
 
     @Transactional
     @Override
-    public void deleteCustomer(int id) {
-        icustomerRepository.deleteById(id);
+    public String deleteCustomer(int id) {
+        try
+        {
+            icustomerRepository.deleteById(id);
+            return "Cliente borrado con exíto";
+        } catch (EmptyResultDataAccessException ex){
+            throw new RequestException("P-501", "ID del Cliente faltante o incorrecto");
+        }
     }
 
 

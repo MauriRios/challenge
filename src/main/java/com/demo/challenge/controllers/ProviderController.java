@@ -10,6 +10,7 @@ import com.demo.challenge.servicesInterfaces.IProviderService;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,8 +53,8 @@ public class ProviderController {
     }
 
     @PostMapping("/crear")
-    public void createProvider(@RequestBody Provider provider) {
-        iproviderService.createProvider(provider);
+    public ResponseEntity<String> createProvider(@RequestBody Provider provider) {
+        return iproviderService.createProvider(provider);
     }
 
     @PutMapping("/editar/{id}")
@@ -66,18 +67,20 @@ public class ProviderController {
 
 
     @PutMapping("/activar/{id}")
-    public void activateProvider(@PathVariable int id) {
-        iproviderService.activateProvider(id);
+    public String activateProvider(@PathVariable int id) {
+
+        return iproviderService.activateProvider(id);
     }
 
     @PutMapping("/desactivar/{id}")
-    public void deactivateProvider(@PathVariable int id) {
-        iproviderService.deactivateProvider(id);
+    public String deactivateProvider(@PathVariable int id) {
+
+        return iproviderService.deactivateProvider(id);
     }
 
     @DeleteMapping("/borrar/{id}")
-    public void deleteProvider(@PathVariable int id) {
-        iproviderService.deleteProvider(id);
+    public String deleteProvider(@PathVariable int id) {
+        return iproviderService.deleteProvider(id);
     }
 
 

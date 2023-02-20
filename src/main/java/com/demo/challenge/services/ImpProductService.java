@@ -75,7 +75,7 @@ public class ImpProductService implements IProductService {
     public String saveProduct(Product product) {
 
         try {
-            if (product.getName() == null ||
+            if (    product.getName() == null ||
                     product.getName() == null ||
                     product.getDescription() == null ||
                     product.getPrice() <= 0 ||
@@ -87,7 +87,7 @@ public class ImpProductService implements IProductService {
             return "Producto agregado con exíto";
 
         } catch (DataIntegrityViolationException ex) {
-            throw new RequestException("P-401", "ID del proveedor faltante o incorrecto");
+            throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
         }
     }
 
@@ -134,7 +134,7 @@ public class ImpProductService implements IProductService {
             iproductRepository.deleteById(id);
             return "Producto borrado con exito";
         } catch (EmptyResultDataAccessException ne) {
-            return "No se encontró el producto con id " + id;
+            throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
         }
     }
 

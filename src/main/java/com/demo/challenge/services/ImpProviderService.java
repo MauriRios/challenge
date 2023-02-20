@@ -8,6 +8,7 @@ package com.demo.challenge.services;
 import com.demo.challenge.dtos.ProductDTO;
 import com.demo.challenge.dtos.ProviderDTO;
 import com.demo.challenge.entities.Provider;
+import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repositories.IProductRepository;
 import com.demo.challenge.repositories.IProviderRepository;
 import com.demo.challenge.servicesInterfaces.IProviderService;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -105,42 +107,57 @@ public class ImpProviderService implements IProviderService {
                     provider.getCuit() == 0 ||
                     provider.getAddress() == null ||
                     provider.getPhone() == 0) {
-                throw new IllegalArgumentException("Validacion de proovedor falló, todos los campos son mandatorios");
+                throw new RequestException("P-600","Validacion de proovedor falló, todos los campos son mandatorios");
             }
             provider.setStatus(true);
             iproviderRepository.save(provider);
             return ResponseEntity.ok().body("Proveedor agregado con éxito");
-        } catch (DataIntegrityViolationException ex) {
-            return ResponseEntity.badRequest().body("El CUIT ingresado ya existe en la base de datos");
+
+            } catch (DataIntegrityViolationException ex) {
+            throw new RequestException("P-602","El CUIT/Telefono ingresado ya existe");
         }
     }
 
+
     @Transactional
     @Override
-    public void updateProvider(Provider provider) {
+    public String updateProvider(Provider provider) {
+
         iproviderRepository.save(provider);
+        return "Proveedor Editado exítosamente";
     }
 
     @Transactional
     @Override
-    public void activateProvider(int id) {
+    public String activateProvider(int id) {
         Provider provider = iproviderRepository.findById(id).get();
         provider.setStatus(true);
         iproviderRepository.save(provider);
+
+        return "Proveedor Activado exítosamente";
     }
 
     @Transactional
     @Override
-    public void deactivateProvider(int id) {
+    public String deactivateProvider(int id) {
         Provider provider = iproviderRepository.findById(id).get();
         provider.setStatus(false);
         iproviderRepository.save(provider);
+
+        return "Proveedor Desactivado exítosamente";
     }
 
     @Transactional
     @Override
-    public void deleteProvider(int id) {
-        iproviderRepository.deleteById(id);
+    public String deleteProvider(int id) {
+        try
+        {
+            iproviderRepository.deleteById(id);
+            return "Proveedor borrado con exíto";
+        } catch (EmptyResultDataAccessException ex){
+            throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
+        }
+
     }
 
 

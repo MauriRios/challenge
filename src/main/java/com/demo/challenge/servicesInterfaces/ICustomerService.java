@@ -6,7 +6,9 @@ package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.dtos.CustomerDTO;
 import com.demo.challenge.entities.Customer;
+import org.springframework.http.ResponseEntity;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -15,18 +17,20 @@ import java.util.List;
 
 public interface ICustomerService {
 
-    List<CustomerDTO> getCustomers();
+    public List<CustomerDTO> getCustomers();
 
-    List<CustomerDTO> getCustomersByStatus(boolean status);
+    public List<CustomerDTO> getCustomersByStatus(boolean status);
 
-    Customer findCustomer(int id);
+    public Customer findCustomer(int id);
 
-    void deleteCustomer(int id);
+    public String deleteCustomer(int id);
 
-    void updateCustomer(Customer customer);
+    ResponseEntity<String> createCustomer(Customer customer);
 
-    void activateCustomer(int id);
+    public String updateCustomer(Customer customer);
 
-    void deactivateCustomer(int id);
+    public String activateCustomer(int id);
+
+    public String deactivateCustomer(int id);
 
 }

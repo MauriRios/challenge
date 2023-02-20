@@ -58,12 +58,12 @@ public class ProductController {
         return product;
     }
 
-    @PutMapping("/activo/{id}")
+    @PutMapping("/activar/{id}")
     public void activateProduct(@PathVariable int id) {
         iproductService.activateProduct(id);
     }
 
-    @PutMapping("/desactivo/{id}")
+    @PutMapping("/desactivar/{id}")
     public void deactivateProduct(@PathVariable int id) {
         iproductService.deactivateProduct(id);
     }

@@ -10,6 +10,7 @@ import com.demo.challenge.servicesInterfaces.ICustomerService;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +52,15 @@ public class CustomerController {
     }
 
     @PostMapping("/crear")
-    public void createCustomer(@RequestBody Customer customer) {
-        icustomerService.updateCustomer(customer);
+    public ResponseEntity<String> createCustomer(@RequestBody Customer customer) {
+
+        return  icustomerService.createCustomer(customer);
     }
 
     @DeleteMapping("/borrar/{id}")
-    public void deleteCustomer(@PathVariable int id) {
-        icustomerService.deleteCustomer(id);
+    public String deleteCustomer(@PathVariable int id) {
+
+        return icustomerService.deleteCustomer(id);
     }
 
     @PutMapping("/editar/{id}")
@@ -68,13 +71,13 @@ public class CustomerController {
         return customer;
     }
 
-    @PutMapping("/activo/{id}")
-    public void activateCustomer(@PathVariable int id) {
-        icustomerService.activateCustomer(id);
+    @PutMapping("/activar/{id}")
+    public String activateCustomer(@PathVariable int id) {
+        return icustomerService.activateCustomer(id);
     }
 
-    @PutMapping("/desactivo/{id}")
-    public void deactivateCustomer(@PathVariable int id) {
-        icustomerService.deactivateCustomer(id);
+    @PutMapping("/desactivar/{id}")
+    public String deactivateCustomer(@PathVariable int id) {
+        return icustomerService.deactivateCustomer(id);
     }
 }
