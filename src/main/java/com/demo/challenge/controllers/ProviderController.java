@@ -43,13 +43,13 @@ public class ProviderController {
     }
 
     @GetMapping("/traer/{id}")
-    public Provider getProviderById(@PathVariable int id) {
-        return iproviderService.findProvider(id);
+    public ProviderDTO getProviderById(@PathVariable int id) {
+        return iproviderService.findProviderById(id);
     }
 
     @GetMapping("/activos")
     public List<ProviderDTO> getActiveProviders() {
-        return iproviderService.getProvidersByStatus(true);
+        return iproviderService.getActiveProviders(true);
     }
 
     @PostMapping("/crear")

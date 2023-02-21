@@ -135,7 +135,7 @@ public class ImpSaleService implements ISaleService {
 
         List<Sale> sales = isaleRepository.findSaleByDate(date);
         if (sales.isEmpty()){
-            throw new RequestException("P-805","No hay ventas realizadas el dia" + date);
+            throw new RequestException("P-805","No hay ventas realizadas el dia " + date);
         }
         List<SaleDTO> saleDTO = new ArrayList<>();
         for (var unit : sales) {

@@ -19,9 +19,9 @@ public interface IProviderService {
 
     List<ProviderDTO> getProviders();
 
-    List<ProviderDTO> getProvidersByStatus(boolean status);
+    List<ProviderDTO> getActiveProviders(boolean status);
 
-    Provider findProvider(int id);
+    ProviderDTO findProviderById(int id);
 
     String deleteProvider(int id);
 
