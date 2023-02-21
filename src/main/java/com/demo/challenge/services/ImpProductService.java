@@ -45,7 +45,7 @@ public class ImpProductService implements IProductService {
     public List<ProductDTO> getProducts() {
         var products = iproductRepository.findAll();
         if (products.isEmpty()){
-            throw new RequestException("P-403","No hay productos cargados");
+            throw new RequestException("P-405","No hay productos cargados");
         }
         List<ProductDTO> productDTO = new ArrayList<>();
         for (var unit : products) {
@@ -103,15 +103,11 @@ public class ImpProductService implements IProductService {
     public ProductDTO findProductById(int id) {
         try {
             Optional<Product> product = iproductRepository.findById(id);
-
             if (product.get().getId() != null){
                 ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-
                 productDTO.setProvideId(product.get().getProvider().getId());
-
                 return productDTO;
             }
-
         }catch (NoSuchElementException ex) {
             throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
         }
@@ -173,7 +169,7 @@ public class ImpProductService implements IProductService {
     public String deleteProduct(int id) {
         try {
             iproductRepository.deleteById(id);
-            return "Producto borrado con exito";
+            return "Producto borrado con exíto";
         } catch (EmptyResultDataAccessException ne) {
             throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
         }

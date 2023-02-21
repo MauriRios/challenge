@@ -42,6 +42,9 @@ public class ImpCustomerService implements ICustomerService {
     @Override
     public List<CustomerDTO> getCustomers() {
         var customer = icustomerRepository.findAll();
+        if (customer.isEmpty()){
+            throw new RequestException("P-705","No hay clientes cargados");
+        }
         List<CustomerDTO> customerDTO = new ArrayList<>();
         for (var unit : customer) {
             var custom = mapper.map(unit, CustomerDTO.class);
@@ -52,8 +55,11 @@ public class ImpCustomerService implements ICustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getCustomersByStatus(boolean status) {
+    public List<CustomerDTO> getActiveCustomers(boolean status) {
         var allCustomers = icustomerRepository.findAll();
+        if (allCustomers.isEmpty()){
+            throw new RequestException("P-703","No hay clientes activos");
+        }
         List<CustomerDTO> customerDTO = new ArrayList<>();
         for (var customer : allCustomers) {
             if (customer.getStatus() == true) {
@@ -66,10 +72,13 @@ public class ImpCustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer findCustomer(int id) {
-        Customer customer = icustomerRepository.findById(id).orElse(null);
-        return customer;
-
+    public Customer findCustomerById(int id) {
+        try {
+            Customer customer = icustomerRepository.findById(id).get();
+            return customer;
+        } catch (NoSuchElementException ex) {
+            throw new RequestException("P-701", "ID del Cliente faltante o incorrecto");
+        }
     }
 
     @Transactional
@@ -96,20 +105,37 @@ public class ImpCustomerService implements ICustomerService {
     @Transactional
     @Override
     public String updateCustomer(Customer customer) {
-        customer.setStatus(true);
-        icustomerRepository.save(customer);
+        try {
+            if (    customer.getName() == null ||
+                    customer.getLastName() == null ||
+                    customer.getAddress() == null ||
+                    customer.getPhone() == 0 ||
+                    customer.getPhone() == 0
+            ) {
+                throw new RequestException("P-700","Validacion de Cliente falló, todos los campos son mandatorios");
+            }
+            customer.setStatus(true);
+            icustomerRepository.save(customer);
+            return "Cliente agregado con éxito";
 
-        return "Cliente Esad con exíto";
+        } catch (DataIntegrityViolationException ex) {
+            throw new RequestException("P-702","El DNI/Telefono ingresado ya existe");
+        }
     }
 
     @Transactional
     @Override
     public String activateCustomer(int id) {
-        Customer customer = icustomerRepository.findById(id).get();
-        customer.setStatus(true);
-      icustomerRepository.save(customer);
-
-      return "Cliente Activado";
+        try {
+            Customer customer = icustomerRepository.findById(id).get();
+            if (customer.getId() != 0){
+                customer.setStatus(true);
+                icustomerRepository.save(customer);
+            }
+            return "Cliente ha sido activado exitosamente";
+        } catch (RuntimeException ex) {
+            throw new RequestException("P-701","ID del Cliente faltante o incorrecto");
+        }
     }
 
     @Transactional
@@ -117,12 +143,13 @@ public class ImpCustomerService implements ICustomerService {
     public String deactivateCustomer(int id) {
         try {
             Customer customer = icustomerRepository.findById(id).get();
-
-            customer.setStatus(false);
-        icustomerRepository.save(customer);
-        return "Cliente desactivado";
-    } catch (NoSuchElementException e) {
-        throw new RequestException("P-405","Id del cliente no encontrado");
+            if (customer.getId() != 0) {
+                customer.setStatus(false);
+                icustomerRepository.save(customer);
+            }
+            return "Cliente ha sido desactivado exitosamente";
+    } catch (RuntimeException ex) {
+        throw new RequestException("P-701","ID del Cliente faltante o incorrecto");
         }
     }
 
@@ -134,7 +161,7 @@ public class ImpCustomerService implements ICustomerService {
             icustomerRepository.deleteById(id);
             return "Cliente borrado con exíto";
         } catch (EmptyResultDataAccessException ex){
-            throw new RequestException("P-501", "ID del Cliente faltante o incorrecto");
+            throw new RequestException("P-701", "ID del Cliente faltante o incorrecto");
         }
     }
 

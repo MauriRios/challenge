@@ -42,13 +42,13 @@ public class CustomerController {
     }
 
     @GetMapping("/traer/{id}")
-    public Customer getCustomerById(@PathVariable int id) {
-        return icustomerService.findCustomer(id);
+    public Customer findCustomerById(@PathVariable int id) {
+        return icustomerService.findCustomerById(id);
     }
 
     @GetMapping("/activos")
     public List<CustomerDTO> getActiveCustomers() {
-        return icustomerService.getCustomersByStatus(true);
+        return icustomerService.getActiveCustomers(true);
     }
 
     @PostMapping("/crear")
