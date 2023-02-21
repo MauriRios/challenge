@@ -151,15 +151,19 @@ public class ImpProductService implements IProductService {
     //query
     @Override
     public List<LowProductProviderDTO> findProductsByLowStock(Integer stock) {
-        var products = iproductRepository.findProductsByLowStock(stock);
-        List<LowProductProviderDTO> productDTO = new ArrayList<>();
-        for (var unit : products) {
-            var product = mapper.map(unit, LowProductProviderDTO.class);
+            var products = iproductRepository.findProductsByLowStock(stock);
 
-            product.setProvider(mapper.map(unit.getProvider(), ProductProviderDTO.ProviderInfoDTO.class));
-            productDTO.add(product);
-        }
-        return productDTO;
+                if (products.isEmpty()) {
+                    throw new RequestException("P-402","No hay productos con stock por debajo de " +stock);
+                }
+                List<LowProductProviderDTO> productDTO = new ArrayList<>();
+                for (var unit : products) {
+                    var product = mapper.map(unit, LowProductProviderDTO.class);
+
+                    product.setProvider(mapper.map(unit.getProvider(), ProductProviderDTO.ProviderInfoDTO.class));
+                    productDTO.add(product);
+                }
+                return productDTO;
 
     }
 
