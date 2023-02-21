@@ -48,6 +48,9 @@ public class ImpSaleService implements ISaleService {
     @Override
     public List<SaleDTO> getSales() {
         var sales = isaleRepository.findAll();
+        if (sales.isEmpty()){
+            throw new RequestException("P-803","No hay ventas realizadas");
+        }
         List<SaleDTO> saleDTO = new ArrayList<>();
 
         for (var unit : sales) {
@@ -131,21 +134,23 @@ public class ImpSaleService implements ISaleService {
     public List<SaleDTO> findSaleByDate(LocalDate date) {
 
         List<Sale> sales = isaleRepository.findSaleByDate(date);
+        if (sales.isEmpty()){
+            throw new RequestException("P-805","No hay ventas realizadas el dia" + date);
+        }
         List<SaleDTO> saleDTO = new ArrayList<>();
         for (var unit : sales) {
             saleDTO.add(mapper.map(unit, SaleDTO.class));
         }
-        if (saleDTO.size() > 0) {
             return saleDTO;
-        } else {
-            return null;
-        }
     }
 
 
     @Override
     public List<SaleDTO> getSalesByProviderId(Integer providerId) {
         List<Sale> sales = isaleRepository.getSalesByProviderId(providerId);
+        if (sales.isEmpty()){
+            throw new RequestException("P-806","El proveedor no realizo ventas");
+        }
         List<SaleDTO> saleDTO = new ArrayList<>();
         for (var unit : sales) {
             saleDTO.add(mapper.map(unit, SaleDTO.class));
