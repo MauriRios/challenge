@@ -14,6 +14,7 @@ import com.demo.challenge.servicesInterfaces.IProductService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -94,12 +95,21 @@ public class ImpProductService implements IProductService {
 
     @Override
     public ProductDTO findProductById(int id) {
-        Optional<Product> product = iproductRepository.findById(id);
-        ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+        try {
+            Optional<Product> product = iproductRepository.findById(id);
 
-        productDTO.setProvideId(product.get().getProvider().getId());
+            if (product.get().getId() != null){
+                ProductDTO productDTO = mapper.map(product, ProductDTO.class);
 
-        return productDTO;
+                productDTO.setProvideId(product.get().getProvider().getId());
+
+                return productDTO;
+            }
+
+        }catch (NoSuchElementException ex) {
+            throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
+        }
+       return null;
     }
 
     @Transactional
