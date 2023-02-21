@@ -42,7 +42,7 @@ public class ProductController {
 
     @GetMapping("/activos")
     public List<ProductDTO> getActiveProducts() {
-        return iproductService.getProductsByStatus(true);
+        return iproductService.getActiveProducts(true);
     }
 
     @PostMapping("/crear")

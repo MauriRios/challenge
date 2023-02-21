@@ -18,7 +18,7 @@ public interface IProductService {
 
     List<ProductDTO> getProducts();
 
-    List<ProductDTO> getProductsByStatus(Boolean status);
+    List<ProductDTO> getActiveProducts(Boolean status);
 
     ProductDTO findProductById(int id);
 

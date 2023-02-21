@@ -44,6 +44,9 @@ public class ImpProductService implements IProductService {
     @Override
     public List<ProductDTO> getProducts() {
         var products = iproductRepository.findAll();
+        if (products.isEmpty()){
+            throw new RequestException("P-403","No hay productos cargados");
+        }
         List<ProductDTO> productDTO = new ArrayList<>();
         for (var unit : products) {
             var prod = mapper.map(unit, ProductDTO.class);
@@ -55,8 +58,11 @@ public class ImpProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> getProductsByStatus(Boolean status) {
+    public List<ProductDTO> getActiveProducts(Boolean status) {
         var allProducts = iproductRepository.findAll();
+        if (allProducts.isEmpty()){
+            throw new RequestException("P-403","No hay productos activos");
+        }
         List<ProductDTO> productDTO = new ArrayList<>();
         for (var product : allProducts) {
             if (product.getStatus() == true) {
