@@ -115,26 +115,51 @@ public class ImpProductService implements IProductService {
     @Transactional
     @Override
     public String updateProduct(Product product) {
-        iproductRepository.save(product);
-        return "Producto editado exítosamente";
+        try {
+            if (    product.getName() == null ||
+                    product.getName() == null ||
+                    product.getDescription() == null ||
+                    product.getPrice() <= 0 ||
+                    product.getStock() <= 0) {
+                throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
+            }
+            iproductRepository.save(product);
+            return "Producto agregado con exíto";
+
+        } catch (DataIntegrityViolationException ex) {
+            throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
+        }
     }
 
     @Transactional
     @Override
     public String activateProduct(int id) {
-        Product product = iproductRepository.findById(id).get();
-        product.setStatus(true);
-        iproductRepository.save(product);
-        return "El producto ha sido activado exitosamente";
+        try {
+            Product product = iproductRepository.findById(id).get();
+            if (product.getId() != 0) {
+                product.setStatus(true);
+                iproductRepository.save(product);
+            }
+            return "El producto ha sido activado exitosamente";
+
+        }catch (RuntimeException ex) {
+            throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
+        }
     }
 
     @Transactional
     @Override
     public String deactivateProduct(int id) {
-        Product product = iproductRepository.findById(id).get();
-        product.setStatus(false);
-        iproductRepository.save(product);
-        return "El producto ha sido desactivado exitosamente";
+        try {
+            Product product = iproductRepository.findById(id).get();
+            if (product.getId() != 0) {
+                product.setStatus(false);
+                iproductRepository.save(product);
+            }
+            return "El producto ha sido desactivado exitosamente";
+        } catch (RuntimeException ex) {
+            throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
+        }
     }
 
     @Transactional
