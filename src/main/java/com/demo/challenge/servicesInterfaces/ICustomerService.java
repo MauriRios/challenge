@@ -21,7 +21,7 @@ public interface ICustomerService {
 
     public List<CustomerDTO> getActiveCustomers(boolean status);
 
-    public Customer findCustomerById(int id);
+    public CustomerDTO findCustomerById(int id);
 
     public String deleteCustomer(int id);
 

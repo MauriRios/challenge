@@ -42,7 +42,8 @@ public class CustomerController {
     }
 
     @GetMapping("/traer/{id}")
-    public Customer findCustomerById(@PathVariable int id) {
+    public CustomerDTO findCustomerById(@PathVariable int id) {
+
         return icustomerService.findCustomerById(id);
     }
 

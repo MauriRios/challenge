@@ -47,6 +47,7 @@ public class SaleController {
 
     @GetMapping("/traer/{id}")
     public SaleDTO getSaleById(@PathVariable int id) {
+
         return isaleService.findSaleById(id);
     }
 

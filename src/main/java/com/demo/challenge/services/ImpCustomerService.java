@@ -72,13 +72,19 @@ public class ImpCustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer findCustomerById(int id) {
+    public CustomerDTO findCustomerById(int id) {
         try {
             Customer customer = icustomerRepository.findById(id).get();
-            return customer;
+            if (customer.getId() != 0){
+
+                CustomerDTO customerDTO = (mapper.map(customer, CustomerDTO.class));
+                return customerDTO;
+            }
+
         } catch (NoSuchElementException ex) {
             throw new RequestException("P-701", "ID del Cliente faltante o incorrecto");
         }
+        return null;
     }
 
     @Transactional
