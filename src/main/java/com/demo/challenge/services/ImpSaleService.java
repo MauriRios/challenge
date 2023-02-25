@@ -4,98 +4,159 @@
  */
 package com.demo.challenge.services;
 
-import com.demo.challenge.dto.SaleDTO;
-import com.demo.challenge.entitys.Customer;
-import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
-import com.demo.challenge.entitys.Sale;
-import com.demo.challenge.repository.IProductRepository;
-import com.demo.challenge.repository.ISaleRepository;
-import com.demo.challenge.servicesInterfaces.ICustomerService;
-import com.demo.challenge.servicesInterfaces.IProviderService;
+import com.demo.challenge.dtos.*;
+import com.demo.challenge.entities.Product;
+import com.demo.challenge.entities.Sale;
+import com.demo.challenge.exceptions.RequestException;
+import com.demo.challenge.repositories.ICustomerRepository;
+import com.demo.challenge.repositories.IProductRepository;
+import com.demo.challenge.repositories.IProviderRepository;
+import com.demo.challenge.repositories.ISaleRepository;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
- *
  * @author mauri
  */
 
 @Service
 public class ImpSaleService implements ISaleService {
-    
-            @Autowired
-            private ISaleRepository isaleRepository;
-
-            @Autowired
-            private ICustomerService icustomerService;
-
-            @Autowired
-            private IProductRepository iproductRepository;
-
-            @Autowired
-            private IProviderService iproviderService;
-
-            @Override
-            public List<Sale> getSales() {
-                List<Sale> sale = isaleRepository.findAll();
-                return sale;
-            }
-
-             @Override
-             public void saveSale(Sale sale, int customerId, Integer providerId) {
-                LocalDate today = LocalDate.now();
-                List<Product> productList = new ArrayList<>();
-                double total = 0.0;
 
 
-                    for (var unit : sale.getProducts()) {
-                        var product = iproductRepository.findById(unit.getId()).get();
-                        var quantity = product.getStock() - unit.getQuantity();
-                        total += unit.getQuantity() * unit.getPrice();
-                        product.setStock(quantity);
-                        productList.add(product);
-                    }
+    private final ISaleRepository isaleRepository;
+    private final IProviderRepository iproviderRepository;
+    private final ICustomerRepository icustomerRepository;
+    private final IProductRepository iproductRepository;
 
-                    sale.setDate(today);
-                    sale.setProducts(productList);
-                    sale.setTotal(total);
+    public ImpSaleService(ISaleRepository isaleRepository, IProviderRepository iproviderRepository, ICustomerRepository icustomerRepository, IProductRepository iproductRepository) {
+        this.isaleRepository = isaleRepository;
+        this.iproviderRepository = iproviderRepository;
+        this.icustomerRepository = icustomerRepository;
+        this.iproductRepository = iproductRepository;
+    }
 
-                    Customer customer = icustomerService.findCustomer(customerId);
-                    sale.setCustomer(customer);
+    ModelMapper mapper = new ModelMapper();
 
-                    // al relacionar el id del provider con la venta, me tira stackoverflow en las
-                    // consultas get de cliente, sale, provider
-                    //Provider provider = iproviderService.findProvider(providerId);
-                   // sale.setProvider(provider);
-                    isaleRepository.save(sale);
+    @Override
+    public List<SaleDTO> getSales() {
+        var sales = isaleRepository.findAll();
+        if (sales.isEmpty()){
+            throw new RequestException("P-803","No hay ventas realizadas");
+        }
+        List<SaleDTO> saleDTO = new ArrayList<>();
 
-             }
+        for (var unit : sales) {
+            var purchases = mapper.map(unit, SaleDTO.class);
+            purchases.setCustomerId(unit.getCustomer().getId());
+            purchases.setProviderId(unit.getProvider_id().getId());
+            purchases.setTotalPrice(unit.getTotalPrice());
+            saleDTO.add(purchases);
+        }
 
-            @Override
-            public void deleteSale(int id) {
-                isaleRepository.deleteById(id);
+        return saleDTO;
+    }
 
-            }
+    @Transactional
+    @Override
+    public String createSale(SaleDTO saleDTO) {
 
-            @Override
-            public Sale findSale(int id) {
-               Sale sale = isaleRepository.findById(id).orElse(null);
-                return sale;
+        try {
 
-               }
+            var customer = icustomerRepository.findById(saleDTO.getCustomerId()).get();
+            var provider = iproviderRepository.findById(saleDTO.getProviderId()).get();
+            LocalDate today = LocalDate.now();
+            List<Product> products = new ArrayList<>();
 
-                //querys 
+            int totalQuantity = 0;
+            BigDecimal totalPrice = new BigDecimal("0.0");
 
-                public List<Sale> findByDate(LocalDate date) {
-                return isaleRepository.findByDate(date);
+            for (var unit : saleDTO.getProducts()) {
+                var product = iproductRepository.findById(unit.getId()).get();
+
+                if (product.getStock() >= unit.getQuantity()) {
+                    var result = product.getStock() - unit.getQuantity();
+
+                    product.setStock(result);
+                    totalQuantity += unit.getQuantity();
+                    totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
+
+                    product.setQuantity(unit.getQuantity());
+                    products.add(mapper.map(unit, Product.class));
+
+                } else {
+                    return "Producto sin Stock, vuelva mas tarde";
                 }
+                iproductRepository.save(product);
+            }
+
+            saleDTO.setDate(today);
+            saleDTO.setTotalPrice(totalPrice);
+            var sale = mapper.map(saleDTO, Sale.class);
+            sale.setCustomer(customer);
+            sale.setProvider_id(provider);
+            sale.setProducts(products);
+            sale.setTotalPrice(totalPrice);
+            sale.setQuantity(totalQuantity);
+            isaleRepository.save(sale);
+            return "Compra realizada con Exíto";
+
+        } catch (RuntimeException ex) {
+            throw new RequestException("P-804","Compra no realizada, Algo salió mal, datos de la compra o producto faltante");
+        }
+    }
+
+    @Override
+    public SaleDTO findSaleById(int id) {
+        try {
+            Optional<Sale> sale = isaleRepository.findById(id);
+            if (sale.get().getId() != 0) {
+                SaleDTO saleDTO = (mapper.map(sale, SaleDTO.class));
+                return saleDTO;
+            }
+        }catch (NoSuchElementException ex) {
+            throw new RequestException("P-801", "Id de la compra no encontrado");
+        }
+
+        return null;
+    }
+
+    //querys
+
+    @Override
+    public List<SaleDTO> findSaleByDate(LocalDate date) {
+
+        List<Sale> sales = isaleRepository.findSaleByDate(date);
+        if (sales.isEmpty()){
+            throw new RequestException("P-805","No hay ventas realizadas el dia " + date);
+        }
+        List<SaleDTO> saleDTO = new ArrayList<>();
+        for (var unit : sales) {
+            saleDTO.add(mapper.map(unit, SaleDTO.class));
+        }
+            return saleDTO;
+    }
 
 
-    
+    @Override
+    public List<SaleDTO> getSalesByProviderId(Integer providerId) {
+        List<Sale> sales = isaleRepository.getSalesByProviderId(providerId);
+        if (sales.isEmpty()){
+            throw new RequestException("P-806","El proveedor no realizo ventas");
+        }
+        List<SaleDTO> saleDTO = new ArrayList<>();
+        for (var unit : sales) {
+            saleDTO.add(mapper.map(unit, SaleDTO.class));
+        }
+        return saleDTO;
+    }
+
+
 }

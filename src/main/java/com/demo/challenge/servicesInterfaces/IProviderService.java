@@ -4,30 +4,34 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.dto.SaleDTO;
-import com.demo.challenge.entitys.Product;
-import com.demo.challenge.entitys.Provider;
+import com.demo.challenge.dtos.ProviderDTO;
+import com.demo.challenge.entities.Provider;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 /**
- *
  * @author mauri
  */
 
 public interface IProviderService {
-    
-    
-    List<Provider> getProviders();
-    List<Provider> getProvidersByStatus(boolean status);
-    Provider findProvider(int id);
-    void deleteProvider(int id);
-    void updateProvider(Provider provider);
-    ResponseEntity<String> createProvider(Provider provider);
-    void activateProvider(int id);
-    void deactivateProvider(int id);
 
-    List<SaleDTO> findSaleByProvider(int providerId);
-    
+
+    List<ProviderDTO> getProviders();
+
+    List<ProviderDTO> getActiveProviders(boolean status);
+
+    ProviderDTO findProviderById(int id);
+
+    String deleteProvider(int id);
+
+    String updateProvider(Provider provider);
+
+    ResponseEntity<String> createProvider(Provider provider);
+
+    String activateProvider(int id);
+
+    String deactivateProvider(int id);
+
+
 }

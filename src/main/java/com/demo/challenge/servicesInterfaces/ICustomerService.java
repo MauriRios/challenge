@@ -4,22 +4,33 @@
  */
 package com.demo.challenge.servicesInterfaces;
 
-import com.demo.challenge.entitys.Customer;
+import com.demo.challenge.dtos.CustomerDTO;
+import com.demo.challenge.entities.Customer;
+import org.springframework.http.ResponseEntity;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- *
  * @author mauri
  */
 
 public interface ICustomerService {
-    
-    List<Customer> getCustomers();
-    List<Customer> getCustomersByStatus(boolean status);
-    Customer findCustomer(int id);
-    void deleteCustomer(int id);
-    void updateCustomer(Customer customer);
-    void activateCustomer(int id);
-    void deactivateCustomer(int id);
-    
+
+    public List<CustomerDTO> getCustomers();
+
+    public List<CustomerDTO> getActiveCustomers(boolean status);
+
+    public Customer findCustomerById(int id);
+
+    public String deleteCustomer(int id);
+
+    ResponseEntity<String> createCustomer(Customer customer);
+
+    public String updateCustomer(Customer customer);
+
+    public String activateCustomer(int id);
+
+    public String deactivateCustomer(int id);
+
 }
