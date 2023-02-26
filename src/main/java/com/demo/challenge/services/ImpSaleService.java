@@ -84,16 +84,17 @@ public class ImpSaleService implements ISaleService {
                 if (product.getStock() >= unit.getQuantity()) {
                     var result = product.getStock() - unit.getQuantity();
 
-                    product.setStock(result);
-                    totalQuantity += unit.getQuantity();
-                    totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
+                        product.setStock(result);
+                        totalQuantity += unit.getQuantity();
+                        totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
 
-                    products.add(mapper.map(unit, Product.class));
-
+                        products.add(mapper.map(unit, Product.class));
                 } else {
                     return "Producto sin Stock, vuelva mas tarde";
                 }
+
                 iproductRepository.save(product);
+
             }
 
             saleDTO.setDate(today);
