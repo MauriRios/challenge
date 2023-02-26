@@ -7,6 +7,7 @@ package com.demo.challenge.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,7 +41,7 @@ public class Product {
 
     @NotNull
     @Column(nullable = false)
-    private Integer price;
+    private BigDecimal price;
 
     @NotNull
     @Column(nullable = false)
@@ -49,9 +50,6 @@ public class Product {
     @NotNull
     @Column(nullable = false)
     private Boolean status = true;
-
-    @Column(nullable = true)
-    private Integer quantity;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

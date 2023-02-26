@@ -6,19 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-
+import java.time.LocalDate;
+import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductSaleDTO {
+public class CustomerSaleDTO {
 
     private Integer id;
-    private String productName;
-    private String description;
-    private BigDecimal price;
+    private Integer providerId;
+    private Integer customerId;
+    private LocalDate date;
     private Integer quantity;
-
+    private BigDecimal totalPrice;
+    private List<ProductCustomerDTO> products;
 }
-
-

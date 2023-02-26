@@ -17,6 +17,6 @@ public class CustomerDTO {
     private Integer dni;
     private Integer phone;
     private String address;
-    private List<SaleDTO> purchases;
+    private List<CustomerSaleDTO> purchases;
 
 }

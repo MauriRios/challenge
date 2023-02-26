@@ -88,7 +88,6 @@ public class ImpSaleService implements ISaleService {
                     totalQuantity += unit.getQuantity();
                     totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
 
-                    product.setQuantity(unit.getQuantity());
                     products.add(mapper.map(unit, Product.class));
 
                 } else {

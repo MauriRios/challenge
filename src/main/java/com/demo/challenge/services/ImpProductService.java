@@ -12,6 +12,7 @@ import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repositories.IProductRepository;
 import com.demo.challenge.servicesInterfaces.IProductService;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -85,8 +86,8 @@ public class ImpProductService implements IProductService {
             if (    product.getName() == null ||
                     product.getName() == null ||
                     product.getDescription() == null ||
-                    product.getPrice() <= 0 ||
-                    product.getStock() <= 0) {
+                    product.getStock() <= 0 ||
+                    product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
             }
 
@@ -121,8 +122,8 @@ public class ImpProductService implements IProductService {
             if (    product.getName() == null ||
                     product.getName() == null ||
                     product.getDescription() == null ||
-                    product.getPrice() <= 0 ||
-                    product.getStock() <= 0) {
+                    product.getStock() <= 0 ||
+                    product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
             }
             iproductRepository.save(product);

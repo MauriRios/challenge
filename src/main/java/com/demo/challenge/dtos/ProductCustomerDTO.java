@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductSaleDTO {
+public class ProductCustomerDTO {
 
     private Integer id;
     private String productName;
@@ -20,5 +20,3 @@ public class ProductSaleDTO {
     private Integer quantity;
 
 }
-
-
