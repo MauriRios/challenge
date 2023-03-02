@@ -46,7 +46,7 @@ public class Provider {
     private Integer phone;
 
     @NotNull
-    @Column(length = 11, nullable = false)
+    @Column(length = 30, nullable = false)
     private String address;
 
     @NotNull
