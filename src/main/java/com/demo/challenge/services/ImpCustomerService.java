@@ -94,7 +94,6 @@ public class ImpCustomerService implements ICustomerService {
             if (    customer.getName() == null ||
                     customer.getLastName() == null ||
                     customer.getAddress() == null ||
-                    customer.getPhone() == 0 ||
                     customer.getPhone() == 0
                     ) {
                 throw new RequestException("P-700","Validacion de Cliente falló, todos los campos son mandatorios");
