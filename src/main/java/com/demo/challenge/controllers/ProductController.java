@@ -46,8 +46,9 @@ public class ProductController {
     }
 
     @PostMapping("/crear")
-    public String createProduct(@RequestBody Product product) {
-        return iproductService.saveProduct(product);
+    public Product createProduct(@RequestBody Product product) {
+        iproductService.saveProduct(product);
+        return product;
     }
 
 

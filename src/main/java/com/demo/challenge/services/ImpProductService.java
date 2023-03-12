@@ -83,8 +83,9 @@ public class ImpProductService implements IProductService {
     public String saveProduct(Product product) {
 
         try {
+
+
             if (    product.getName() == null ||
-                    product.getName() == null ||
                     product.getDescription() == null ||
                     product.getStock() <= 0 ||
                     product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
