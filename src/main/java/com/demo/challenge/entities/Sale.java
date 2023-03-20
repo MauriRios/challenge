@@ -28,6 +28,7 @@ public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JoinColumn(name = "sale_id")
     private int id;
     @NotNull
     @Column(nullable = false)

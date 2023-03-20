@@ -5,6 +5,8 @@
 package com.demo.challenge.controllers;
 
 import com.demo.challenge.dtos.SaleDTO;
+import com.demo.challenge.entities.OrderDetail;
+import com.demo.challenge.servicesInterfaces.IOrderDetailService;
 import com.demo.challenge.servicesInterfaces.IProviderService;
 import com.demo.challenge.servicesInterfaces.ISaleService;
 

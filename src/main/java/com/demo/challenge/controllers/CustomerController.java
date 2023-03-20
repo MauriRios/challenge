@@ -33,11 +33,13 @@ public class CustomerController {
     private final ICustomerService icustomerService;
 
     public CustomerController(ICustomerService icustomerService) {
+
         this.icustomerService = icustomerService;
     }
 
     @GetMapping("/traer")
     public List<CustomerDTO> getCustomers() {
+
         return icustomerService.getCustomers();
     }
 
@@ -49,6 +51,7 @@ public class CustomerController {
 
     @GetMapping("/activos")
     public List<CustomerDTO> getActiveCustomers() {
+
         return icustomerService.getActiveCustomers(true);
     }
 
