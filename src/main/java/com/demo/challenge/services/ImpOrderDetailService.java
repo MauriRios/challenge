@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ImpOrderDetailService implements IOrderDetailService {
@@ -24,6 +25,37 @@ public class ImpOrderDetailService implements IOrderDetailService {
         this.iorderDetailRepository = iorderDetailRepository;
     }
     ModelMapper mapper = new ModelMapper();
+
+    @Override
+    public List<OrderDetailDTO> getOrderDetails() {
+        List<OrderDetail> orderDetails = iorderDetailRepository.findAll();
+
+        if (orderDetails.isEmpty()){
+            throw new RequestException("P-906","No se encontraron detalles de ventas con el ID seleccionado");
+        }
+
+        List<OrderDetailDTO> orderDetailDTOs = new ArrayList<>();
+
+        for (var sale : orderDetails.stream().map(OrderDetail::getSale).distinct().collect(Collectors.toList())) {
+            SaleOrderDTO saleDTO = mapper.map(sale, SaleOrderDTO.class);
+            List<OrderProductDTO> orderProductDTOs = new ArrayList<>();
+
+            for (var unit : orderDetails.stream().filter(detail -> detail.getSale().equals(sale)).collect(Collectors.toList())) {
+                Product product = unit.getProduct();
+                var unitQuantity = unit.getQuantity();
+                OrderProductDTO orderProductDTO = mapper.map(product, OrderProductDTO.class);
+                orderProductDTO.setQuantity(unitQuantity);
+                orderProductDTOs.add(orderProductDTO);
+            }
+
+            OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+            orderDetailDTO.setSale(saleDTO);
+            orderDetailDTO.setProduct(orderProductDTOs);
+            orderDetailDTOs.add(orderDetailDTO);
+        }
+
+        return orderDetailDTOs;
+    }
 
     @Override
     public OrderDetailDTO getSalesBySaleId(Integer saleId) {
