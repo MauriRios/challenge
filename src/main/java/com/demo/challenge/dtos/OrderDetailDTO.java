@@ -1,7 +1,5 @@
 package com.demo.challenge.dtos;
 
-import com.demo.challenge.entities.Product;
-import com.demo.challenge.entities.Sale;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetailDTO {
-    private Integer id;
-    private Sale sale;
+    private SaleOrderDTO sale;
     private List<OrderProductDTO> product;
-    private int quantity;
+
 }

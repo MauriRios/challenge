@@ -7,14 +7,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleDTO {
+public class SaleOrderDTO {
 
     private Integer id;
     private Integer providerId;
@@ -22,8 +21,5 @@ public class SaleDTO {
     private LocalDate date;
     private Integer quantity;
     private BigDecimal totalPrice;
-    private List<ProductSaleDTO> products;
+
 }
-
-
-

@@ -3,7 +3,10 @@ package com.demo.challenge.services;
 import com.demo.challenge.dtos.OrderDetailDTO;
 import com.demo.challenge.dtos.OrderProductDTO;
 import com.demo.challenge.dtos.SaleDTO;
+import com.demo.challenge.dtos.SaleOrderDTO;
 import com.demo.challenge.entities.OrderDetail;
+import com.demo.challenge.entities.Product;
+import com.demo.challenge.entities.Sale;
 import com.demo.challenge.exceptions.RequestException;
 import com.demo.challenge.repositories.IOrderDetailRepository;
 import com.demo.challenge.servicesInterfaces.IOrderDetailService;
@@ -30,15 +33,28 @@ public class ImpOrderDetailService implements IOrderDetailService {
             throw new RequestException("P-906","No se encontraron detalles de ventas con el ID seleccionado");
         }
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+
         List<OrderProductDTO> orderProductDTO = new ArrayList<>();
+        SaleOrderDTO saleDTO = new SaleOrderDTO();
 
-        for (var unit : orderDetail) {
+            for (var saleUnit : orderDetail) {
 
-            OrderDetail orderDetails = new OrderDetail();
+                Sale sale = saleUnit.getSale();
+                saleDTO = mapper.map(sale, SaleOrderDTO.class);
+            }
+            for (var unit : orderDetail) {
 
-            SaleDTO saleDTO = (mapper.map(orderDetails, SaleDTO.class));
+                Product product = unit.getProduct();
+                var unitQuantity = unit.getQuantity();
+                OrderProductDTO orderProduct = mapper.map(product, OrderProductDTO.class);
+                orderProduct.setQuantity(unitQuantity);
+                orderProductDTO.add(orderProduct);
 
-        }
+            }
+
+
+        orderDetailDTO.setSale(saleDTO);
+        orderDetailDTO.setProduct(orderProductDTO);
 
         return orderDetailDTO;
     }

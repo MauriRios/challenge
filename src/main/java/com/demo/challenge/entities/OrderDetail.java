@@ -1,9 +1,11 @@
 package com.demo.challenge.entities;
 
+import com.demo.challenge.dtos.SaleDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
