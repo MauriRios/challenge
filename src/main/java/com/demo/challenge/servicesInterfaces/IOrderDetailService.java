@@ -9,4 +9,6 @@ import java.util.List;
 public interface IOrderDetailService {
 
     public OrderDetailDTO getSalesBySaleId(Integer saleId);
+
+    public List<OrderDetailDTO> getOrderDetails();
 }

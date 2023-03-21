@@ -27,4 +27,9 @@ public class OrderDetailController {
         return iorderDetailService.getSalesBySaleId(saleId);
 
     }
+    @GetMapping("/ordenes")
+    public List<OrderDetailDTO> getOrderDetails() {
+        return iorderDetailService.getOrderDetails();
+
+    }
 }
