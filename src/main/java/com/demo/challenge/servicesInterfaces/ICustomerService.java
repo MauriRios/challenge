@@ -23,14 +23,14 @@ public interface ICustomerService {
 
     public CustomerDTO findCustomerById(int id);
 
-    public String deleteCustomer(int id);
+    public ResponseEntity<String> deleteCustomer(int id);
 
-    ResponseEntity<String> createCustomer(Customer customer);
+    public ResponseEntity<String> createCustomer(Customer customer);
 
-    public String updateCustomer(Customer customer);
+    public ResponseEntity<String> updateCustomer(Customer customer);
 
-    public String activateCustomer(int id);
+    public ResponseEntity<String> activateCustomer(int id);
 
-    public String deactivateCustomer(int id);
+    public ResponseEntity<String> deactivateCustomer(int id);
 
 }

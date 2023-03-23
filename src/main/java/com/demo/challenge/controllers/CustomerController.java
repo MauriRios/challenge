@@ -57,31 +57,28 @@ public class CustomerController {
 
     @PostMapping("/crear")
     public ResponseEntity<String> createCustomer(@RequestBody Customer customer) {
-
-        return  icustomerService.createCustomer(customer);
+        return icustomerService.createCustomer(customer);
     }
 
     @DeleteMapping("/borrar/{id}")
-    public String deleteCustomer(@PathVariable int id) {
-
+    public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
         return icustomerService.deleteCustomer(id);
     }
 
     @PutMapping("/editar/{id}")
-    public Customer editCustomer(@PathVariable("id") int id,
-                                 @RequestBody Customer customer) {
+    public ResponseEntity<String> editCustomer(@PathVariable("id") int id,
+                                               @RequestBody Customer customer) {
         customer.setId(id);
-        icustomerService.updateCustomer(customer);
-        return customer;
+        return icustomerService.updateCustomer(customer);
     }
 
     @PutMapping("/activar/{id}")
-    public String activateCustomer(@PathVariable int id) {
+    public ResponseEntity<String> activateCustomer(@PathVariable int id) {
         return icustomerService.activateCustomer(id);
     }
 
     @PutMapping("/desactivar/{id}")
-    public String deactivateCustomer(@PathVariable int id) {
+    public ResponseEntity<String> deactivateCustomer(@PathVariable int id) {
         return icustomerService.deactivateCustomer(id);
     }
 }

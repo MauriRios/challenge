@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,6 +44,8 @@ public class ImpProductService implements IProductService {
     }
 
     ModelMapper mapper = new ModelMapper();
+
+    JSONObject response = new JSONObject();
 
     @Override
     public List<ProductDTO> getProducts() {
@@ -80,21 +85,17 @@ public class ImpProductService implements IProductService {
 
     @Transactional
     @Override
-    public String saveProduct(Product product) {
-
+    public ResponseEntity<String> saveProduct(Product product) {
         try {
-
-
             if (    product.getName() == null ||
                     product.getDescription() == null ||
                     product.getStock() <= 0 ||
                     product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
                 throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
             }
-
             iproductRepository.save(product);
-            return "Producto agregado con exíto";
-
+            response.put("message", "Producto agregado con exíto");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
         }
@@ -118,7 +119,7 @@ public class ImpProductService implements IProductService {
 
     @Transactional
     @Override
-    public String updateProduct(Product product) {
+    public ResponseEntity<String> updateProduct(Product product) {
         try {
             if (    product.getName() == null ||
                     product.getName() == null ||
@@ -128,7 +129,8 @@ public class ImpProductService implements IProductService {
                 throw new RequestException("P-400", "Validacion de producto falló, todos los campos son requeridos");
             }
             iproductRepository.save(product);
-            return "Producto agregado con exíto";
+            response.put("message", "Producto editado con exíto");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
         } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
@@ -137,14 +139,15 @@ public class ImpProductService implements IProductService {
 
     @Transactional
     @Override
-    public String activateProduct(int id) {
+    public ResponseEntity<String> activateProduct(int id) {
         try {
             Product product = iproductRepository.findById(id).get();
             if (product.getId() != 0) {
                 product.setStatus(true);
                 iproductRepository.save(product);
             }
-            return "El producto ha sido activado exitosamente";
+            response.put("message", "El producto ha sido activado exitosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
         }catch (RuntimeException ex) {
             throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
@@ -153,14 +156,15 @@ public class ImpProductService implements IProductService {
 
     @Transactional
     @Override
-    public String deactivateProduct(int id) {
+    public ResponseEntity<String> deactivateProduct(int id) {
         try {
             Product product = iproductRepository.findById(id).get();
             if (product.getId() != 0) {
                 product.setStatus(false);
                 iproductRepository.save(product);
             }
-            return "El producto ha sido desactivado exitosamente";
+            response.put("message", "El producto ha sido desactivado exitosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (RuntimeException ex) {
             throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
         }
@@ -168,10 +172,11 @@ public class ImpProductService implements IProductService {
 
     @Transactional
     @Override
-    public String deleteProduct(int id) {
+    public ResponseEntity<String> deleteProduct(int id) {
         try {
             iproductRepository.deleteById(id);
-            return "Producto borrado con exíto";
+            response.put("message", "Producto borrado con exíto");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (EmptyResultDataAccessException ne) {
             throw new RequestException("P-401", "ID del Producto faltante o incorrecto");
         }

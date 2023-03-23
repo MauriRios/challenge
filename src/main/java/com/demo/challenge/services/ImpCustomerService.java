@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,8 @@ public class ImpCustomerService implements ICustomerService {
     }
 
     ModelMapper mapper = new ModelMapper();
+    JSONObject response = new JSONObject();
+
 
     @Override
     public List<CustomerDTO> getCustomers() {
@@ -100,7 +104,9 @@ public class ImpCustomerService implements ICustomerService {
             }
             customer.setStatus(true);
             icustomerRepository.save(customer);
-            return ResponseEntity.ok().body("Cliente agregado con éxito");
+
+            response.put("message", "Cliente agregado con éxito");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
         } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-702","El DNI/Telefono ingresado ya existe");
@@ -109,35 +115,40 @@ public class ImpCustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public String updateCustomer(Customer customer) {
+    public ResponseEntity<String> updateCustomer(Customer customer) {
         try {
             if (    customer.getName() == null ||
                     customer.getLastName() == null ||
                     customer.getAddress() == null ||
-                    customer.getPhone() == 0 ||
                     customer.getPhone() == 0
             ) {
-                throw new RequestException("P-700","Validacion de Cliente falló, todos los campos son mandatorios");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new RequestException("P-700","Validacion de Cliente falló, todos los campos son mandatorios").toString());
             }
             customer.setStatus(true);
             icustomerRepository.save(customer);
-            return "Cliente agregado con éxito";
+            response.put("message", "Cliente editado con éxito");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
         } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-702","El DNI/Telefono ingresado ya existe");
+        } catch (RequestException ex) {
+            response.put("error", ex.getMessage());
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @Transactional
     @Override
-    public String activateCustomer(int id) {
+    public ResponseEntity<String> activateCustomer(int id) {
         try {
             Customer customer = icustomerRepository.findById(id).get();
             if (customer.getId() != 0){
                 customer.setStatus(true);
                 icustomerRepository.save(customer);
             }
-            return "Cliente ha sido activado exitosamente";
+            response.put("message", "Cliente ha sido activado exitosamente");
+            return ResponseEntity.ok(response.toString());
         } catch (RuntimeException ex) {
             throw new RequestException("P-701","ID del Cliente faltante o incorrecto");
         }
@@ -145,26 +156,28 @@ public class ImpCustomerService implements ICustomerService {
 
     @Transactional
     @Override
-    public String deactivateCustomer(int id) {
+    public ResponseEntity<String> deactivateCustomer(int id) {
         try {
             Customer customer = icustomerRepository.findById(id).get();
             if (customer.getId() != 0) {
                 customer.setStatus(false);
                 icustomerRepository.save(customer);
             }
-            return "Cliente ha sido desactivado exitosamente";
-    } catch (RuntimeException ex) {
-        throw new RequestException("P-701","ID del Cliente faltante o incorrecto");
+            response.put("message", "Cliente ha sido desactivado exitosamente");
+            return ResponseEntity.ok(response.toString());
+        } catch (RuntimeException ex) {
+            throw new RequestException("P-701","ID del Cliente faltante o incorrecto");
         }
     }
 
     @Transactional
     @Override
-    public String deleteCustomer(int id) {
+    public ResponseEntity<String> deleteCustomer(int id) {
         try
         {
             icustomerRepository.deleteById(id);
-            return "Cliente borrado con exíto";
+            response.put("message", "Cliente ha sido Eliminado exitosamente");
+            return ResponseEntity.ok(response.toString());
         } catch (EmptyResultDataAccessException ex){
             throw new RequestException("P-701", "ID del Cliente faltante o incorrecto");
         }
