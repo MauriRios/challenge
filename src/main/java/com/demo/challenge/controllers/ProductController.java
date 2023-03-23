@@ -11,6 +11,7 @@ import com.demo.challenge.servicesInterfaces.IProductService;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -46,32 +47,32 @@ public class ProductController {
     }
 
     @PostMapping("/crear")
-    public Product createProduct(@RequestBody Product product) {
-        iproductService.saveProduct(product);
-        return product;
+    public ResponseEntity<String> createProduct(@RequestBody Product product) {
+        return iproductService.saveProduct(product);
+
     }
 
 
     @PutMapping("/editar/{id}")
-    public Product editProduct(@PathVariable("id") int id, @RequestBody Product product) {
+    public ResponseEntity<String> editProduct(@PathVariable("id") int id, @RequestBody Product product) {
         product.setId(id);
-        iproductService.updateProduct(product);
-        return product;
+     return  iproductService.updateProduct(product);
+
     }
 
     @PutMapping("/activar/{id}")
-    public String activateProduct(@PathVariable int id) {
+    public ResponseEntity<String> activateProduct(@PathVariable int id) {
 
         return iproductService.activateProduct(id);
     }
 
     @PutMapping("/desactivar/{id}")
-    public String deactivateProduct(@PathVariable int id) {
+    public ResponseEntity<String> deactivateProduct(@PathVariable int id) {
         return iproductService.deactivateProduct(id);
     }
 
     @DeleteMapping("/borrar/{id}")
-    public String deleteProduct(@PathVariable int id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
         return iproductService.deleteProduct(id);
     }
 

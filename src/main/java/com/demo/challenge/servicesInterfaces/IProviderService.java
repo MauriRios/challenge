@@ -23,15 +23,15 @@ public interface IProviderService {
 
     ProviderDTO findProviderById(int id);
 
-    String deleteProvider(int id);
+    ResponseEntity<String> deleteProvider(int id);
 
-    String updateProvider(Provider provider);
+    ResponseEntity<String> updateProvider(Provider provider);
 
     ResponseEntity<String> createProvider(Provider provider);
 
-    String activateProvider(int id);
+    ResponseEntity<String> activateProvider(int id);
 
-    String deactivateProvider(int id);
+    ResponseEntity<String> deactivateProvider(int id);
 
 
 }

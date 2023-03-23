@@ -7,6 +7,7 @@ package com.demo.challenge.servicesInterfaces;
 import com.demo.challenge.dtos.LowProductProviderDTO;
 import com.demo.challenge.dtos.ProductDTO;
 import com.demo.challenge.entities.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,15 +23,15 @@ public interface IProductService {
 
     ProductDTO findProductById(int id);
 
-    String deleteProduct(int id);
+    ResponseEntity<String> deleteProduct(int id);
 
-    String updateProduct(Product product);
+    ResponseEntity<String> updateProduct(Product product);
 
-    String saveProduct(Product product);
+    ResponseEntity<String> saveProduct(Product product);
 
-    String activateProduct(int id);
+    ResponseEntity<String> activateProduct(int id);
 
-    String deactivateProduct(int id);
+    ResponseEntity<String> deactivateProduct(int id);
 
     // querys
 

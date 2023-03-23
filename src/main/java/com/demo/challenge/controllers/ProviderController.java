@@ -58,28 +58,27 @@ public class ProviderController {
     }
 
     @PutMapping("/editar/{id}")
-    public Provider editProvider(@PathVariable("id") int id,
+    public ResponseEntity<String> editProvider(@PathVariable("id") int id,
                                  @RequestBody Provider provider) {
         provider.setId(id);
-        iproviderService.updateProvider(provider);
-        return provider;
+        return iproviderService.updateProvider(provider);
     }
 
 
     @PutMapping("/activar/{id}")
-    public String activateProvider(@PathVariable int id) {
+    public ResponseEntity<String> activateProvider(@PathVariable int id) {
 
         return iproviderService.activateProvider(id);
     }
 
     @PutMapping("/desactivar/{id}")
-    public String deactivateProvider(@PathVariable int id) {
+    public ResponseEntity<String> deactivateProvider(@PathVariable int id) {
 
         return iproviderService.deactivateProvider(id);
     }
 
     @DeleteMapping("/borrar/{id}")
-    public String deleteProvider(@PathVariable int id) {
+    public ResponseEntity<String> deleteProvider(@PathVariable int id) {
         return iproviderService.deleteProvider(id);
     }
 

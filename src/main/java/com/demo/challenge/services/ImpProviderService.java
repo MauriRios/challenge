@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,9 @@ public class ImpProviderService implements IProviderService {
     }
 
     ModelMapper mapper = new ModelMapper();
+
+    JSONObject response = new JSONObject();
+
 
     @Override
     public List<ProviderDTO> getProviders() {
@@ -133,8 +138,8 @@ public class ImpProviderService implements IProviderService {
             }
             provider.setStatus(true);
             iproviderRepository.save(provider);
-            return ResponseEntity.ok().body("Proveedor agregado con éxito");
-
+            response.put("message", "Proveedor agregado con éxito");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
             } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-602","El CUIT/Telefono ingresado ya existe");
         }
@@ -143,7 +148,7 @@ public class ImpProviderService implements IProviderService {
 
     @Transactional
     @Override
-    public String updateProvider(Provider provider) {
+    public ResponseEntity<String> updateProvider(Provider provider) {
         try {
             if (provider.getProviderName() == null ||
                     provider.getAddress() == null ||
@@ -153,8 +158,8 @@ public class ImpProviderService implements IProviderService {
             }
             provider.setStatus(true);
             iproviderRepository.save(provider);
-            return "Proveedor Editado exítosamente";
-
+            response.put("message", "Proveedor Editado exítosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (DataIntegrityViolationException ex) {
             throw new RequestException("P-602","El CUIT/Telefono ingresado ya existe");
         }
@@ -162,14 +167,15 @@ public class ImpProviderService implements IProviderService {
 
     @Transactional
     @Override
-    public String activateProvider(int id) {
+    public ResponseEntity<String> activateProvider(int id) {
         try {
             Provider provider = iproviderRepository.findById(id).get();
             if (provider.getId() !=0){
             provider.setStatus(true);
             iproviderRepository.save(provider);
         }
-        return "Proveedor Activado exítosamente";
+            response.put("message", "Proveedor Activado exítosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (RuntimeException ex) {
             throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
         }
@@ -177,7 +183,7 @@ public class ImpProviderService implements IProviderService {
 
     @Transactional
     @Override
-    public String deactivateProvider(int id) {
+    public ResponseEntity<String> deactivateProvider(int id) {
         try
         {
         Provider provider = iproviderRepository.findById(id).get();
@@ -185,7 +191,8 @@ public class ImpProviderService implements IProviderService {
             provider.setStatus(false);
             iproviderRepository.save(provider);
             }
-            return "Proveedor Desactivado exítosamente";
+            response.put("message", "Proveedor Desactivado exítosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
             } catch (RuntimeException ex) {
             throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
             }
@@ -193,11 +200,12 @@ public class ImpProviderService implements IProviderService {
 
     @Transactional
     @Override
-    public String deleteProvider(int id) {
+    public ResponseEntity<String> deleteProvider(int id) {
         try
         {
             iproviderRepository.deleteById(id);
-            return "Proveedor borrado con exíto";
+            response.put("message", "Proveedor Eliminado exítosamente");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         } catch (EmptyResultDataAccessException ex){
             throw new RequestException("P-601", "ID del Proveedor faltante o incorrecto");
         }
