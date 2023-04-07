@@ -5,6 +5,7 @@
 package com.demo.challenge.servicesInterfaces;
 
 import com.demo.challenge.dtos.SaleDTO;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ISaleService {
 
     public List<SaleDTO> getSales();
 
-    public String createSale(SaleDTO saleDTO);
+    public ResponseEntity<String> createSale(SaleDTO saleDTO);
 
     public SaleDTO findSaleById(int id);
 

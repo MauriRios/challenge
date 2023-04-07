@@ -1,7 +1,9 @@
 package com.demo.challenge.entities;
 
 import com.demo.challenge.dtos.SaleDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "orderDetail")
 public class OrderDetail {

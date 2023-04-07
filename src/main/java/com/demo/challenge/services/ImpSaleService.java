@@ -16,7 +16,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,6 +48,9 @@ public class ImpSaleService implements ISaleService {
 
     ModelMapper mapper = new ModelMapper();
 
+    JSONObject response = new JSONObject();
+
+
     @Override
     public List<SaleDTO> getSales() {
         var sales = isaleRepository.findAll();
@@ -66,59 +72,47 @@ public class ImpSaleService implements ISaleService {
 
     @Transactional
     @Override
-    public String createSale(SaleDTO saleDTO) {
-
+    public ResponseEntity<String> createSale(SaleDTO saleDTO) {
         try {
-
             var customer = icustomerRepository.findById(saleDTO.getCustomerId()).get();
             var provider = iproviderRepository.findById(saleDTO.getProviderId()).get();
-
             LocalDate today = LocalDate.now();
             List<Product> products = new ArrayList<>();
             saleDTO.setDate(today);
-
             var sale = mapper.map(saleDTO, Sale.class);
             sale.setCustomer(customer);
             sale.setProvider_id(provider);
-
             int totalQuantity = 0;
             BigDecimal totalPrice = new BigDecimal("0.0");
-
             for (var unit : saleDTO.getProducts()) {
-
                 var product = iproductRepository.findById(unit.getId()).get();
                 OrderDetail orderDetail = new OrderDetail();
-
                 if (product.getStock() >= unit.getQuantity()) {
                     var result = product.getStock() - unit.getQuantity();
-
                     product.setPrice(unit.getPrice());
                     product.setStock(result);
                     totalQuantity += unit.getQuantity();
                     totalPrice = totalPrice.add(unit.getPrice().multiply(new BigDecimal(unit.getQuantity())));
-
                     // crea y persiste un objeto OrderDetail para este producto
                     orderDetail.setSale(sale);
                     orderDetail.setProduct(product);
                     orderDetail.setQuantity(unit.getQuantity());
                     iorderDetailRepository.save(orderDetail);
-
                     products.add(mapper.map(unit, Product.class));
                 } else {
-                    return "Producto sin Stock, vuelva mas tarde";
+                    response.put("message", "Producto sin Stock, vuelva mas tarde");
+                    return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
                 }
 
                 iproductRepository.save(product);
-
             }
-
-
             saleDTO.setTotalPrice(totalPrice);
             sale.setTotalPrice(totalPrice);
             sale.setQuantity(totalQuantity);
             sale.setProducts(products);
             isaleRepository.save(sale);
-            return "Compra realizada con Exíto";
+            response.put("message", "Compra realizada con Exíto");
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
         } catch (RuntimeException ex) {
             throw new RequestException("P-804","Compra no realizada, Algo salió mal, datos de la compra o producto faltante");
