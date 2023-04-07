@@ -103,6 +103,7 @@ public class ImpSaleService implements ISaleService {
                     response.put("message", "Producto sin Stock, vuelva mas tarde");
                     return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
                 }
+
                 iproductRepository.save(product);
             }
             saleDTO.setTotalPrice(totalPrice);
