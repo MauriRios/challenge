@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +55,7 @@ public class SaleController {
     }
 
     @PostMapping("/crear")
-    public String createSale(@RequestBody SaleDTO saleDTO) {
+    public ResponseEntity<String> createSale(@RequestBody SaleDTO saleDTO) {
         return isaleService.createSale(saleDTO);
 
     }
