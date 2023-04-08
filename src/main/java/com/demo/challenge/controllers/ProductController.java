@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("producto")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class ProductController {
 
 

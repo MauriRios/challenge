@@ -31,9 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("venta")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class SaleController {
-
 
     private final ISaleService isaleService;
 

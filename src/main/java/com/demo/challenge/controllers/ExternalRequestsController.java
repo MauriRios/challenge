@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("external")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class ExternalRequestsController {
 
     private final ExternalProductService externalProductService;

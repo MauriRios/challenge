@@ -6,10 +6,12 @@ import com.demo.challenge.exceptions.BusinessException;
 import com.demo.challenge.exceptions.RequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class ControllerAdvice {
 
     @ExceptionHandler(value = RequestException.class)
