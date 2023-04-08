@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("venta")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class OrderDetailController {
     private final IOrderDetailService iorderDetailService;
     private final IOrderDetailRepository iorderDetailRepository;

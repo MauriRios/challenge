@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("proveedor")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://challenge-fe.web.app/","http://localhost:4200"})
 public class ProviderController {
 
     private final IProviderService iproviderService;
