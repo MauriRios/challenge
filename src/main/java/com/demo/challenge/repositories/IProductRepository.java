@@ -20,6 +20,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query(value = "SELECT * FROM PRODUCTS where stock <= :stock", nativeQuery = true)
+    @Query(value = "SELECT * FROM products where stock <= :stock", nativeQuery = true)
     List<Product> findProductsByLowStock(@Param("stock") Integer stock);
 }
